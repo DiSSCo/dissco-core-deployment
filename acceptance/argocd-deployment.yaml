@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     path: acceptance
-    repoURL: https://github.com/DiSSCo/dissco-core-infrastructure.git
+    repoURL: https://github.com/DiSSCo/dissco-core-deployment.git
     targetRevision: HEAD
     directory:
       recurse: true
