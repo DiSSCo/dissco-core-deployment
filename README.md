@@ -43,5 +43,8 @@ Each folder includes everything needed to run the service, this may contain:
 - Kafka topic, for messages
 
 ## Change management
-After all application are deployed, all changes should be made by creating PR's and merging them to `main`.
-This will trigger ArgoCD to indicate the resources are no longer in sync and update them accordingly (if configured this way).
+After all applications are deployed, all changes should be made by creating PR's on the repo and merge them to `main`.
+ArgoCD monitors the `main` branch of the GitHub repo.
+When new changes are made it will automatically recognise that kubernetes is no longer in sync with the files in the repo.
+It can then automatically synchronise the cluster with the changed kubernetes files.
+There is also an option to leave the actual syncrhonisation a manual action.
