@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-handle-manager-deployment
+  labels:
+    app: dissco-handle-manager-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-handle-manager
+  template:
+    metadata:
+      labels:
+        app: dissco-handle-manager
+    spec:
+      containers:
+        - name: dissco-handle-manager
+          image: public.ecr.aws/dissco/handle-manager
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
+              value: https://login-demo.dissco.eu/auth/realms/dissco
+            - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
+              value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+            - name: application.ui-url
+              value: https://dev.dissco.tech
+            - name: application.api-url
+              value: ${application.ui-url}/api/v1
+            - name: application.orchestration-url
+              value: https://orchestration.dissco.tech/api/v1
+            - name: application.maxHandles
+              value: '1000'
+            - name: spring.datasource.url
+              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-password
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
