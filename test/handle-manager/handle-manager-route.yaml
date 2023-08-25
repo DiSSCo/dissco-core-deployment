@@ -34,5 +34,5 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /handle-manager/api/v1/pids
+      - /handle-manager
     forceSlash: false
