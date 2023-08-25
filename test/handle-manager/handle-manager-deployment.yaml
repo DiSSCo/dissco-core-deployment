@@ -45,6 +45,8 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: db-password
+            - name: application.prefix
+              value: TEST
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
