@@ -30,7 +30,7 @@ spec:
             - name: application.api-url
               value: ${application.ui-url}/api/v1
             - name: application.orchestration-url
-              value: https://orchestration.dissco.tech/api/v1
+              value: https://dev-orchestration.dissco.tech/api/v1
             - name: application.maxHandles
               value: '1000'
             - name: spring.datasource.url
