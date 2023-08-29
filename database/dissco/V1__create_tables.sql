@@ -36,7 +36,7 @@ create table new_digital_media_object
     deleted              timestamp with time zone,
     data                 jsonb,
     original_data        jsonb,
-    physical_specimen_id varchar default                              not null
+    physical_specimen_id varchar                                      not null
 );
 
 create index new_digital_media_object_id_idx
@@ -109,7 +109,7 @@ create table source_system
     deleted     timestamp with time zone,
     mapping_id  text                                        not null,
     version     integer default 1                           not null,
-    creator     text    default                             not null
+    creator     text                                        not null
 );
 
 create table new_user

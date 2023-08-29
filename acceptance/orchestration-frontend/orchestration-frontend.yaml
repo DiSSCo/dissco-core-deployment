@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dissco-orchestration-frontend
-          image: public.ecr.aws/dissco/orchestration-frontend:latest
+          image: public.ecr.aws/dissco/orchestration-frontend:sha-b4f735e
           ports:
             - containerPort: 3000
           resources:
