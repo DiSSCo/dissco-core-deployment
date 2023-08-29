@@ -17,13 +17,13 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:latest
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-9f36082
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: spring.datasource.url
-              value: jdbc:postgresql://terraform-20230523131639857400000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -40,6 +40,25 @@ spec:
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
+            - name: kafka.publisher.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: mas.kafkaHost
+              value: kafka.kafka.svc.cluster.local:9092
+            - name: token.id
+              value: demo-api-client
+            - name: token.grant-type
+              value: client_credentials
+            - name: endpoint.token-endpoint
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+            - name: endpoint.handle-endpoint
+              value: https://sandbox.dissco.tech/handle-manager/api/v1/pids/
+            - name: application.baseUrl
+              value: orchestration.dissco.tech
+            - name: token.secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: handle-endpoint-token
           resources:
             requests:
               memory: "500Mi"
