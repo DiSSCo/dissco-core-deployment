@@ -2,12 +2,12 @@
 
 ## Make sure infrastructure is deployed
 First deploy all infrastructure necessary for the applications using TerraFrom,see the [infrastructure repo](https://github.com/DiSSCo/dissco-core-infrastructure). 
-If this was de deployed succesfully you should now have a document-db, rds postgres database and a kubernetes cluster. 
+If this was de deployed successfully you should now have a document-db, rds postgres database and a kubernetes cluster. 
 On the kubernetes cluster you should have ArgoCD deployed with all the shared-resources. 
 These shared resources consists of some overhead needed to deploy CRDs.
 
 ## Synchronize helm charts
-The second step is to synchonize the helm charts. 
+The second step is to synchronise the helm charts. 
 You can now open the ArgoCD portal by using `k port-forward -n argocd service/argo-cd-argocd-server 8080:80`  
 The password can be found by getting it from the cluster with:
 `k get secret -n argocd argocd-initial-admin-secret -o yaml`
