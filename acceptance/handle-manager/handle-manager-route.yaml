@@ -46,6 +46,6 @@ spec:
     accessControlAllowMethods:
       - "GET"
     accessControlAllowHeaders: "*"
-    accessControlAllowOriginList: "*"
+    accessControlAllowOrigin: "*"
     accessControlMaxAge: 100
     addVaryHeader: true
