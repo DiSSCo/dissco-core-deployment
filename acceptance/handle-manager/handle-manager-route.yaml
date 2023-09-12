@@ -26,6 +26,7 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-handle-manager-stripprefix
+        - name: dissco-handle-manager-cors-headers
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
