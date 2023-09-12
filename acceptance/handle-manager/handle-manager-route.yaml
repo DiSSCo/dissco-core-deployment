@@ -36,3 +36,16 @@ spec:
     prefixes:
       - /handle-manager
     forceSlash: false
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-handle-manager-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders: "*"
+    accessControlAllowOriginList: "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true
