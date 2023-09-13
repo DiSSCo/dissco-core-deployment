@@ -46,7 +46,7 @@ spec:
                   name: db-secrets
                   key: db-password
             - name: application.prefix
-              value: ACCEPTANCE
+              value: SANDBOX
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
