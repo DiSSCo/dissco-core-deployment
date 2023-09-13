@@ -62,7 +62,7 @@ spec:
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
             - name: feign.annotations
-              value: dissco-core-annotation-processing-service.default.svc.cluster.local:8080
+              value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
