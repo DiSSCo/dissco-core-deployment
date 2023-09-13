@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dissco-digital-media-object-processor-kafka
-          image: public.ecr.aws/dissco/dissco-core-digital-media-object-processor:sha-3d151b6
+          image: public.ecr.aws/dissco/dissco-core-digital-media-object-processor:sha-bcdffed
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -82,10 +82,10 @@ spec:
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:
             requests:
-              memory: "500Mi"
-              cpu: "200m"
+              memory: "1Gi"
+              cpu: "500m"
             limits:
-              memory: "500Mi"
+              memory: "1Gi"
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
@@ -98,7 +98,7 @@ spec:
   scaleTargetRef:
     name: dissco-digital-media-object-processor-kafka
   minReplicaCount: 0
-  maxReplicaCount:  5
+  maxReplicaCount:  1
   triggers:
     - type: kafka
       metadata:

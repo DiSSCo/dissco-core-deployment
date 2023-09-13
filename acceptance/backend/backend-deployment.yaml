@@ -18,7 +18,7 @@ spec:
       serviceAccountName: secret-manager
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-1bf60d9
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-2fc86f6
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -62,7 +62,7 @@ spec:
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
             - name: feign.annotations
-              value: dissco-core-annotation-processing-service.default.svc.cluster.local:8080
+              value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:

@@ -4,8 +4,9 @@ metadata:
   name: dissco-core-annotation-processing-service-web
 spec:
   selector:
-    app: dissco-core-annotation-processing
+    app: dissco-core-annotation-processing-web
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+
