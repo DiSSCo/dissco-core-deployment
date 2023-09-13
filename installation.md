@@ -2,7 +2,7 @@
 
 ## Make sure infrastructure is deployed
 First deploy all infrastructure necessary for the applications using TerraFrom,see the [infrastructure repo](https://github.com/DiSSCo/dissco-core-infrastructure). 
-If this was de deployed successfully you should now have a document-db, rds postgres database and a kubernetes cluster. 
+If this was deployed successfully you should now have a document-db, rds postgres database and a kubernetes cluster. 
 On the kubernetes cluster you should have ArgoCD deployed with all the shared-resources. 
 These shared resources consists of some overhead needed to deploy CRDs.
 
@@ -48,6 +48,40 @@ Create a port-forward to kibana:
 Go to `https://localhost:5601/app/home#/` and login with the elastic user creds.
 Then go to dev tools and add the mappings available in this repository.
 
+## Setup indices for mongodb
+We need to add some additional indices on mongodb to make sure we can quickly grap the version numbers of the objects.
+We will put the version on each PID (instead of the default which is on PID/version)
+This step is a bit tricky as mongodb is not publicly exposed so we need an app in the network to reach mongodb
+`kubectl run my-shell --rm -i --tty --image ubuntu -- bash`
+Then run the installation steps for mongosh
+https://www.mongodb.com/docs/mongodb-shell/install
+`mongosh <connection-string>` Use connection string from secret but remove additional query params
+`use dissco`
+Run the following create index comments
+```
+db.digital_specimen_provenance.createIndex(
+  {
+      "eventRecord.id": 1
+  }
+)
+
+db.annotation_provenance.createIndex(
+  {
+      "eventRecord.id": 1
+  }
+)
+
+db.digital_media_provenance.createIndex(
+  {
+      "eventRecord.id": 1
+  }
+)
+```
+Now we can exit and delete the pod
+`.exit`
+`exit`
+`k delete pod my-shell`
+
 ## Add Kafka and traefik
 We can now add Kafka by applying the yaml to the cluster.
 Next we can also add the ingress, this creates the external IP we need for the DNS record.
@@ -61,6 +95,12 @@ Make sure all applications are running.
 
 ## Commit the files to github
 Commit all changes to github from now on this is the place where all changes will be made.
+
+## Enable resizing of PVC 
+Add scaling property to EKS disk.
+Edit storageclass `gp2` and add `allowVolumeExpansion: true`
+`kubectl edit sc gp2`
+https://www.jeffgeerling.com/blog/2019/expanding-k8s-pvs-eks-on-aws
 
 ## Deploy the argocd deployment to synchronize with the github repo
 
