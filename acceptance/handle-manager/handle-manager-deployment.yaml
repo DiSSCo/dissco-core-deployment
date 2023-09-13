@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dissco-handle-manager
-          image: public.ecr.aws/dissco/handle-manager:sha-fa23634
+          image: public.ecr.aws/dissco/handle-manager:sha-506d308
           imagePullPolicy: Always
           ports:
             - containerPort: 80

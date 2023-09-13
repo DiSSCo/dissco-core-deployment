@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dissco-digital-specimen-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-ceec6f5
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-71f3bc7
           imagePullPolicy: Always
           ports:
             - containerPort: 80

@@ -43,7 +43,7 @@ spec:
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: mas.kafkaHost
-              value: kafka.kafka.svc.cluster.local:9092
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: token.id
               value: demo-api-client
             - name: token.grant-type

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dissco-core-annotation-processing-kafka
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-14ddfb6
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-35e58c3
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
