@@ -51,7 +51,7 @@ Then go to dev tools and add the mappings available in this repository.
 ## Setup indices for mongodb
 We need to add some additional indices on mongodb to make sure we can quickly grap the version numbers of the objects.
 We will put the version on each PID (instead of the default which is on PID/version)
-This step is a bit tricky ad mongodb is not publicly exposed so we need an app in the network to reach mongodb
+This step is a bit tricky as mongodb is not publicly exposed so we need an app in the network to reach mongodb
 `kubectl run my-shell --rm -i --tty --image ubuntu -- bash`
 Then run the installation steps for mongosh
 https://www.mongodb.com/docs/mongodb-shell/install
