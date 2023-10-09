@@ -74,6 +74,8 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: handle-endpoint-token
+            - name: application.specimenBaseUrl
+              value: https://hdl.handle.net/
           resources:
             requests:
               memory: "500Mi"
