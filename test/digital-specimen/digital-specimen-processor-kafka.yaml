@@ -50,7 +50,7 @@ spec:
                   name: aws-secrets
                   key: elastic-password
             - name: elasticsearch.index-name
-              value: digital-specimen
+              value: digital-specimen-um
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: kafka.consumer.host
