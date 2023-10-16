@@ -52,7 +52,7 @@ spec:
                   name: aws-secrets
                   key: elastic-password
             - name: elasticsearch.index-name
-              value: digital-media-object-um
+              value: digital-media-object
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: kafka.consumer.host
