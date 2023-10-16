@@ -33,6 +33,8 @@ spec:
               value: https://dev-orchestration.dissco.tech/api/v1
             - name: application.maxHandles
               value: '1000'
+            - name: spring.profiles.active
+              value: handle
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
