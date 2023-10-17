@@ -222,10 +222,10 @@
                     "ignore_above": 256
                   }
                 },
-                "schema.orc:ratingCount": {
+                "schema.org:ratingCount": {
                   "type": "integer"
                 },
-                "schema.orc:ratingValue": {
+                "schema.org:ratingValue": {
                   "type": "float"
                 }
               }
