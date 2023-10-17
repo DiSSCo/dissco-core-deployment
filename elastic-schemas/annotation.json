@@ -1,249 +1,136 @@
 {
   "mappings": {
-    "dynamic": false,
-    "properties": {
-      "annotation": {
-        "properties": {
-          "ods:id": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "rdf:type": {
-            "type": "constant_keyword",
-            "value": "Annotation"
-          },
-          "ods:version": {
-            "type": "integer"
-          },
-          "oa:motivation": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 64
-              }
-            }
-          },
-          "oa:motivatedBy": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
-          },
-          "oa:target": {
-            "properties": {
-              "ods:id": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
+    "_doc": {
+      "properties": {
+        "annotation": {
+          "properties": {
+            "body": {
+              "type": "flattened"
+            },
+            "created": {
+              "type": "date"
+            },
+            "creator": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
                 }
-              },
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "oa:selector": {
-                "properties": {
-                  "type": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
+              }
+            },
+            "generated": {
+              "type": "date"
+            },
+            "generator": {
+              "properties": {
+                "id": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
                     }
-                  },
-                  "field": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "class": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "ac:hasRoi": {
-                    "properties": {
-                      "ac:xFrac": {
-                        "type": "float"
-                      },
-                      "ac:yFrac": {
-                        "type": "float"
-                      },
-                      "ac:widthFrac": {
-                        "type": "float"
-                      },
-                      "ac:heightFrac": {
-                        "type": "float"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "oa:body": {
-            "properties": {
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "oa:value": {
-                "type": "nested",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dcterms:reference": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "ods:score": {
-                "type": "float"
-              }
-            }
-          },
-          "oa:creator": {
-            "properties": {
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "foaf:name": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "ods:id": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              }
-            }
-          },
-          "ods:deletedOn": {
-            "type": "date"
-          },
-          "dcterms:created": {
-            "type": "date"
-          },
-          "oa:generated": {
-            "type": "date"
-          },
-          "as:generator": {
-            "properties": {
-              "ods:id": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "foaf:name": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              }
-            }
-          },
-          "schema.org:aggregateRating": {
-            "properties": {
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
                   }
                 },
-                "schema.orc:ratingCount": {
-                  "type": "integer"
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
                 },
-                "schema.orc:ratingValue": {
-                  "type": "float"
+                "type": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "motivation": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "preferenceScore": {
+              "type": "long"
+            },
+            "target": {
+              "properties": {
+                "id": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "indvProp": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "invdProp": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "type": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
                 }
               }
             }
           }
-        }
-      },
-      "id": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+        },
+        "created": {
+          "type": "date"
+        },
+        "id": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
           }
+        },
+        "version": {
+          "type": "long"
         }
-      },
-      "version": {
-        "type": "long"
       }
     }
   }
