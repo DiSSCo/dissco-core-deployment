@@ -1,52 +1,24 @@
-create table annotation
+create table new_annotation
 (
     id               text                     not null
-        constraint annotation_pk
+        constraint new_annotation_pk
             primary key,
     version          integer                  not null,
     type             text                     not null,
     motivation       text                     not null,
-    motivated_by     text,
     target_id        text                     not null,
-    target           jsonb                    not null,
+    target_field     text,
+    target_body      jsonb                    not null,
     body             jsonb                    not null,
-    creator_id       text                     not null,
-    creator          jsonb                    not null,
+    preference_score integer                  not null,
+    creator          text                     not null,
     created          timestamp with time zone not null,
-    generator        jsonb                    not null,
+    generator_id     text                     not null,
+    generator_body   jsonb                    not null,
     generated        timestamp with time zone not null,
     last_checked     timestamp with time zone not null,
-    aggregate_rating jsonb,
-    deleted_on       timestamp with time zone
+    deleted          timestamp with time zone
 );
-
-create index annotation_id_creator_id_index
-    on annotation (id, creator_id);
-
-create index annotation_id_target_id_index
-    on annotation (id, target_id);
-
-create table mas_job_record
-(
-    job_id         uuid default uuid_generate_v4() not null
-        constraint mas_job_record_pk
-            primary key,
-    state          text                            not null,
-    creator_id     text                            not null,
-    time_started   timestamp with time zone        not null,
-    time_completed timestamp with time zone,
-    annotations    jsonb,
-    target_id      text                            not null
-);
-
-alter table mas_job_record
-    owner to disscomasteruser;
-
-create index mas_job_record_created_idx
-    on mas_job_record (time_started);
-
-create index mas_job_record_job_id_index
-    on mas_job_record (job_id);
 
 create table digital_media_object
 (
