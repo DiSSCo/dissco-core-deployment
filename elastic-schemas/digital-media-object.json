@@ -12,7 +12,7 @@
             "fields": {
               "keyword": {
                 "type": "keyword",
-                "ignore_above": 256
+                "ignore_above": 64
               }
             }
           },
@@ -23,7 +23,7 @@
                 "fields": {
                   "keyword": {
                     "type": "keyword",
-                    "ignore_above": 256
+                    "ignore_above": 512
                   }
                 }
               },
@@ -95,7 +95,7 @@
                 "fields": {
                   "keyword": {
                     "type": "keyword",
-                    "ignore_above": 256
+                    "ignore_above": 1024
                   }
                 }
               },
@@ -248,6 +248,21 @@
                         "ignore_above": 256
                       }
                     }
+                  },
+                  "???:partOfLabel": {
+                    "type": "boolean"
+                  },
+                  "???:barcodeOrNfc": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "isIdPersistent": {
+                    "type": "boolean"
                   }
                 }
               },
@@ -368,15 +383,6 @@
                       }
                     }
                   },
-                  "???:citationType": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
                   "???:citationPageNumber": {
                     "type": "text",
                     "fields": {
@@ -481,12 +487,12 @@
         "fields": {
           "keyword": {
             "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 64
           }
         }
       },
       "version": {
-        "type": "long"
+        "type": "short"
       }
     }
   }

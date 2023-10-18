@@ -26,7 +26,7 @@ create table digital_media_object
         constraint digital_media_object_pk
             primary key,
     version                 integer                  not null,
-    type                    text,
+    type                    text                     not null,
     digital_specimen_id     text                     not null,
     media_url               text                     not null,
     created                 timestamp with time zone not null,
@@ -61,8 +61,8 @@ create table digital_specimen
     created                     timestamp with time zone    not null,
     last_checked                timestamp with time zone    not null,
     deleted                     timestamp with time zone,
-    data                        jsonb,
-    original_data               jsonb
+    data                        jsonb                       not null,
+    original_data               jsonb                       not null
 );
 
 
@@ -82,7 +82,7 @@ create table mapping
     created            timestamp with time zone not null,
     creator            text                     not null,
     deleted            timestamp with time zone,
-    sourcedatastandard varchar                  not null,
+    source_data_standard varchar                  not null,
     constraint new_mapping_pk
         primary key (id, version)
 );

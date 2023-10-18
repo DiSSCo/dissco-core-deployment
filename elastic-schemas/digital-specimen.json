@@ -29,15 +29,6 @@
                       }
                     }
                   },
-                  "???:citationType": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
                   "???:citationPageNumber": {
                     "type": "text",
                     "fields": {
@@ -75,13 +66,7 @@
                     }
                   },
                   "???:isPeerReviewed": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
+                    "type": "boolean"
                   },
                   "dcterms:creator": {
                     "type": "text",
@@ -453,6 +438,103 @@
                         }
                       }
                     }
+                  },
+                  "citations": {
+                    "properties": {
+                      "???:citationRemarks": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dcterms:bibliographicCitation": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:citationPageNumber": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:referenceType": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:referenceYear": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:referenceIri": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:isPeerReviewed": {
+                        "type": "boolean"
+                      },
+                      "dcterms:creator": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dcterms:date": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dcterms:title": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dcterms:type": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               },
@@ -560,6 +642,21 @@
                         "ignore_above": 256
                       }
                     }
+                  },
+                  "???:partOfLabel": {
+                    "type": "boolean"
+                  },
+                  "???:barcodeOrNfc": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "isIdPersistent": {
+                    "type": "boolean"
                   }
                 }
               },
@@ -1569,10 +1666,10 @@
         }
       },
       "midsLevel": {
-        "type": "long"
+        "type": "short"
       },
       "version": {
-        "type": "long"
+        "type": "short"
       }
     }
   }
