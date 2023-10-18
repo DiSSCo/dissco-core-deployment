@@ -2,7 +2,41 @@
   "mappings": {
     "dynamic": false,
     "properties": {
-      "annotation": {
+      "ods:id": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "rdf:type": {
+        "type": "constant_keyword",
+        "value": "Annotation"
+      },
+      "ods:version": {
+        "type": "integer"
+      },
+      "oa:motivation": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 64
+          }
+        }
+      },
+      "oa:motivatedBy": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "oa:target": {
         "properties": {
           "ods:id": {
             "type": "text",
@@ -13,23 +47,7 @@
               }
             }
           },
-          "rdf:type": {
-            "type": "constant_keyword",
-            "value": "Annotation"
-          },
-          "ods:version": {
-            "type": "integer"
-          },
-          "oa:motivation": {
-            "type": "text",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 64
-              }
-            }
-          },
-          "oa:motivatedBy": {
+          "ods:type": {
             "type": "text",
             "fields": {
               "keyword": {
@@ -38,9 +56,9 @@
               }
             }
           },
-          "oa:target": {
+          "oa:selector": {
             "properties": {
-              "ods:id": {
+              "type": {
                 "type": "text",
                 "fields": {
                   "keyword": {
@@ -49,7 +67,7 @@
                   }
                 }
               },
-              "ods:type": {
+              "field": {
                 "type": "text",
                 "fields": {
                   "keyword": {
@@ -58,195 +76,158 @@
                   }
                 }
               },
-              "oa:selector": {
+              "class": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "ac:hasRoi": {
                 "properties": {
-                  "type": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
+                  "ac:xFrac": {
+                    "type": "float"
                   },
-                  "field": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
+                  "ac:yFrac": {
+                    "type": "float"
                   },
-                  "class": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
+                  "ac:widthFrac": {
+                    "type": "float"
                   },
-                  "ac:hasRoi": {
-                    "properties": {
-                      "ac:xFrac": {
-                        "type": "float"
-                      },
-                      "ac:yFrac": {
-                        "type": "float"
-                      },
-                      "ac:widthFrac": {
-                        "type": "float"
-                      },
-                      "ac:heightFrac": {
-                        "type": "float"
-                      }
-                    }
+                  "ac:heightFrac": {
+                    "type": "float"
                   }
-                }
-              }
-            }
-          },
-          "oa:body": {
-            "properties": {
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "oa:value": {
-                "type": "nested",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dcterms:reference": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "ods:score": {
-                "type": "float"
-              }
-            }
-          },
-          "oa:creator": {
-            "properties": {
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "foaf:name": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "ods:id": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              }
-            }
-          },
-          "ods:deletedOn": {
-            "type": "date"
-          },
-          "dcterms:created": {
-            "type": "date"
-          },
-          "oa:generated": {
-            "type": "date"
-          },
-          "as:generator": {
-            "properties": {
-              "ods:id": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "foaf:name": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              }
-            }
-          },
-          "schema.org:aggregateRating": {
-            "properties": {
-              "ods:type": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                },
-                "schema.org:ratingCount": {
-                  "type": "integer"
-                },
-                "schema.org:ratingValue": {
-                  "type": "float"
                 }
               }
             }
           }
         }
       },
-      "id": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+      "oa:body": {
+        "properties": {
+          "ods:type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "oa:value": {
+            "type": "nested",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "dcterms:reference": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "ods:score": {
+            "type": "float"
           }
         }
       },
-      "version": {
-        "type": "long"
+      "oa:creator": {
+        "properties": {
+          "ods:type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "foaf:name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "ods:id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
       },
-      "created": {
+      "ods:deletedOn": {
         "type": "date"
+      },
+      "dcterms:created": {
+        "type": "date"
+      },
+      "oa:generated": {
+        "type": "date"
+      },
+      "as:generator": {
+        "properties": {
+          "ods:id": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "foaf:name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "ods:type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "schema.org:aggregateRating": {
+        "properties": {
+          "ods:type": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            },
+            "schema.org:ratingCount": {
+              "type": "integer"
+            },
+            "schema.org:ratingValue": {
+              "type": "float"
+            }
+          }
+        }
       }
     }
   }
