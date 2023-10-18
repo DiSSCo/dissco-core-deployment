@@ -39,9 +39,6 @@ create table mas_job_record
     target_id      text                            not null
 );
 
-alter table mas_job_record
-    owner to disscomasteruser;
-
 create index mas_job_record_created_idx
     on mas_job_record (time_started);
 

@@ -7,7 +7,7 @@
         "fields": {
           "keyword": {
             "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 32
           }
         }
       },
@@ -43,7 +43,7 @@
             "fields": {
               "keyword": {
                 "type": "keyword",
-                "ignore_above": 256
+                "ignore_above": 32
               }
             }
           },
@@ -63,7 +63,7 @@
                 "fields": {
                   "keyword": {
                     "type": "keyword",
-                    "ignore_above": 256
+                    "ignore_above": 64
                   }
                 }
               },
