@@ -72,6 +72,8 @@ spec:
               value: dissco
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: application.base-url
+              value: https://dev.dissco.tech
           resources:
             requests:
               memory: "500Mi"

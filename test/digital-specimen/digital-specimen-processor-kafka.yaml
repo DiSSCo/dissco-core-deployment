@@ -50,7 +50,7 @@ spec:
                   name: aws-secrets
                   key: elastic-password
             - name: elasticsearch.index-name
-              value: digital-specimen-um
+              value: digital-specimen
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: kafka.consumer.host
@@ -77,7 +77,7 @@ spec:
                   name: aws-secrets
                   key: handle-endpoint-token
             - name: application.specimenBaseUrl
-              value: https://hdl.handle.net/
+              value: https://doi.org/
           resources:
             requests:
               memory: "1Gi"

@@ -1,85 +1,101 @@
-create table new_annotation
+create table annotation
 (
     id               text                     not null
-        constraint new_annotation_pk
+        constraint annotation_pk
             primary key,
     version          integer                  not null,
     type             text                     not null,
     motivation       text                     not null,
+    motivated_by     text,
     target_id        text                     not null,
-    target_field     text,
-    target_body      jsonb                    not null,
+    target           jsonb                    not null,
     body             jsonb                    not null,
-    preference_score integer                  not null,
-    creator          text                     not null,
+    creator_id       text                     not null,
+    creator          jsonb                    not null,
     created          timestamp with time zone not null,
-    generator_id     text                     not null,
-    generator_body   jsonb                    not null,
+    generator        jsonb                    not null,
     generated        timestamp with time zone not null,
     last_checked     timestamp with time zone not null,
-    deleted          timestamp with time zone
+    aggregate_rating jsonb,
+    deleted_on       timestamp with time zone
 );
 
-create table new_digital_media_object
+create index annotation_id_creator_id_index
+    on annotation (id, creator_id);
+
+create index annotation_id_target_id_index
+    on annotation (id, target_id);
+
+create table mas_job_record
 (
-    id                   text                                         not null
-        constraint new_digital_media_object_pk
+    job_id         uuid default uuid_generate_v4() not null
+        constraint mas_job_record_pk
             primary key,
-    version              integer                                      not null,
-    type                 text,
-    digital_specimen_id  text                                         not null,
-    media_url            text,
-    format               text,
-    source_system_id     text                                         not null,
-    created              timestamp with time zone                     not null,
-    last_checked         timestamp with time zone                     not null,
-    deleted              timestamp with time zone,
-    data                 jsonb,
-    original_data        jsonb,
-    physical_specimen_id varchar                                      not null
+    state          text                            not null,
+    creator_id     text                            not null,
+    time_started   timestamp with time zone        not null,
+    time_completed timestamp with time zone,
+    annotations    jsonb,
+    target_id      text                            not null
 );
 
-create index new_digital_media_object_id_idx
-    on new_digital_media_object (id, media_url);
+create index mas_job_record_created_idx
+    on mas_job_record (time_started);
 
-create unique index new_digital_media_object_id_version_url
-    on new_digital_media_object (id, version, media_url);
+create index mas_job_record_job_id_index
+    on mas_job_record (job_id);
 
-create index new_digital_media_object_digital_specimen_id_url
-    on new_digital_media_object (digital_specimen_id, media_url);
-
-create table new_digital_specimen
+create table digital_media_object
 (
-    id                           text                     not null
-        constraint new_digital_specimen_pk
+    id                      text                     not null
+        constraint digital_media_object_pk
             primary key,
-    version                      integer                  not null,
-    type                         text                     not null,
-    midslevel                    smallint                 not null,
-    physical_specimen_id         text                     not null,
-    physical_specimen_type       text                     not null,
-    specimen_name                text,
-    organization_id              text                     not null,
-    physical_specimen_collection text,
-    dataset                      text,
-    source_system_id             text                     not null,
-    created                      timestamp with time zone not null,
-    last_checked                 timestamp with time zone not null,
-    deleted                      timestamp with time zone,
-    data                         jsonb,
-    original_data                jsonb,
-    dwca_id                      text
+    version                 integer                  not null,
+    type                    text                     not null,
+    digital_specimen_id     text                     not null,
+    media_url               text                     not null,
+    created                 timestamp with time zone not null,
+    last_checked            timestamp with time zone not null,
+    deleted                 timestamp with time zone,
+    data                    jsonb                    not null,
+    original_data           jsonb                    not null
 );
 
-create index new_digital_specimen_created_idx
-    on new_digital_specimen (created);
+create index digital_media_object_id_idx
+    on digital_media_object (id, media_url);
 
-create index new_digital_specimen_id_idx
-    on new_digital_specimen (id, created);
+create unique index digital_media_object_id_version_url
+    on digital_media_object (id, version, media_url);
 
-create index new_digital_specimen_physical_specimen_id_idx
-    on new_digital_specimen (physical_specimen_id);
+create index digital_media_object_digital_specimen_id_url
+    on digital_media_object (digital_specimen_id, media_url);
 
+create table digital_specimen
+(
+    id                          text                        not null
+        constraint digital_specimen_pk
+            primary key,
+    version                     integer                     not null,
+    type                        text                        not null,
+    midslevel                   smallint                    not null,
+    physical_specimen_id        text                        not null,
+    physical_specimen_type      text                        not null,
+    specimen_name               text,
+    organization_id             text                        not null,
+    source_system_id            text                        not null,
+    created                     timestamp with time zone    not null,
+    last_checked                timestamp with time zone    not null,
+    deleted                     timestamp with time zone,
+    data                        jsonb                       not null,
+    original_data               jsonb                       not null
+);
+
+
+create index digital_specimen_created_idx
+    on digital_specimen (created);
+
+create index digital_specimen_physical_specimen_id_idx
+    on digital_specimen (physical_specimen_id);
 
 create table mapping
 (
@@ -91,7 +107,7 @@ create table mapping
     created            timestamp with time zone not null,
     creator            text                     not null,
     deleted            timestamp with time zone,
-    sourcedatastandard varchar                  not null,
+    source_data_standard varchar                  not null,
     constraint new_mapping_pk
         primary key (id, version)
 );
