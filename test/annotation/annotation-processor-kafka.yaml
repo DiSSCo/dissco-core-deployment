@@ -78,6 +78,8 @@ spec:
               value: https://dev.dissco.tech/handle-manager/api/v1/pids/
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+            - name: application.processor-handle
+              value: 20.5000.1025/ANNOTATION-PROCESSOR
           resources:
             requests:
               memory: "500Mi"
