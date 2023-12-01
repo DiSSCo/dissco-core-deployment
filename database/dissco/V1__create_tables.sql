@@ -130,7 +130,7 @@ create table source_system
     creator     text                                        not null
 );
 
-create table new_user
+create table user
 (
     id           text                     not null
         primary key,
