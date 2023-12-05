@@ -117,13 +117,7 @@
             }
           },
           "oa:value": {
-            "type": "nested",
-            "fields": {
-              "keyword": {
-                "type": "keyword",
-                "ignore_above": 256
-              }
-            }
+            "type": "text"
           },
           "dcterms:reference": {
             "type": "text",
@@ -219,13 +213,13 @@
                 "type": "keyword",
                 "ignore_above": 256
               }
-            },
-            "schema.org:ratingCount": {
-              "type": "integer"
-            },
-            "schema.org:ratingValue": {
-              "type": "float"
             }
+          },
+          "schema.org:ratingCount": {
+            "type": "integer"
+          },
+          "schema.org:ratingValue": {
+            "type": "float"
           }
         }
       }

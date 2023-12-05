@@ -67,8 +67,6 @@ spec:
               value: demo-api-client
             - name: token.grantType
               value: client_credentials
-            - name: token.tokenEndpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: token.secret
               valueFrom:
                 secretKeyRef:
@@ -79,7 +77,7 @@ spec:
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: application.processor-handle
-              value: 20.5000.1025/ANNOTATION-PROCESSOR
+              value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
           resources:
             requests:
               memory: "500Mi"
@@ -97,7 +95,7 @@ metadata:
 spec:
   scaleTargetRef:
     name: dissco-core-annotation-processing-kafka
-  minReplicaCount: 0
+  minReplicaCount: 1
   maxReplicaCount:  5
   triggers:
     - type: kafka
