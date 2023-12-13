@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dissco-schemas
+spec:
+  selector:
+    app: dissco-schemas
+  ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dissco-schemas-manager-route
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`schemas.dissco.tech`)
+      kind: Rule
+      services:
+        - name: dissco-schemas
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-schemas-cors-headers
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-schemas-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true

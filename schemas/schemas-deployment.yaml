@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-schemas-deployment
+  labels:
+    app: dissco-schemas-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-schemas
+  template:
+    metadata:
+      labels:
+        app: dissco-schemas
+    spec:
+      containers:
+        - name: dissco-handle-manager
+          image: public.ecr.aws/dissco/opends
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
