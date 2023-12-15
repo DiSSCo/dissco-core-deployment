@@ -20,6 +20,11 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+        - name: dissco-handle-manager
+          image: public.ecr.aws/dissco/opends
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
