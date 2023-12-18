@@ -15,6 +15,11 @@ spec:
         app: dissco-schemas
     spec:
       containers:
+        - name: dissco-schemas-deployment
+          image: public.ecr.aws/dissco/opends
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
         - name: dissco-handle-manager
           image: public.ecr.aws/dissco/opends
           imagePullPolicy: Always
