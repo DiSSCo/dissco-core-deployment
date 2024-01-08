@@ -29,16 +29,22 @@ create index annotation_id_target_id_index
 
 create table mas_job_record
 (
-    job_id         uuid default uuid_generate_v4() not null
+    job_id         text                     not null
         constraint mas_job_record_pk
             primary key,
-    state          text                            not null,
-    creator_id     text                            not null,
-    time_started   timestamp with time zone        not null,
+    job_state      text                     not null
+        constraint job_state_check
+            check (job_state = ANY
+                   (ARRAY['SCHEDULED'::text, 'FAILED'::text, 'COMPLETED'::text, 'RUNNING'::text])),
+    mas_id         text                     not null,
+    time_started   timestamp with time zone not null,
     time_completed timestamp with time zone,
     annotations    jsonb,
-    target_id      text                            not null,
-    user_id        text
+    target_id      text                     not null,
+    user_id        text,
+    target_type    text
+        constraint target_type_check
+            check (target_type = ANY (ARRAY['DIGITAL_SPECIMEN'::text, 'MEDIA_OBJECT'::text]))
 );
 
 create index mas_job_record_created_idx
@@ -49,18 +55,18 @@ create index mas_job_record_job_id_index
 
 create table digital_media_object
 (
-    id                      text                     not null
+    id                  text                     not null
         constraint digital_media_object_pk
             primary key,
-    version                 integer                  not null,
-    type                    text                     not null,
-    digital_specimen_id     text                     not null,
-    media_url               text                     not null,
-    created                 timestamp with time zone not null,
-    last_checked            timestamp with time zone not null,
-    deleted                 timestamp with time zone,
-    data                    jsonb                    not null,
-    original_data           jsonb                    not null
+    version             integer                  not null,
+    type                text                     not null,
+    digital_specimen_id text                     not null,
+    media_url           text                     not null,
+    created             timestamp with time zone not null,
+    last_checked        timestamp with time zone not null,
+    deleted             timestamp with time zone,
+    data                jsonb                    not null,
+    original_data       jsonb                    not null
 );
 
 create index digital_media_object_id_idx
@@ -74,22 +80,22 @@ create index digital_media_object_digital_specimen_id_url
 
 create table digital_specimen
 (
-    id                          text                        not null
+    id                     text                     not null
         constraint digital_specimen_pk
             primary key,
-    version                     integer                     not null,
-    type                        text                        not null,
-    midslevel                   smallint                    not null,
-    physical_specimen_id        text                        not null,
-    physical_specimen_type      text                        not null,
-    specimen_name               text,
-    organization_id             text                        not null,
-    source_system_id            text                        not null,
-    created                     timestamp with time zone    not null,
-    last_checked                timestamp with time zone    not null,
-    deleted                     timestamp with time zone,
-    data                        jsonb                       not null,
-    original_data               jsonb                       not null
+    version                integer                  not null,
+    type                   text                     not null,
+    midslevel              smallint                 not null,
+    physical_specimen_id   text                     not null,
+    physical_specimen_type text                     not null,
+    specimen_name          text,
+    organization_id        text                     not null,
+    source_system_id       text                     not null,
+    created                timestamp with time zone not null,
+    last_checked           timestamp with time zone not null,
+    deleted                timestamp with time zone,
+    data                   jsonb                    not null,
+    original_data          jsonb                    not null
 );
 
 
@@ -101,14 +107,14 @@ create index digital_specimen_physical_specimen_id_idx
 
 create table mapping
 (
-    id                 text                     not null,
-    version            integer                  not null,
-    name               text                     not null,
-    description        text,
-    mapping            jsonb                    not null,
-    created            timestamp with time zone not null,
-    creator            text                     not null,
-    deleted            timestamp with time zone,
+    id                   text                     not null,
+    version              integer                  not null,
+    name                 text                     not null,
+    description          text,
+    mapping              jsonb                    not null,
+    created              timestamp with time zone not null,
+    creator              text                     not null,
+    deleted              timestamp with time zone,
     source_data_standard varchar                  not null,
     constraint new_mapping_pk
         primary key (id, version)
@@ -117,17 +123,17 @@ create table mapping
 
 create table source_system
 (
-    id          text                                        not null
+    id          text                     not null
         constraint new_source_system_pkey
             primary key,
-    name        text                                        not null,
-    endpoint    text                                        not null,
+    name        text                     not null,
+    endpoint    text                     not null,
     description text,
-    created     timestamp with time zone                    not null,
+    created     timestamp with time zone not null,
     deleted     timestamp with time zone,
-    mapping_id  text                                        not null,
-    version     integer default 1                           not null,
-    creator     text                                        not null
+    mapping_id  text                     not null,
+    version     integer default 1        not null,
+    creator     text                     not null
 );
 
 create table user
@@ -165,5 +171,6 @@ create table machine_annotation_services
     sla_documentation             text,
     topicname                     text,
     maxreplicas                   integer,
-    deleted_on                    timestamp with time zone
+    deleted_on                    timestamp with time zone,
+    mas_input                     jsonb
 );
