@@ -27,24 +27,22 @@ create index annotation_id_creator_id_index
 create index annotation_id_target_id_index
     on annotation (id, target_id);
 
+create type mjr_job_state as enum ('SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED');
+create type mjr_target_type as enum ('DIGITAL_SPECIMEN', 'MEDIA_OBJECT');
+
 create table mas_job_record
 (
     job_id         text                     not null
         constraint mas_job_record_pk
             primary key,
-    job_state      text                     not null
-        constraint job_state_check
-            check (job_state = ANY
-                   (ARRAY['SCHEDULED'::text, 'FAILED'::text, 'COMPLETED'::text, 'RUNNING'::text])),
+    job_state      mjr_job_state,
     mas_id         text                     not null,
     time_started   timestamp with time zone not null,
     time_completed timestamp with time zone,
     annotations    jsonb,
     target_id      text                     not null,
     user_id        text,
-    target_type    text
-        constraint target_type_check
-            check (target_type = ANY (ARRAY['DIGITAL_SPECIMEN'::text, 'MEDIA_OBJECT'::text]))
+    target_type    mjr_target_type
 );
 
 create index mas_job_record_created_idx
