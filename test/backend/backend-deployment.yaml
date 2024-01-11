@@ -74,6 +74,25 @@ spec:
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: application.base-url
               value: https://dev.dissco.tech
+            - name: fdo.profile
+              value: https://hdl.handle.net/21.T11148/532ce6796e2828dd2be6
+            - name: fdo.agent
+              value: https://ror.org/0566bfb96
+            - name: fdo.digital-object-type
+              value: https://hdl.handle.net/21.T11148/532ce6796e2828dd2be6
+            - name: token.grant-type
+              value: client_credentials
+            - name: token.id
+              value: demo-api-client
+            - name: token.secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: handle-endpoint-token
+            - name: endpoint.handle-endpoint
+              value: https://dev.dissco.tech/handle-manager/api/v1/pids/
+            - name: endpoint.token-endpoint
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:
             requests:
               memory: "500Mi"
