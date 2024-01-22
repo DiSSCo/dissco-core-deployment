@@ -32,17 +32,18 @@ create type mjr_target_type as enum ('DIGITAL_SPECIMEN', 'MEDIA_OBJECT');
 
 create table mas_job_record
 (
-    job_id         text                     not null
+    job_id             text                     not null
         constraint mas_job_record_pk
             primary key,
-    job_state      mjr_job_state,
-    mas_id         text                     not null,
-    time_started   timestamp with time zone not null,
-    time_completed timestamp with time zone,
-    annotations    jsonb,
-    target_id      text                     not null,
-    user_id        text,
-    target_type    mjr_target_type
+    job_state          mjr_job_state,
+    mas_id             text                     not null,
+    time_started       timestamp with time zone not null,
+    time_completed     timestamp with time zone,
+    annotations        jsonb,
+    target_id          text                     not null,
+    user_id            text,
+    target_type        mjr_target_type,
+    batching_requested boolean                  not null
 );
 
 create index mas_job_record_created_idx
@@ -170,5 +171,5 @@ create table machine_annotation_services
     topicname                     text,
     maxreplicas                   integer,
     deleted_on                    timestamp with time zone,
-    mas_input                     jsonb
+    batching_permitted            boolean                  not null
 );
