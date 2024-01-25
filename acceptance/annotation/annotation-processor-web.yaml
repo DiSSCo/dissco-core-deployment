@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dissco-core-annotation-processing-web
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-35e58c3
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-578a8ab
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -78,6 +78,8 @@ spec:
               value: https://sandbox.dissco.tech/handle-manager/api/v1/pids/
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+            - name: application.processor-handle
+              value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
           resources:
             requests:
               memory: "500Mi"
