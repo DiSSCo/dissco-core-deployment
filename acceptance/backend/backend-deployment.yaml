@@ -18,7 +18,7 @@ spec:
       serviceAccountName: secret-manager
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-2fc86f6
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-fb42362
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -72,6 +72,8 @@ spec:
               value: dissco
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: application.base-url
+              value: https://sandbox.dissco.tech
           resources:
             requests:
               memory: "500Mi"

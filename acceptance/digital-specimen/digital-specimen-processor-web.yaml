@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dissco-digital-specimen-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-71f3bc7
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-41fbd03
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -51,8 +51,6 @@ spec:
                   key: elastic-password
             - name: elasticsearch.index-name
               value: digital-specimen
-            - name: management.health.elasticsearch.enabled
-              value: "false"
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: kafka.consumer.host
@@ -76,6 +74,8 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: handle-endpoint-token
+            - name: application.specimenBaseUrl
+              value: https://hdl.handle.net/
           resources:
             requests:
               memory: "500Mi"

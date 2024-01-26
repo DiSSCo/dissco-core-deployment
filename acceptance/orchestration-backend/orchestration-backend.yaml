@@ -17,7 +17,7 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-9f36082
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-72bbada
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -68,3 +68,14 @@ spec:
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: aws-secrets
+              mountPath: "/mnt/secrets-store/aws-secrets"
+              readOnly: true
+      volumes:
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"
