@@ -1,0 +1,13 @@
+services:
+  doip_server:
+    container_name: doip-server
+    image: doip-server:latest
+    network_mode: "host"
+    restart: always
+    volumes:
+      - type: bind
+        source: /home/ubuntu/doip_deployment/keys/doip
+        target: /server/doip
+      - type: bind
+        source: /home/ubuntu/doip_deployment/keys/doip.pub
+        target: /server/doip.pub
