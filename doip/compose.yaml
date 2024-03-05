@@ -1,13 +1,13 @@
 services:
   doip_server:
     container_name: doip-server
-    image: doip-server:latest
-    network_mode: "host"
-    restart: always
+    image: public.ecr.aws/dissco/doip-deployment@sha256:025956455699765eef6ec96e218431e4920aa9b8180f5667b527e5e72995188c
+    ports:
+      - 8888:8888
     volumes:
       - type: bind
-        source: /home/ubuntu/doip_deployment/keys/doip
-        target: /server/doip
+        source: /home/ubuntu/keys/doip_server
+        target: /application/doip_server
       - type: bind
-        source: /home/ubuntu/doip_deployment/keys/doip.pub
-        target: /server/doip.pub
+        source: /home/ubuntu/keys/doip_server.pub
+        target: /application/doip_server.pub
