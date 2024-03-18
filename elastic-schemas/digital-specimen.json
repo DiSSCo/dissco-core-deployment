@@ -1,6 +1,12 @@
 {
+  "settings": {
+    "index": {
+      "number_of_shards": 5,
+      "number_of_replicas": 1
+    }
+  },
   "mappings": {
-    "dynamic": false,
+    "dynamic": "false",
     "properties": {
       "created": {
         "type": "date"
@@ -11,6 +17,15 @@
             "properties": {
               "citations": {
                 "properties": {
+                  "???:citationPageNumber": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
                   "???:citationRemarks": {
                     "type": "text",
                     "fields": {
@@ -20,7 +35,7 @@
                       }
                     }
                   },
-                  "dcterms:bibliographicCitation": {
+                  "???:citationType": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -29,7 +44,16 @@
                       }
                     }
                   },
-                  "???:citationPageNumber": {
+                  "???:isPeerReviewed": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "???:referenceIri": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -56,7 +80,7 @@
                       }
                     }
                   },
-                  "???:referenceIri": {
+                  "dcterms:bibliographicCitation": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -64,9 +88,6 @@
                         "ignore_above": 256
                       }
                     }
-                  },
-                  "???:isPeerReviewed": {
-                    "type": "boolean"
                   },
                   "dcterms:creator": {
                     "type": "text",
@@ -106,7 +127,52 @@
                   }
                 }
               },
+              "dcterms:accessRights": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "dcterms:disposition": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "dcterms:license": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
               "dcterms:modified": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "dcterms:preparations": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "dcterms:rightsHolder": {
                 "type": "text",
                 "fields": {
                   "keyword": {
@@ -133,54 +199,18 @@
                   }
                 }
               },
+              "dwc:datasetName": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
               "dwc:identification": {
                 "properties": {
-                  "???:typeDesignatedBy": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "???:typeDesignationType": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:identificationRemarks": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:identificationReferences": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:identifiedById": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:verbatimIdentification": {
+                  "???:identificationType": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -198,7 +228,16 @@
                       }
                     }
                   },
-                  "???:identificationType": {
+                  "???:typeDesignatedBy": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "???:typeDesignationType": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -225,10 +264,37 @@
                       }
                     }
                   },
+                  "dwc:identificationReferences": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:identificationRemarks": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
                   "dwc:identificationVerificationStatus": {
                     "type": "boolean"
                   },
                   "dwc:identifiedBy": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:identifiedById": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -246,8 +312,44 @@
                       }
                     }
                   },
+                  "dwc:verbatimIdentification": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
                   "taxonIdentifications": {
                     "properties": {
+                      "???:acceptedScientificName": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:taxonSource": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dwc:class": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
                       "dwc:family": {
                         "type": "text",
                         "fields": {
@@ -266,16 +368,7 @@
                           }
                         }
                       },
-                      "dwc:namePublishedInYear": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:order": {
+                      "dwc:kingdom": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -293,7 +386,7 @@
                           }
                         }
                       },
-                      "dwc:taxonRank": {
+                      "dwc:namePublishedInYear": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -302,7 +395,7 @@
                           }
                         }
                       },
-                      "???:taxonSource": {
+                      "dwc:nomenclaturalCode": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -311,16 +404,7 @@
                           }
                         }
                       },
-                      "dwc:taxonRemarks": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:kingdom": {
+                      "dwc:order": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -330,24 +414,6 @@
                         }
                       },
                       "dwc:phylum": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:class": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:subfamily": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -383,25 +449,7 @@
                           }
                         }
                       },
-                      "dwc:taxonomicStatus": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:nomenclaturalCode": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:vernacularName": {
+                      "dwc:subfamily": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -419,15 +467,6 @@
                           }
                         }
                       },
-                      "???:acceptedScientificName": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
                       "dwc:taxonID": {
                         "type": "text",
                         "fields": {
@@ -436,12 +475,8 @@
                             "ignore_above": 256
                           }
                         }
-                      }
-                    }
-                  },
-                  "citations": {
-                    "properties": {
-                      "???:citationRemarks": {
+                      },
+                      "dwc:taxonRank": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -450,7 +485,7 @@
                           }
                         }
                       },
-                      "dcterms:bibliographicCitation": {
+                      "dwc:taxonRemarks": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -459,7 +494,7 @@
                           }
                         }
                       },
-                      "???:citationPageNumber": {
+                      "dwc:taxonomicStatus": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -468,64 +503,7 @@
                           }
                         }
                       },
-                      "???:referenceType": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "???:referenceYear": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "???:referenceIri": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "???:isPeerReviewed": {
-                        "type": "boolean"
-                      },
-                      "dcterms:creator": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dcterms:date": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dcterms:title": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dcterms:type": {
+                      "dwc:vernacularName": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -535,6 +513,15 @@
                         }
                       }
                     }
+                  }
+                }
+              },
+              "dwc:institutionCode": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
                   }
                 }
               },
@@ -556,7 +543,25 @@
                   }
                 }
               },
+              "dwc:ownerInstitutionId": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
               "dwc:recordedBy": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "dwc:recordedById": {
                 "type": "text",
                 "fields": {
                   "keyword": {
@@ -567,7 +572,7 @@
               },
               "entityRelationships": {
                 "properties": {
-                  "entityRelationshipType": {
+                  "entityRelationshipCreatorId": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -576,7 +581,7 @@
                       }
                     }
                   },
-                  "objectEntityIri": {
+                  "entityRelationshipCreatorName": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -603,7 +608,7 @@
                       }
                     }
                   },
-                  "entityRelationshipCreatorName": {
+                  "entityRelationshipType": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -612,7 +617,7 @@
                       }
                     }
                   },
-                  "entityRelationshipCreatorId": {
+                  "objectEntityIri": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -642,288 +647,12 @@
                         "ignore_above": 256
                       }
                     }
-                  },
-                  "???:partOfLabel": {
-                    "type": "boolean"
-                  },
-                  "???:barcodeOrNfc": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "isIdPersistent": {
-                    "type": "boolean"
                   }
                 }
               },
               "occurrences": {
                 "properties": {
-                  "dwc:eventDate": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:occurrenceRemarks": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:organismQuantity": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:organismQuantityType": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:sex": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:lifeStage": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:reproductiveCondition": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:behavior": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:establishmentMeans": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:occurrenceStatus": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:pathway": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:degreeOfEstablishment": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:georeferenceVerificationStatus": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:informationWithheld": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:dataGeneralizations": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:recordedBy": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:recordedById": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "???:eventName": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:fieldNumber": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:year": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:month": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:day": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:habitat": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "???:protocolDescription": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:sampleSizeValue": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:sampleSizeUnit": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:samplingProtocol": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "???:eventEffort": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:fieldNotes": {
-                    "type": "text",
-                    "fields": {
-                      "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                      }
-                    }
-                  },
-                  "dwc:eventRemarks": {
+                  "???:collectorId": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -941,7 +670,25 @@
                       }
                     }
                   },
-                  "???:collectorId": {
+                  "???:eventEffort": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "???:eventName": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "???:protocolDescription": {
                     "type": "text",
                     "fields": {
                       "keyword": {
@@ -952,46 +699,7 @@
                   },
                   "assertions": {
                     "properties": {
-                      "???:assertionType": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "???:assertionMadeDate": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "???:assertionEffectiveDate": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "???:assertionValue": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "???:assertionValueNumeric": {
-                        "type": "float"
-                      },
-                      "???:assertionUnit": {
+                      "???:assertionByAgentId": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -1009,7 +717,16 @@
                           }
                         }
                       },
-                      "???:assertionByAgentId": {
+                      "???:assertionEffectiveDate": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:assertionMadeDate": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -1044,39 +761,285 @@
                             "ignore_above": 256
                           }
                         }
+                      },
+                      "???:assertionType": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:assertionUnit": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:assertionValue": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "???:assertionValueNumeric": {
+                        "type": "float"
+                      }
+                    }
+                  },
+                  "dwc:behavior": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:dataGeneralizations": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:day": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:degreeOfEstablishment": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:establishmentMeans": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:eventDate": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:eventRemarks": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:fieldNotes": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:fieldNumber": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:georeferenceVerificationStatus": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:habitat": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:informationWithheld": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:lifeStage": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:month": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:occurrenceRemarks": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:occurrenceStatus": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:organismQuantity": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:organismQuantityType": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:pathway": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:recordedBy": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:recordedById": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:reproductiveCondition": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:sampleSizeUnit": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:sampleSizeValue": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:samplingProtocol": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:sex": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                      }
+                    }
+                  },
+                  "dwc:year": {
+                    "type": "text",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
                       }
                     }
                   },
                   "location": {
                     "properties": {
                       "dwc:continent": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:waterBody": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:islandGroup": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:island": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -1103,52 +1066,7 @@
                           }
                         }
                       },
-                      "dwc:municipality": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:minimumElevationInMeters": {
-                        "type": "double"
-                      },
-                      "dwc:maximumElevationInMeters": {
-                        "type": "double"
-                      },
-                      "dwc:minimumDistanceAboveSurfaceInMeters": {
-                        "type": "double"
-                      },
-                      "dwc:maximumDistanceAboveSurfaceInMeters": {
-                        "type": "double"
-                      },
-                      "dwc:minimumDepthInMeters": {
-                        "type": "double"
-                      },
-                      "dwc:maximumDepthInMeters": {
-                        "type": "double"
-                      },
-                      "dwc:verticalDatum": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:locationRemarks": {
-                        "type": "text",
-                        "fields": {
-                          "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                          }
-                        }
-                      },
-                      "dwc:locationAccordingTo": {
+                      "dwc:county": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -1166,7 +1084,16 @@
                           }
                         }
                       },
-                      "dwc:county": {
+                      "dwc:island": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dwc:islandGroup": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -1184,7 +1111,70 @@
                           }
                         }
                       },
+                      "dwc:locationAccordingTo": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dwc:locationRemarks": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dwc:maximumDepthInMeters": {
+                        "type": "double"
+                      },
+                      "dwc:maximumDistanceAboveSurfaceInMeters": {
+                        "type": "double"
+                      },
+                      "dwc:maximumElevationInMeters": {
+                        "type": "double"
+                      },
+                      "dwc:minimumDepthInMeters": {
+                        "type": "double"
+                      },
+                      "dwc:minimumDistanceAboveSurfaceInMeters": {
+                        "type": "double"
+                      },
+                      "dwc:minimumElevationInMeters": {
+                        "type": "double"
+                      },
+                      "dwc:municipality": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
                       "dwc:stateProvince": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dwc:verticalDatum": {
+                        "type": "text",
+                        "fields": {
+                          "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                          }
+                        }
+                      },
+                      "dwc:waterBody": {
                         "type": "text",
                         "fields": {
                           "keyword": {
@@ -1195,6 +1185,15 @@
                       },
                       "geologicalContext": {
                         "properties": {
+                          "dwc:bed": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                              }
+                            }
+                          },
                           "dwc:earliestAgeOrLowestStage": {
                             "type": "text",
                             "fields": {
@@ -1232,6 +1231,33 @@
                             }
                           },
                           "dwc:earliestPeriodOrLowestSystem": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                              }
+                            }
+                          },
+                          "dwc:formation": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                              }
+                            }
+                          },
+                          "dwc:group": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                              }
+                            }
+                          },
+                          "dwc:highestBiostratigraphicZone": {
                             "type": "text",
                             "fields": {
                               "keyword": {
@@ -1285,24 +1311,6 @@
                               }
                             }
                           },
-                          "dwc:lowestBiostratigraphicZone": {
-                            "type": "text",
-                            "fields": {
-                              "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                              }
-                            }
-                          },
-                          "dwc:highestBiostratigraphicZone": {
-                            "type": "text",
-                            "fields": {
-                              "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                              }
-                            }
-                          },
                           "dwc:lithostratigraphicTerms": {
                             "type": "text",
                             "fields": {
@@ -1312,16 +1320,7 @@
                               }
                             }
                           },
-                          "dwc:group": {
-                            "type": "text",
-                            "fields": {
-                              "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                              }
-                            }
-                          },
-                          "dwc:formation": {
+                          "dwc:lowestBiostratigraphicZone": {
                             "type": "text",
                             "fields": {
                               "keyword": {
@@ -1338,8 +1337,12 @@
                                 "ignore_above": 256
                               }
                             }
-                          },
-                          "dwc:bed": {
+                          }
+                        }
+                      },
+                      "georeference": {
+                        "properties": {
+                          "???:preferredSpatialRepresentation": {
                             "type": "text",
                             "fields": {
                               "keyword": {
@@ -1347,36 +1350,20 @@
                                 "ignore_above": 256
                               }
                             }
-                          }
-                        }
-                      },
-                      "georeference": {
-                        "properties": {
+                          },
+                          "dwc:coordinatePrecision": {
+                            "type": "float"
+                          },
+                          "dwc:coordinateUncertaintyInMeters": {
+                            "type": "float"
+                          },
                           "dwc:decimalLatitude": {
                             "type": "float"
                           },
                           "dwc:decimalLongitude": {
                             "type": "float"
                           },
-                          "dwc:geodeticDatum": {
-                            "type": "text",
-                            "fields": {
-                              "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                              }
-                            }
-                          },
-                          "dwc:coordinateUncertaintyInMeters": {
-                            "type": "float"
-                          },
-                          "dwc:coordinatePrecision": {
-                            "type": "float"
-                          },
-                          "dwc:pointRadiusSpatialFit": {
-                            "type": "float"
-                          },
-                          "dwc:footprintWkt": {
+                          "dwc:footprintSpatialFit": {
                             "type": "text",
                             "fields": {
                               "keyword": {
@@ -1394,7 +1381,7 @@
                               }
                             }
                           },
-                          "dwc:footprintSpatialFit": {
+                          "dwc:footprintWkt": {
                             "type": "text",
                             "fields": {
                               "keyword": {
@@ -1403,16 +1390,7 @@
                               }
                             }
                           },
-                          "dwc:georeferencedBy": {
-                            "type": "text",
-                            "fields": {
-                              "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                              }
-                            }
-                          },
-                          "dwc:georeferencedDate": {
+                          "dwc:geodeticDatum": {
                             "type": "text",
                             "fields": {
                               "keyword": {
@@ -1439,15 +1417,6 @@
                               }
                             }
                           },
-                          "???:preferredSpatialRepresentation": {
-                            "type": "text",
-                            "fields": {
-                              "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                              }
-                            }
-                          },
                           "dwc:georeferenceSources": {
                             "type": "text",
                             "fields": {
@@ -1456,12 +1425,36 @@
                                 "ignore_above": 256
                               }
                             }
+                          },
+                          "dwc:georeferencedBy": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                              }
+                            }
+                          },
+                          "dwc:georeferencedDate": {
+                            "type": "text",
+                            "fields": {
+                              "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                              }
+                            }
+                          },
+                          "dwc:pointRadiusSpatialFit": {
+                            "type": "float"
                           }
                         }
                       }
                     }
                   }
                 }
+              },
+              "ods:hasMedia": {
+                "type": "boolean"
               },
               "ods:livingOrPreserved": {
                 "type": "text",
@@ -1472,7 +1465,10 @@
                   }
                 }
               },
-              "ods:physicalSpecimenId": {
+              "ods:markedAsType": {
+                "type": "boolean"
+              },
+              "ods:normalisedPhysicalSpecimenId": {
                 "type": "text",
                 "fields": {
                   "keyword": {
@@ -1481,7 +1477,7 @@
                   }
                 }
               },
-              "ods:normalisedPhysicalSpecimenId": {
+              "ods:physicalSpecimenId": {
                 "type": "text",
                 "fields": {
                   "keyword": {
@@ -1508,12 +1504,6 @@
                   }
                 }
               },
-              "ods:markedAsType": {
-                "type": "boolean"
-              },
-              "ods:hasMedia": {
-                "type": "boolean"
-              },
               "ods:specimenName": {
                 "type": "text",
                 "fields": {
@@ -1532,15 +1522,6 @@
                   }
                 }
               },
-              "ods:topicOrigin": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
               "ods:topicDomain": {
                 "type": "text",
                 "fields": {
@@ -1550,79 +1531,7 @@
                   }
                 }
               },
-              "dcterms:license": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dcterms:preparations": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dcterms:disposition": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dwc:institutionCode": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dwc:recordedById": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dwc:ownerInstitutionId": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dwc:datasetName": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dcterms:accessRights": {
-                "type": "text",
-                "fields": {
-                  "keyword": {
-                    "type": "keyword",
-                    "ignore_above": 256
-                  }
-                }
-              },
-              "dcterms:rightsHolder": {
+              "ods:topicOrigin": {
                 "type": "text",
                 "fields": {
                   "keyword": {
@@ -1632,9 +1541,6 @@
                 }
               }
             }
-          },
-          "ods:originalAttributes": {
-            "type": "flattened"
           },
           "ods:normalisedPhysicalSpecimenId": {
             "type": "text",
@@ -1644,6 +1550,9 @@
                 "ignore_above": 256
               }
             }
+          },
+          "ods:originalAttributes": {
+            "type": "flattened"
           },
           "ods:type": {
             "type": "text",

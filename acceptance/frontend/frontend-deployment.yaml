@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: disscover
-          image: public.ecr.aws/dissco/disscover:sha-64809ff
+          image: public.ecr.aws/dissco/disscover:sha-8a7e68a
           ports:
             - containerPort: 3000
           resources:
