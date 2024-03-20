@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: dissco-orchestration-backend
+        language: java
     spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:

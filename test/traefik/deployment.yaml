@@ -84,11 +84,32 @@ spec:
     metadata:
       labels:
         app: traefik
+      annotations:
+        co.elastic.logs/module: traefik
+        co.elastic.logs/fileset.stdout: access
+        co.elastic.logs/fileset.stderr: error
     spec:
       serviceAccountName: traefik-ingress-controller
+      automountServiceAccountToken: true
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: eks.amazonaws.com/nodegroup
+                    operator: In
+                    values:
+                      - managed_m5-20230823065304717700000010
       containers:
         - name: traefik
-          image: traefik:v2.10
+          image: traefik:v2.11
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "100m"
+            limits:
+              memory: "250Mi"
+              cpu: "200m"
           args:
             - --accesslog
             - --entrypoints.web.Address=:80
@@ -99,14 +120,16 @@ spec:
             - --entrypoints.websecure.http.tls.certresolver=defaultresolver
             - --entrypoints.websecure.http.middlewares=default-security-middleware@kubernetescrd
             - --entrypoints.websecure.http.tls.options=default-tls-option@kubernetescrd
+            - --entrypoints.web.forwardedheaders.insecure=true
+            - --entrypoints.websecure.forwardedheaders.insecure=true
             - --providers.kubernetescrd
             - --certificatesresolvers.defaultresolver.acme.tlschallenge
             - --certificatesresolvers.defaultresolver.acme.email=sam.leeflang@naturalis.nl
             - --certificatesresolvers.defaultresolver.acme.storage=acme.json
             - --metrics.prometheus=true
             - --providers.kubernetescrd.allowcrossnamespace=true
-            - --entryPoints.web.forwardedHeaders.insecure=true
-#            - --log.level=DEBUG
+            - --log.level=INFO
+            - --accesslog.fields.headers.defaultmode=keep
           ports:
             - name: web
               containerPort: 80

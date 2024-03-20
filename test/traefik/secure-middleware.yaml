@@ -5,7 +5,6 @@ metadata:
 spec:
   headers:
     frameDeny: false
-    sslRedirect: true
     browserXssFilter: true
     contentTypeNosniff: true
     #HSTS
