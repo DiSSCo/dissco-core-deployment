@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-nu-search-deployment
+  labels:
+    app: dissco-nu-search-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-nu-search-deployment
+  template:
+    metadata:
+      labels:
+        app: dissco-nu-search-deployment
+    spec:
+      containers:
+        - name: dissco-nu-search-deployment
+          image: public.ecr.aws/dissco/dissco-nusearch-service
+          imagePullPolicy: Always
+          env:
+            - name: kafka.publisher.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.topic
+              value: col
+            - name: indexing.col-password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: indexing-col-password
+            - name: indexing.col-username
+              value: sam_leeflang
+            - name: indexing.col-dataset
+              value: "286246"
+            - name: indexing.index-location
+              value: /index-files/index
+            - name: indexing.index-at-startup
+              value: "true"
+            - name: indexing.delete-index
+              value: "true"
+            - name: indexing.temp-coldp-location
+              value: /index-files/col-temp.zip
+            - name: JAVA_TOOL_OPTIONS
+              value: -XX:MaxRAMPercentage=85
+          resources:
+            requests:
+              memory: "6Gi"
+              cpu: "500m"
+            limits:
+              memory: "6Gi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /index-files
+              name: temp-volume
+      volumes:
+        - name: temp-volume
+          emptyDir: { }
