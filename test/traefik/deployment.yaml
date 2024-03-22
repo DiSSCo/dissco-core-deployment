@@ -125,7 +125,7 @@ spec:
             - --providers.kubernetescrd
             - --certificatesresolvers.defaultresolver.acme.tlschallenge
             - --certificatesresolvers.defaultresolver.acme.email=sam.leeflang@naturalis.nl
-            - --certificatesresolvers.defaultresolver.acme.storage=acme.json
+            - --certificatesresolvers.defaultresolver.acme.storage=/cert/acme.json
             - --metrics.prometheus=true
             - --providers.kubernetescrd.allowcrossnamespace=true
             - --log.level=INFO
@@ -135,3 +135,21 @@ spec:
               containerPort: 80
             - name: websecure
               containerPort: 443
+          volumeMounts:
+            - mountPath: "/cert"
+              name: cert-storage
+      volumes:
+        - name: cert-storage
+          persistentVolumeClaim:
+            claimName: cert-storage-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cert-storage-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
