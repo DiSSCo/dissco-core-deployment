@@ -13,6 +13,11 @@ spec:
     metadata:
       labels:
         app: dissco-digital-media-object-processor-kafka
+        language: java
+      annotations:
+        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
+        co.elastic.logs/multiline.negate: "false"
+        co.elastic.logs/multiline.match: after
     spec:
       containers:
         - name: dissco-digital-media-object-processor-kafka
