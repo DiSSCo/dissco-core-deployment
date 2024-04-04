@@ -46,7 +46,7 @@ create table mas_job_record
     target_type        mjr_target_type,
     batching_requested boolean                  not null,
     error              error_code,
-    time_to_live       timestamp with time zone not null
+    expires_on         timestamp with time zone not null
 );
 
 create index mas_job_record_created_idx
