@@ -174,5 +174,6 @@ create table machine_annotation_services
     topicname                     text,
     maxreplicas                   integer,
     deleted_on                    timestamp with time zone,
-    batching_permitted            boolean                  not null
+    batching_permitted            boolean                  not null,
+    time_to_live                  integer default 86400
 );
