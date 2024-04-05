@@ -1,32 +1,27 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: dissco-nu-search-deployment
+  name: dissco-nu-search-indexer-job
   labels:
-    app: dissco-nu-search-deployment
+    app: dissco-nu-search-indexer-job
+    language: java
+  annotations:
+    co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
+    co.elastic.logs/multiline.negate: "false"
+    co.elastic.logs/multiline.match: after
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: dissco-nu-search-deployment
   template:
-    metadata:
-      labels:
-        app: dissco-nu-search-deployment
-        language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
+      automountServiceAccountToken: false
+      restartPolicy: OnFailure
       serviceAccountName: nu-search-sa
       containers:
-        - name: dissco-nu-search-deployment
+        - name: dissco-nu-search-indexer-job
           image: public.ecr.aws/dissco/dissco-nusearch-service
           imagePullPolicy: Always
           env:
             - name: spring.profiles.active
-              value: s3-resolver
+              value: s3-indexer
             - name: s3.access-key
               valueFrom:
                 secretKeyRef:
@@ -51,24 +46,20 @@ spec:
             - name: indexing.col-username
               value: sam_leeflang
             - name: indexing.col-dataset
-              value: "286246"
+              value: "292011"
             - name: indexing.index-location
               value: /index-files/index
-            - name: indexing.index-at-startup
-              value: "true"
-            - name: indexing.delete-index
-              value: "true"
             - name: indexing.temp-coldp-location
               value: /index-files/col-temp.zip
             - name: JAVA_TOOL_OPTIONS
               value: -XX:MaxRAMPercentage=85
           resources:
             requests:
-              memory: "2Gi"
+              memory: "6Gi"
               cpu: "500m"
             limits:
-              memory: "2Gi"
-              cpu: "500m"
+              memory: "6Gi"
+              cpu: "1000m"
               ephemeral-storage: "10Gi"
           securityContext:
             runAsNonRoot: true
