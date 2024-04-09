@@ -5,7 +5,7 @@ metadata:
   namespace: elastic
 spec:
   type: metricbeat
-  version: 8.11.1
+  version: 8.12.1
   elasticsearchRef:
     name: elastic-search
   kibanaRef:
@@ -68,6 +68,7 @@ spec:
     podTemplate:
       spec:
         serviceAccountName: metricbeat
+        automountServiceAccountToken: true # some older Beat versions are depending on this settings presence in k8s context
         containers:
           - args:
               - -e
