@@ -32,3 +32,30 @@ roleRef:
   kind: Role
   name: orchestration-backend-role
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: translator-services
+  name: orchestration-backend-translator-role
+rules:
+  - apiGroups: ["batch"] # "" indicates the core API group
+    resources: ["jobs"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [ "batch" ] # "" indicates the core API group
+    resources: [ "cronjobs" ]
+    verbs: [ "get", "list", "watch", "create", "update", "patch", "delete" ]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: translator-admin-role
+  namespace: translator-services
+subjects:
+  - kind: ServiceAccount
+    name: dissco-orchestration-backend-sa
+    namespace: default
+roleRef:
+  kind: Role
+  name: orchestration-backend-translator-role
+  apiGroup: rbac.authorization.k8s.io
