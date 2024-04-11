@@ -62,13 +62,15 @@ spec:
               value: /index-files/col-temp.zip
             - name: JAVA_TOOL_OPTIONS
               value: -XX:MaxRAMPercentage=85
+            - name: logging.level.root
+              value: INFO
           resources:
             requests:
               memory: "2Gi"
-              cpu: "500m"
+              cpu: "1500m"
             limits:
               memory: "2Gi"
-              cpu: "500m"
+              cpu: "1500m"
               ephemeral-storage: "10Gi"
           securityContext:
             runAsNonRoot: true
