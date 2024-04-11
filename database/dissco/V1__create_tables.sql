@@ -27,16 +27,16 @@ create index annotation_id_creator_id_index
 create index annotation_id_target_id_index
     on annotation (id, target_id);
 
-create type mjr_job_state as enum ('SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED');
+create type job_state as enum ('SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED');
 create type mjr_target_type as enum ('DIGITAL_SPECIMEN', 'MEDIA_OBJECT');
-create type error_code as enum ('TIMEOUT');
+create type error_code as enum ('TIMEOUT', 'DISSCO_EXCEPTION');
 
 create table mas_job_record
 (
     job_id             text                     not null
         constraint mas_job_record_pk
             primary key,
-    job_state          mjr_job_state            not null,
+    job_state          job_state                not null,
     mas_id             text                     not null,
     time_started       timestamp with time zone not null,
     time_completed     timestamp with time zone,
@@ -176,4 +176,17 @@ create table machine_annotation_services
     deleted_on                    timestamp with time zone,
     batching_permitted            boolean                  not null,
     time_to_live                  integer default 86400    not null
+);
+
+create table translator_job_record
+(
+    job_id            uuid                     not null,
+    job_state         job_state                not null,
+    source_system_id  text                     not null,
+    time_started      timestamp with time zone not null,
+    time_completed    timestamp with time zone,
+    processed_records int,
+    error             error_code,
+    PRIMARY KEY (job_id, source_system_id),
+    FOREIGN KEY (source_system_id) REFERENCES source_system (id)
 );
