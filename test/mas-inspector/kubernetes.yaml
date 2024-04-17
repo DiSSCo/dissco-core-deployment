@@ -5,17 +5,17 @@ metadata:
   labels:
     app: mas-job-timeout-inspector
 spec:
-  schedule: "0 * * * *" # At the start of every hour
+  schedule: "0 * * * *"  # At the start of every hour
   jobTemplate:
     spec:
       template:
+        metadata:
+          language: python
         spec:
           containers:
             - name: mas-job-timeout-inspector
               image: public.ecr.aws/dissco/mas-inspector:sha256:21bc616a87de48e736174aea44c8db6ec96e1e89ba35555dc528b24e9b25ecab
               imagePullPolicy: IfNotPresent
-              ports:
-                - containerPort: 8080
               env:
                 - name: HOST
                   value: terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com
@@ -34,3 +34,9 @@ spec:
               securityContext:
                 runAsNonRoot: true
                 allowPrivilegeEscalation: false
+              resources:
+                requests:
+                  memory: "250Mi"
+                  cpu: "100m"
+                limits:
+                  memory: "250Mi"
