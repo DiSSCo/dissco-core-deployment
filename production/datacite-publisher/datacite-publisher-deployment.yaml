@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datacite-publisher
+  labels:
+    app: datacite-publisher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datacite-publisher
+  template:
+    metadata:
+      labels:
+        app: datacite-publisher
+        language: java
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: datacite-publisher
+          image: public.ecr.aws/dissco/datacite-publisher:d669eefec83bec9f2a49a71dfb5d551cd86f1a57fd213d594d3207a39740d26b
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: spring.kafka.consumer.group-id
+              value: group-1
+            - name: kafka.consumer.topic.specimen
+              value: specimen-doi
+            - name: kafka.consumer.topic.media
+              value: media-doi
+              # secrets haven't been set as we don't have a production cluster yet
+            - name: datacite.repository-id
+              valueFrom:
+                secretKeyRef:
+                  name: datacite-credentials
+                  key: datacite-repository-id
+            - name: datacite.password
+              valueFrom:
+                secretKeyRef:
+                  name: datacite-credentials
+                  key: datacite-password
+            - name: datacite.endpoint
+              value: https://api.datacite.org/dois
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "200m"
+            limits:
+              memory: "500Mi"
+              cpu: "200m"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+
+
+
