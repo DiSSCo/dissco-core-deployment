@@ -1,21 +1,20 @@
-apiVersion: apps/v1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: mas-job-timeout-inspector
   labels:
     app: mas-job-timeout-inspector
+    language: python
 spec:
-  automountServiceAccountToken: false
   schedule: "0 * * * *"  # At the start of every hour
   jobTemplate:
     spec:
       template:
-        metadata:
-          language: python
         spec:
+          restartPolicy: OnFailure
           containers:
             - name: mas-job-timeout-inspector
-              image: public.ecr.aws/dissco/mas-inspector:sha256:21bc616a87de48e736174aea44c8db6ec96e1e89ba35555dc528b24e9b25ecab
+              image: public.ecr.aws/dissco/mas-inspector:latest
               imagePullPolicy: IfNotPresent
               env:
                 - name: HOST
@@ -41,4 +40,3 @@ spec:
                   cpu: "100m"
                 limits:
                   memory: "250Mi"
-                  cpu: "100m"
