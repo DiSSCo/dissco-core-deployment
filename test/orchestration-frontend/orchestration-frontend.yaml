@@ -14,6 +14,7 @@ spec:
       labels:
         app: dissco-orchestration-frontend
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: dissco-orchestration-frontend
           image: public.ecr.aws/dissco/orchestration-frontend:latest
@@ -25,4 +26,5 @@ spec:
               cpu: "100m"
             limits:
               memory: "100Mi"
+              cpu: "200m"
       restartPolicy: Always

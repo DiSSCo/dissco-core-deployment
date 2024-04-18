@@ -110,6 +110,7 @@ spec:
             limits:
               memory: "250Mi"
               cpu: "200m"
+              ephemeral-storage: "1Gi"
           args:
             - --accesslog
             - --entrypoints.web.Address=:80

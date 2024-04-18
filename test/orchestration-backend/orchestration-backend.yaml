@@ -15,6 +15,7 @@ spec:
         app: dissco-orchestration-backend
         language: java
     spec:
+      automountServiceAccountToken: true
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
@@ -66,6 +67,20 @@ spec:
               cpu: "200m"
             limits:
               memory: "500Mi"
+              cpu: "1000m"
+              ephemeral-storage: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
