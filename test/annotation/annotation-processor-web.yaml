@@ -19,6 +19,7 @@ spec:
         co.elastic.logs/multiline.negate: "false"
         co.elastic.logs/multiline.match: after
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: dissco-core-annotation-processing-web
           image: public.ecr.aws/dissco/dissco-core-annotation-processing-service
@@ -91,6 +92,19 @@ spec:
               cpu: "200m"
             limits:
               memory: "500Mi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
