@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: tettris-marketplace
   labels:
-    app: tettris-marketplace,
+    app: tettris-marketplace
     project: tettris
 spec:
   replicas: 1
