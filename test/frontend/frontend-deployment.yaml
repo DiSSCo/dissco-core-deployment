@@ -14,6 +14,7 @@ spec:
       labels:
         app: disscover
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: disscover
           image: public.ecr.aws/dissco/disscover:latest
@@ -25,4 +26,5 @@ spec:
               cpu: "100m"
             limits:
               memory: "100Mi"
+              cpu: "200m"
       restartPolicy: Always

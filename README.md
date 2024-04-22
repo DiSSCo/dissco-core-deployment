@@ -48,3 +48,7 @@ ArgoCD monitors the `main` branch of the GitHub repo.
 When new changes are made it will automatically recognise that kubernetes is no longer in sync with the files in the repo.
 It can then automatically synchronise the cluster with the changed kubernetes files.
 There is also an option to leave the actual syncrhonisation a manual action.
+
+## Kube Green
+The installation of kube-green is still  manual.
+Follow the steps on this website: https://kube-green.dev/docs/install/

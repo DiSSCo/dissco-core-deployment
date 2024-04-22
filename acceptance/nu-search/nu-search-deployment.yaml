@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-nu-search-deployment
+  labels:
+    app: dissco-nu-search-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-nu-search-deployment
+  template:
+    metadata:
+      labels:
+        app: dissco-nu-search-deployment
+        language: java
+      annotations:
+        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
+        co.elastic.logs/multiline.negate: "false"
+        co.elastic.logs/multiline.match: after
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: nu-search-sa
+      containers:
+        - name: dissco-nu-search-deployment
+          image: public.ecr.aws/dissco/dissco-nusearch-service
+          imagePullPolicy: Always
+          env:
+            - name: spring.profiles.active
+              value: s3-resolver
+            - name: s3.access-key
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: col-bucket-access-key-id
+            - name: s3.access-secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: col-bucket-access-key-secret
+            - name: kafka.publisher.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.topic
+              value: col
+            - name: indexing.col-password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: indexing-col-password
+            - name: indexing.col-username
+              value: sam_leeflang
+            - name: indexing.col-dataset
+              value: "292011"
+            - name: indexing.index-location
+              value: /index-files/index
+            - name: indexing.index-at-startup
+              value: "true"
+            - name: indexing.delete-index
+              value: "true"
+            - name: indexing.temp-coldp-location
+              value: /index-files/col-temp.zip
+            - name: JAVA_TOOL_OPTIONS
+              value: -XX:MaxRAMPercentage=85
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1500m"
+              ephemeral-storage: "10Gi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 2
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /index-files
+              name: temp-volume
+            - name: aws-secrets
+              mountPath: "/mnt/secrets-store/aws-secrets"
+              readOnly: true
+      volumes:
+        - name: temp-volume
+          emptyDir: { }
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"

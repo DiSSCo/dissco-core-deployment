@@ -4,7 +4,7 @@ metadata:
   name: elastic-search
   namespace: elastic
 spec:
-  version: 8.8.0
+  version: 8.12.1
   nodeSets:
     - name: default
       count: 3
@@ -18,7 +18,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 40Gi
+                storage: 80Gi
   http:
     tls:
       selfSignedCertificate:

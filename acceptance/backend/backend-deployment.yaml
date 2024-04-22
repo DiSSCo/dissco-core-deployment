@@ -14,11 +14,17 @@ spec:
     metadata:
       labels:
         app: dissco-backend
+        language: java
+      annotations:
+        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
+        co.elastic.logs/multiline.negate: "false"
+        co.elastic.logs/multiline.match: after
     spec:
       serviceAccountName: secret-manager
+      automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-fb42362
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-637eefd
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -49,8 +55,6 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: elastic-password
-            - name: management.health.elasticsearch.enabled
-              value: "false"
             - name: springdoc.api-docs.path
               value: /api/v3/api-docs
             - name: springdoc.swagger-ui.path
@@ -99,6 +103,20 @@ spec:
               cpu: "200m"
             limits:
               memory: "500Mi"
+              cpu: "500m"
+              ephemeral-storage: "32Mi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 60
+            failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
