@@ -14,9 +14,10 @@ spec:
       labels:
         app: disscover
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: disscover
-          image: public.ecr.aws/dissco/disscover:sha-8a7e68a
+          image: public.ecr.aws/dissco/disscover:sha-a1f8484
           ports:
             - containerPort: 3000
           resources:
@@ -25,4 +26,5 @@ spec:
               cpu: "100m"
             limits:
               memory: "100Mi"
+              cpu: "200m"
       restartPolicy: Always

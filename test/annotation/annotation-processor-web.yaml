@@ -57,8 +57,6 @@ spec:
                   key: elastic-password
             - name: elasticsearch.index-name
               value: annotation
-            - name: management.health.elasticsearch.enabled
-              value: "false"
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: kafka.consumer.host
@@ -108,5 +106,3 @@ spec:
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
-
-

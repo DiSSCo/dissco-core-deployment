@@ -57,8 +57,6 @@ spec:
                   key: elastic-password
             - name: elasticsearch.index-name
               value: annotation
-            - name: management.health.elasticsearch.enabled
-              value: "false"
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: kafka.consumer.host
@@ -114,7 +112,7 @@ metadata:
 spec:
   scaleTargetRef:
     name: dissco-core-annotation-processing-kafka
-  minReplicaCount: 1
+  minReplicaCount: 0
   maxReplicaCount:  5
   triggers:
     - type: kafka
@@ -123,4 +121,3 @@ spec:
         consumerGroup: group
         topic: annotation
         lagThreshold: '5'
-

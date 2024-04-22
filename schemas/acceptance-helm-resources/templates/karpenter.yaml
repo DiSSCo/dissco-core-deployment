@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: karpenter-argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: karpenter
+    repoURL: public.ecr.aws/karpenter
+    targetRevision: 0.35.2
+    helm:
+      releaseName: karpenter
+      values: |
+        serviceAccount:
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::824841205322:role/KarpenterControllerRole-dissco-k8s-test
+        settings:
+          clusterName: dissco-k8s-test
+        dnsPolicy: ClusterFirst
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: karpenter
