@@ -19,6 +19,7 @@ spec:
         co.elastic.logs/multiline.negate: "false"
         co.elastic.logs/multiline.match: after
     spec:
+      automountServiceAccountToken: true
       serviceAccountName: nu-search-sa
       containers:
         - name: dissco-nu-search-deployment
@@ -72,6 +73,18 @@ spec:
               memory: "2Gi"
               cpu: "1500m"
               ephemeral-storage: "10Gi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false

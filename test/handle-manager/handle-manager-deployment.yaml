@@ -19,12 +19,14 @@ spec:
         co.elastic.logs/multiline.negate: "false"
         co.elastic.logs/multiline.match: after
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager
           image: public.ecr.aws/dissco/handle-manager
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+            - containerPort: 8080
           env:
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
@@ -54,6 +56,25 @@ spec:
                   key: db-password
             - name: application.prefix
               value: TEST
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "200m"
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 45
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 45
+            failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false

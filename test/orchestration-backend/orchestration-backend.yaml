@@ -14,7 +14,12 @@ spec:
       labels:
         app: dissco-orchestration-backend
         language: java
+      annotations:
+        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
+        co.elastic.logs/multiline.negate: "false"
+        co.elastic.logs/multiline.match: after
     spec:
+      automountServiceAccountToken: true
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
@@ -66,6 +71,20 @@ spec:
               cpu: "200m"
             limits:
               memory: "500Mi"
+              cpu: "1000m"
+              ephemeral-storage: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false

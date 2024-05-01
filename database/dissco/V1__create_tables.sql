@@ -122,6 +122,7 @@ create table mapping
         primary key (id, version)
 );
 
+create type translator_type as enum ('biocase', 'dwca');
 
 create table source_system
 (
@@ -135,7 +136,8 @@ create table source_system
     deleted     timestamp with time zone,
     mapping_id  text                     not null,
     version     integer default 1        not null,
-    creator     text                     not null
+    creator     text                     not null,
+    translator_type translator_type
 );
 
 create table user

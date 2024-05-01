@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tettris-marketplace
+  labels:
+    app: tettris-marketplace
+    project: tettris
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tettris-marketplace
+  template:
+    metadata:
+      labels:
+        app: tettris-marketplace
+    spec:
+      containers:
+        - name: tettris-marketplace
+          image: public.ecr.aws/dissco/tettris-marketplace:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "100Mi"
+      restartPolicy: Always
