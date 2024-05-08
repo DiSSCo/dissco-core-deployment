@@ -56,6 +56,8 @@ spec:
                   key: db-password
             - name: application.prefix
               value: TEST
+            - name: caching.spring.ttl
+              value: "43200000"
           resources:
             requests:
               memory: "500Mi"
