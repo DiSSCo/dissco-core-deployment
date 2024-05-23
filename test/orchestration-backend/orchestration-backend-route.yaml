@@ -49,6 +49,6 @@ spec:
     accessControlAllowHeaders:
       - "*"
     accessControlAllowOriginListRegex:
-      - "https:\\/\\/dev\\.dissco\\.tech\\/.+"
+      - "https://dev\\.dissco\\.tech(.*)"
     accessControlMaxAge: 100
     addVaryHeader: true
