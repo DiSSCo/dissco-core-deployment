@@ -23,7 +23,7 @@ spec:
       serviceAccountName: nu-search-sa
       containers:
         - name: dissco-nu-search-deployment
-          image: public.ecr.aws/dissco/dissco-nusearch-service
+          image: public.ecr.aws/dissco/dissco-nusearch-service:sha-6808b6a
           imagePullPolicy: Always
           env:
             - name: spring.profiles.active

@@ -23,7 +23,7 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-34a6597
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-c3eb058
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -65,6 +65,8 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: handle-endpoint-token
+            - name: translator-job.image
+              value: public.ecr.aws/dissco/dissco-core-translator:sha-c3810a2
           resources:
             requests:
               memory: "500Mi"
