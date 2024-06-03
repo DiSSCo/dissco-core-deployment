@@ -19,7 +19,7 @@ spec:
         co.elastic.logs/multiline.negate: "false"
         co.elastic.logs/multiline.match: after
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
