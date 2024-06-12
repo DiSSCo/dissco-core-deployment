@@ -45,6 +45,8 @@ spec:
               value: elastic-search-es-http.elastic.svc.cluster.local
             - name: elasticsearch.port
               value: "9200"
+            - name: application.batch-page-size
+              value: "50"
             - name: elasticsearch.username
               valueFrom:
                 secretKeyRef:
