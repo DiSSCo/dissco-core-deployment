@@ -6,24 +6,8 @@ services:
     restart: always
     volumes:
       - type: bind
-        source: ${SRC_KEYS}/admpriv.bin
-        target: ${TGT_KEYS}/admpriv.bin
-      - type: bind
-        source: ${SRC_KEYS}/privkey.bin
-        target: ${TGT_KEYS}/privkey.bin
-      - type: bind
-        source: ${SRC_KEYS}/config.dct
-        target: ${TGT_KEYS}/config.dct
-      - type: bind
-        source: ${SRC_KEYS}/serverCertificate.pem
-        target: ${TGT_KEYS}/serverCertificate.pem
-      - type: bind
-        source: ${SRC_KEYS}/siteinfo.json
-        target: ${TGT_KEYS}/siteinfo.json
-      - type: bind
-        source: ${SRC_KEYS}/sitebndl.zip
-        target: ${TGT_KEYS}/sitebndl.zip
-
+        source: ${SRC_KEYS}/*
+        target: ${TGT_KEYS}/
   doi_api:
     container_name: doi-api
     image: public.ecr.aws/dissco/handle-manager:sha-4e6785c #Oct 2, 2023
