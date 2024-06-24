@@ -24,3 +24,6 @@ spec:
     - apiVersion: "apps/v1"
       kind: Deployment
       name: dissco-schemas-deployment
+    - apiVersion: "apps/v1"
+      kind: Deployment
+      name: dissco-opends-documentation
