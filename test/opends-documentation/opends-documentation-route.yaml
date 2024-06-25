@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dissco-opends-documentation-service
+spec:
+  selector:
+    app: dissco-opends-documentation
+  ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dissco-opends-documentation-route
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`dev.terms.dissco.tech`)
+      kind: Rule
+      services:
+        - name: dissco-opends-documentation-service
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-opends-documentation-headers
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-opends-documentation-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true
