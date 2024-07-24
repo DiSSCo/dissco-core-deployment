@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tdwg-mids-documentation-service
+spec:
+  selector:
+    app: tdwg-mids-documentation
+  ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: tdwg-mids-documentation-route
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`dev.mids.dissco.tech`)
+      kind: Rule
+      services:
+        - name: tdwg-mids-documentation-service
+          namespace: default
+          port: 8080

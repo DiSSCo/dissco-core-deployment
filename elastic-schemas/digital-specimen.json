@@ -23,7 +23,8 @@
                 }
             },
             "@type": {
-                "type": "constant_keyword"
+                "type": "constant_keyword",
+                "value": "ods:DigitalSpecimen"
             },
             "ods:ID": {
                 "type": "text",
@@ -40,7 +41,16 @@
             "ods:status": {
                 "type": "keyword"
             },
-            "ods:created": {
+            "dcterms:modified": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "dcterms:created": {
                 "type": "date"
             },
             "ods:type": {
@@ -113,15 +123,6 @@
                 "type": "keyword"
             },
             "dcterms:license": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                    }
-                }
-            },
-            "dcterms:modified": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -358,7 +359,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:MaterialEntity"
                     },
                     "dwc:materialEntityID": {
                         "type": "text",
@@ -489,7 +491,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Identification"
                             },
                             "dwc:identificationID": {
                                 "type": "text",
@@ -605,7 +608,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Citation"
                                     },
                                     "dcterms:identifier": {
                                         "type": "text",
@@ -726,7 +730,8 @@
                                                         }
                                                     },
                                                     "@type": {
-                                                        "type": "constant_keyword"
+                                                        "type": "constant_keyword",
+                                                        "value": "ods:Identifier"
                                                     },
                                                     "dcterms:title": {
                                                         "type": "text",
@@ -851,7 +856,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:TaxonIdentification"
                                     },
                                     "dwc:taxonID": {
                                         "type": "text",
@@ -1175,7 +1181,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Assertion"
                             },
                             "dwc:measurementID": {
                                 "type": "text",
@@ -1350,7 +1357,8 @@
                                                 }
                                             },
                                             "@type": {
-                                                "type": "constant_keyword"
+                                                "type": "constant_keyword",
+                                                "value": "ods:Identifier"
                                             },
                                             "dcterms:title": {
                                                 "type": "text",
@@ -1451,7 +1459,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:EntityRelationship"
                             },
                             "dwc:relationshipOfResource": {
                                 "type": "text",
@@ -1578,7 +1587,8 @@
                                                 }
                                             },
                                             "@type": {
-                                                "type": "constant_keyword"
+                                                "type": "constant_keyword",
+                                                "value": "ods:Identifier"
                                             },
                                             "dcterms:title": {
                                                 "type": "text",
@@ -1670,7 +1680,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Citation"
                             },
                             "dcterms:identifier": {
                                 "type": "text",
@@ -1791,7 +1802,8 @@
                                                 }
                                             },
                                             "@type": {
-                                                "type": "constant_keyword"
+                                                "type": "constant_keyword",
+                                                "value": "ods:Identifier"
                                             },
                                             "dcterms:title": {
                                                 "type": "text",
@@ -1916,7 +1928,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Identifier"
                             },
                             "dcterms:title": {
                                 "type": "text",
@@ -1986,7 +1999,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Event"
                             },
                             "dwc:organismQuantity": {
                                 "type": "text",
@@ -2282,7 +2296,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Assertion"
                                     },
                                     "dwc:measurementID": {
                                         "type": "text",
@@ -2457,7 +2472,8 @@
                                                         }
                                                     },
                                                     "@type": {
-                                                        "type": "constant_keyword"
+                                                        "type": "constant_keyword",
+                                                        "value": "ods:Identifier"
                                                     },
                                                     "dcterms:title": {
                                                         "type": "text",
@@ -2558,7 +2574,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Location"
                                     },
                                     "dwc:locationID": {
                                         "type": "text",
@@ -2761,7 +2778,8 @@
                                                 }
                                             },
                                             "@type": {
-                                                "type": "constant_keyword"
+                                                "type": "constant_keyword",
+                                                "value": "ods:GeoReference"
                                             },
                                             "dwc:verbatimCoordinates": {
                                                 "type": "text",
@@ -2912,7 +2930,8 @@
                                                 }
                                             },
                                             "@type": {
-                                                "type": "constant_keyword"
+                                                "type": "constant_keyword",
+                                                "value": "ods:GeologicalContext"
                                             },
                                             "dwc:earliestEonOrLowestEonothem": {
                                                 "type": "text",
@@ -3156,7 +3175,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",
@@ -3230,7 +3250,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Identification"
                     },
                     "dwc:identificationID": {
                         "type": "text",
@@ -3346,7 +3367,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Citation"
                             },
                             "dcterms:identifier": {
                                 "type": "text",
@@ -3467,7 +3489,8 @@
                                                 }
                                             },
                                             "@type": {
-                                                "type": "constant_keyword"
+                                                "type": "constant_keyword",
+                                                "value": "ods:Identifier"
                                             },
                                             "dcterms:title": {
                                                 "type": "text",
@@ -3592,7 +3615,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:TaxonIdentification"
                             },
                             "dwc:taxonID": {
                                 "type": "text",
@@ -3916,7 +3940,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Assertion"
                     },
                     "dwc:measurementID": {
                         "type": "text",
@@ -4091,7 +4116,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",
@@ -4192,7 +4218,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Event"
                     },
                     "dwc:organismQuantity": {
                         "type": "text",
@@ -4488,7 +4515,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Assertion"
                             },
                             "dwc:measurementID": {
                                 "type": "text",
@@ -4663,7 +4691,8 @@
                                                 }
                                             },
                                             "@type": {
-                                                "type": "constant_keyword"
+                                                "type": "constant_keyword",
+                                                "value": "ods:Identifier"
                                             },
                                             "dcterms:title": {
                                                 "type": "text",
@@ -4764,7 +4793,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Location"
                             },
                             "dwc:locationID": {
                                 "type": "text",
@@ -4967,7 +4997,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:GeoReference"
                                     },
                                     "dwc:verbatimCoordinates": {
                                         "type": "text",
@@ -5118,7 +5149,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:GeologicalContext"
                                     },
                                     "dwc:earliestEonOrLowestEonothem": {
                                         "type": "text",
@@ -5291,7 +5323,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:EntityRelationship"
                     },
                     "dwc:relationshipOfResource": {
                         "type": "text",
@@ -5418,7 +5451,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",
@@ -5510,7 +5544,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Citation"
                     },
                     "dcterms:identifier": {
                         "type": "text",
@@ -5631,7 +5666,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",
@@ -5756,7 +5792,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Identifier"
                     },
                     "dcterms:title": {
                         "type": "text",
@@ -5826,7 +5863,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:ChronometricAge"
                     },
                     "chrono:chronometricAgeID": {
                         "type": "text",
@@ -6057,7 +6095,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Identifier"
                             },
                             "dcterms:title": {
                                 "type": "text",
@@ -6120,7 +6159,8 @@
             "ods:TombstoneMetadata": {
                 "properties": {
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Tombstone"
                     },
                     "ods:tombstonedDate": {
                         "type": "date"
@@ -6217,7 +6257,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",

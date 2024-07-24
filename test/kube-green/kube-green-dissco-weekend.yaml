@@ -27,3 +27,6 @@ spec:
     - apiVersion: "apps/v1"
       kind: Deployment
       name: dissco-opends-documentation
+    - apiVersion: "apps/v1"
+      kind: Deployment
+      name: tdwg-mids-documentation

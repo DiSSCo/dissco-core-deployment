@@ -95,7 +95,8 @@ def generate_property_mapping(json_property):
     }
   elif json_property.get('const'):
     return {
-      'type': 'constant_keyword'
+      'type': 'constant_keyword',
+      'value': json_property.get('const')
     }
   elif json_property.get('format') and json_property.get(
       'format') == 'date-time':
