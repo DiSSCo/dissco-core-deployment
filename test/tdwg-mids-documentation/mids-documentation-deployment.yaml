@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tdwg-mids-documentation
+  labels:
+    app: tdwg-mids-documentation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tdwg-mids-documentation
+  template:
+    metadata:
+      labels:
+        app: tdwg-mids-documentation
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: tdwg-mids-documentation
+          image: public.ecr.aws/dissco/mids-documentation:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              memory: "150Mi"
+              cpu: "100m"
+            limits:
+              memory: "150Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 2

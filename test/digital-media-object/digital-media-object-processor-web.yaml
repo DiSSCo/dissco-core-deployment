@@ -58,7 +58,7 @@ spec:
                   name: aws-secrets
                   key: elastic-password
             - name: elasticsearch.index-name
-              value: digital-media-object
+              value: digital-media
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: kafka.consumer.host
@@ -66,7 +66,7 @@ spec:
             - name: kafka.consumer.group
               value: group
             - name: kafka.consumer.topic
-              value: digital-media-object
+              value: digital-media
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: auth.id
@@ -82,6 +82,8 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: handle-endpoint-token
+            - name: caching.spring.ttl
+              value: PT6H
           resources:
             requests:
               memory: "500Mi"

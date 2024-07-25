@@ -23,7 +23,8 @@
                 }
             },
             "@type": {
-                "type": "constant_keyword"
+                "type": "constant_keyword",
+                "value": "ods:DigitalMedia"
             },
             "ods:ID": {
                 "type": "text",
@@ -40,7 +41,16 @@
             "ods:status": {
                 "type": "keyword"
             },
-            "ods:created": {
+            "dcterms:modified": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "dcterms:created": {
                 "type": "date"
             },
             "ods:type": {
@@ -163,24 +173,6 @@
                     }
                 }
             },
-            "dcterms:created": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                    }
-                }
-            },
-            "dcterms:modified": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                    }
-                }
-            },
             "ods:hasAssertion": {
                 "properties": {
                     "@id": {
@@ -193,7 +185,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Assertion"
                     },
                     "dwc:measurementID": {
                         "type": "text",
@@ -368,7 +361,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",
@@ -469,7 +463,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Citation"
                     },
                     "dcterms:identifier": {
                         "type": "text",
@@ -590,7 +585,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",
@@ -715,7 +711,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Identifier"
                     },
                     "dcterms:title": {
                         "type": "text",
@@ -785,7 +782,8 @@
                         }
                     },
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:EntityRelationship"
                     },
                     "dwc:relationshipOfResource": {
                         "type": "text",
@@ -912,7 +910,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",
@@ -1075,7 +1074,8 @@
                                 }
                             },
                             "@type": {
-                                "type": "constant_keyword"
+                                "type": "constant_keyword",
+                                "value": "ods:Identifier"
                             },
                             "dcterms:title": {
                                 "type": "text",
@@ -1138,7 +1138,8 @@
             "ods:TombstoneMetadata": {
                 "properties": {
                     "@type": {
-                        "type": "constant_keyword"
+                        "type": "constant_keyword",
+                        "value": "ods:Tombstone"
                     },
                     "ods:tombstonedDate": {
                         "type": "date"
@@ -1235,7 +1236,8 @@
                                         }
                                     },
                                     "@type": {
-                                        "type": "constant_keyword"
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
                                     },
                                     "dcterms:title": {
                                         "type": "text",
