@@ -58,6 +58,13 @@ spec:
               value: TEST
             - name: caching.spring.ttl
               value: "43200000"
+            - name: mongo.database
+              value: handle
+            - name: mongo.connection-string
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: mongodb_connection
           resources:
             requests:
               memory: "500Mi"
