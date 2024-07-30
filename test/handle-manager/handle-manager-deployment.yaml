@@ -64,7 +64,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: mongodb_connection
+                  key: mongodb-connection
           resources:
             requests:
               memory: "500Mi"
