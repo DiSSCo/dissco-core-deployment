@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: tettris-marketplace
-          image: tom13m/tettris-marketplace-static:latest
+          image: public.ecr.aws/dissco/tettris-marketplace-static:latest
           ports:
             - containerPort: 3000
           resources:
