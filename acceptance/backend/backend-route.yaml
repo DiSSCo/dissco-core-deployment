@@ -24,3 +24,21 @@ spec:
         - name: dissco-backend-service
           namespace: default
           port: 8080
+      middlewares:
+        - name: dissco-backend-cors-headers
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-backend-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginListRegex:
+      - "https://dev-orchestration\\.dissco\\.tech(.*)"
+      - "https://osca-simple.netlify.app/(.*)"
+    accessControlMaxAge: 100
+    addVaryHeader: true
