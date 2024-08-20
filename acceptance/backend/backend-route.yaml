@@ -37,8 +37,7 @@ spec:
       - "GET"
     accessControlAllowHeaders:
       - "*"
-    accessControlAllowOriginListRegex:
-      - "https://dev-orchestration\\.dissco\\.tech(.*)"
-      - "https://osca-simple.netlify.app/(.*)"
+    accessControlAllowOriginList:
+      - "*"
     accessControlMaxAge: 100
     addVaryHeader: true
