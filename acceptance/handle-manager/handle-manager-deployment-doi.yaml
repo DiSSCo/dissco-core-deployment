@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: datacite-publisher
+  name: dissco-handle-manager-doi-deployment
   labels:
-    app: datacite-publisher-deployment
+    app: dissco-handle-manager-doi-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: datacite-publisher
+      app: dissco-handle-manager-doi
   template:
     metadata:
       labels:
-        app: datacite-publisher
+        app: dissco-handle-manager-doi
         language: java
       annotations:
         co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
@@ -21,39 +21,43 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher@sha256:d669eefec83bec9f2a49a71dfb5d551cd86f1a57fd213d594d3207a39740d26b
+        - name: dissco-handle-manager
+          image: public.ecr.aws/dissco/handle-manager:sha-6d5eec8
           imagePullPolicy: Always
           ports:
             - containerPort: 80
             - containerPort: 8080
           env:
-            - name: doi.prefix
-              value: '10.82621'
+            - name: spring.profiles.active
+              value: doi
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-            - name: datacite.endpoint
-              value: https://api.test.datacite.org/dois
-            - name: datacite.repository-id
+            - name: application.ui-url
+              value: https://sandbox.dissco.tech
+            - name: application.api-url
+              value: ${application.ui-url}/api/v1
+            - name: application.orchestration-url
+              value: https://orchestration.dissco.tech/api/v1
+            - name: kafka.publisher.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: application.maxHandles
+              value: '1000'
+            - name: spring.datasource.url
+              value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+            - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
-                  name: aws-secrets
-                  key: datacite_repository_id
-            - name: datacite.password
+                  name: db-secrets
+                  key: db-username
+            - name: spring.datasource.password
               valueFrom:
                 secretKeyRef:
-                  name: aws-secrets
-                  key: datacite_password
-            - name: kafka.consumer.topic.specimen
-              value: specimen-doi
-            - name: kafka.consumer.topic.media
-              value: media-doi
-            - name: kafka.consumer.topic.tombstone
-              value: tombstone
-            - name: spring.kafka.consumer.group-id
-              value: group-1
+                  name: db-secrets
+                  key: db-password
+            - name: application.prefix
+              value: SANDBOX
           resources:
             requests:
               memory: "500Mi"
