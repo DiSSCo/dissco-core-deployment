@@ -501,6 +501,9 @@
                     }
                 }
             },
+            "ods:placeInBatch": {
+                "type": "integer"
+            },
             "ods:mergingDecisionStatus": {
                 "type": "keyword"
             },
@@ -657,10 +660,10 @@
                         "type": "constant_keyword",
                         "value": "ods:Tombstone"
                     },
-                    "ods:tombstonedDate": {
+                    "ods:tombstoneDate": {
                         "type": "date"
                     },
-                    "ods:tombstonedText": {
+                    "ods:tombstoneText": {
                         "type": "text",
                         "fields": {
                             "keyword": {
