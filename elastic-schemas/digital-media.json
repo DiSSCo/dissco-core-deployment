@@ -83,6 +83,15 @@
                     }
                 }
             },
+            "ods:sourceSystemName": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
             "ods:organisationID": {
                 "type": "text",
                 "fields": {
@@ -1141,10 +1150,10 @@
                         "type": "constant_keyword",
                         "value": "ods:Tombstone"
                     },
-                    "ods:tombstonedDate": {
+                    "ods:tombstoneDate": {
                         "type": "date"
                     },
-                    "ods:tombstonedText": {
+                    "ods:tombstoneText": {
                         "type": "text",
                         "fields": {
                             "keyword": {
