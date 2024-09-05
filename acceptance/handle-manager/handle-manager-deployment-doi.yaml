@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-handle-manager-deployment
+  name: dissco-handle-manager-doi-deployment
   labels:
-    app: dissco-handle-manager-deployment
+    app: dissco-handle-manager-doi-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-handle-manager
+      app: dissco-handle-manager-doi
   template:
     metadata:
       labels:
-        app: dissco-handle-manager
+        app: dissco-handle-manager-doi
         language: java
       annotations:
         co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
@@ -22,14 +22,13 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager
-          image: public.ecr.aws/dissco/handle-manager:acc-update
+          image: public.ecr.aws/dissco/handle-manager:sha-6d5eec8
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
             - containerPort: 8080
           env:
             - name: spring.profiles.active
-              value: handle
+              value: doi
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
@@ -40,6 +39,8 @@ spec:
               value: ${application.ui-url}/api/v1
             - name: application.orchestration-url
               value: https://orchestration.dissco.tech/api/v1
+            - name: kafka.publisher.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: application.maxHandles
               value: '1000'
             - name: spring.datasource.url

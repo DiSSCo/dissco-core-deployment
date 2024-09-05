@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dissco-handle-manager-doi
+spec:
+  selector:
+    app: dissco-handle-manager-doi
+  ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dissco-handle-manager-doi-route
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`sandbox.dissco.tech`) && PathPrefix(`/doi-manager/api/v1/pids`)
+      kind: Rule
+      services:
+        - name: dissco-handle-manager-doi
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-handle-manager-doi-stripprefix
+        - name: dissco-handle-manager-doi-cors-headers
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-handle-manager-doi-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /handle-manager
+    forceSlash: false
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-handle-manager-doi-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true
