@@ -65,6 +65,8 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: handle-endpoint-token
+            - name: mas.runningEndpoint
+              value: https://dev.dissco.tech/api/v1/mjr
           resources:
             requests:
               memory: "500Mi"
