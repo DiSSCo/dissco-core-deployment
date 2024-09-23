@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-handle-manager-handle-deployment
+  name: dissco-handle-manager-doi-deployment
   labels:
-    app: dissco-handle-manager-handle-deployment
+    app: dissco-handle-manager-doi-deployment
 spec:
   replicas: 1
   selector:
@@ -21,7 +21,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-handle-manager-handle
+        - name: dissco-handle-manager
           image: public.ecr.aws/dissco/handle-manager
           imagePullPolicy: Always
           ports:
@@ -41,7 +41,7 @@ spec:
             - name: application.maxHandles
               value: '1000'
             - name: spring.profiles.active
-              value: handle
+              value: doi
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
