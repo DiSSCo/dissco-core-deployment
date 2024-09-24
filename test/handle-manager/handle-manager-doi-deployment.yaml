@@ -8,11 +8,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-handle-manager
+      app: dissco-handle-manager-doi
   template:
     metadata:
       labels:
-        app: dissco-handle-manager
+        app: dissco-handle-manager-doi
         language: java
       annotations:
         co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
@@ -26,7 +26,6 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-            - containerPort: 8080
           env:
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco

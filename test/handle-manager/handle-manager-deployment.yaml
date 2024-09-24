@@ -26,7 +26,6 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-            - containerPort: 8080
           env:
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
