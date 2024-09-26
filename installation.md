@@ -49,6 +49,9 @@ Go to `https://localhost:5601/app/home#/` and login with the elastic user creds.
 Then go to dev tools and add the mappings available in this repository.
 
 ## Setup indices for mongodb
+
+Note: the following is also possible through a user interface using a tool such as [MongoDB Compass](https://www.mongodb.com/products/tools/compass). 
+
 We need to add some additional indices on mongodb to make sure we can quickly grap the version numbers of the objects.
 We will put the version on each PID (instead of the default which is on PID/version)
 This step is a bit tricky as mongodb is not publicly exposed so we need an app in the network to reach mongodb
@@ -61,26 +64,48 @@ Run the following create index comments
 ```
 db.digital_specimen_provenance.createIndex(
   {
-      "eventRecord.id": 1
+      "prov:Entity.prov:value.@id": 1
+  }
+)
+
+db.digital_specimen_provenance.createIndex(
+  {
+      "prov:Entity.prov:value.ods:version": 1
   }
 )
 
 db.annotation_provenance.createIndex(
   {
-      "eventRecord.id": 1
+      "prov:Entity.prov:value.@id": 1
+  }
+)
+
+db.annotation_provenance.createIndex(
+  {
+      "prov:Entity.prov:value.ods:version": 1
+  }
+)
+
+
+db.digital_media_provenance.createIndex(
+  {
+      "prov:Entity.prov:value.@id": 1
   }
 )
 
 db.digital_media_provenance.createIndex(
   {
-      "eventRecord.id": 1
+      "prov:Entity.prov:value.ods:version": 1
   }
 )
 ```
+
 Now we can exit and delete the pod
 `.exit`
 `exit`
 `k delete pod my-shell`
+
+It may take several minutes to create the indexes.
 
 ## Add Kafka and traefik
 We can now add Kafka by applying the yaml to the cluster.
