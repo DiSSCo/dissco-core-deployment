@@ -26,6 +26,7 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-orchestration-backend-stripprefix
+        - name: dissco-orchestration-cors-headers
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -36,3 +37,18 @@ spec:
     prefixes:
       - /api/v1
     forceSlash: false
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-orchestration-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginListRegex:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true
