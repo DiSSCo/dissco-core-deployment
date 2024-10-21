@@ -23,8 +23,8 @@ spec:
       serviceAccountName: secret-manager
       automountServiceAccountToken: true
       containers:
-        - name: dissco-data-exporter-backend
-          image: public.ecr.aws/dissco/dissco-data-exporter-backend
+        - name: dissco-backend
+          image: public.ecr.aws/dissco/dissco-core-backend
           imagePullPolicy: Always
           ports:
             - containerPort: 80
