@@ -26,18 +26,3 @@ spec:
           port: 8080
       middlewares:
         - name: data-exporter-backend-cors-headers
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: data-exporter-backend-cors-headers
-spec:
-  headers:
-    accessControlAllowMethods:
-      - "GET"
-    accessControlAllowHeaders:
-      - "*"
-    accessControlAllowOriginList:
-      - "*"
-    accessControlMaxAge: 100
-    addVaryHeader: true
