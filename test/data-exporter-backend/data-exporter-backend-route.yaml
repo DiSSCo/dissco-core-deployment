@@ -24,5 +24,3 @@ spec:
         - name: data-exporter-backend-service
           namespace: default
           port: 8080
-      middlewares:
-        - name: data-exporter-backend-cors-headers
