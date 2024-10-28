@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-exporter-backend-service
+spec:
+  selector:
+    app: data-exporter-backend
+  ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: data-exporter-backend-route
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`dev.dissco.tech`) && PathPrefix(`/api`)
+      kind: Rule
+      services:
+        - name: data-exporter-backend-service
+          namespace: default
+          port: 8080
