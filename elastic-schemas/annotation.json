@@ -26,7 +26,16 @@
                 "type": "constant_keyword",
                 "value": "ods:Annotation"
             },
-            "ods:ID": {
+            "dcterms:identifier": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ods:fdoType": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -46,10 +55,6 @@
                         "ignore_above": 256
                     }
                 }
-            },
-            "rdf:type": {
-                "type": "constant_keyword",
-                "value": "ods:Annotation"
             },
             "ods:version": {
                 "type": "integer"
@@ -86,7 +91,7 @@
                             }
                         }
                     },
-                    "ods:ID": {
+                    "dcterms:identifier": {
                         "type": "text",
                         "fields": {
                             "keyword": {
@@ -95,7 +100,7 @@
                             }
                         }
                     },
-                    "ods:type": {
+                    "ods:fdoType": {
                         "type": "text",
                         "fields": {
                             "keyword": {
@@ -107,9 +112,10 @@
                     "oa:hasSelector": {
                         "properties": {
                             "@type": {
-                                "type": "keyword"
+                                "type": "constant_keyword",
+                                "value": "oa:FragmentSelector"
                             },
-                            "ods:field": {
+                            "ods:term": {
                                 "type": "text",
                                 "fields": {
                                     "keyword": {
@@ -144,13 +150,8 @@
                                 }
                             },
                             "dcterms:conformsTo": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
+                                "type": "constant_keyword",
+                                "value": "https://ac.tdwg.org/termlist/#711-region-of-interest-vocabulary"
                             }
                         }
                     }
@@ -159,13 +160,8 @@
             "oa:hasBody": {
                 "properties": {
                     "@type": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
+                        "type": "constant_keyword",
+                        "value": "oa:TextualBody"
                     },
                     "dcterms:references": {
                         "type": "text",
@@ -195,6 +191,15 @@
                     "@type": {
                         "type": "keyword"
                     },
+                    "schema:identifier": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
                     "schema:name": {
                         "type": "text",
                         "fields": {
@@ -204,35 +209,52 @@
                             }
                         }
                     },
-                    "schema:roleName": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
+                    "ods:hasRoles": {
+                        "properties": {
+                            "@id": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "@type": {
+                                "type": "constant_keyword",
+                                "value": "schema:Role"
+                            },
+                            "schema:roleName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:startDate": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:endDate": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:position": {
+                                "type": "integer"
                             }
                         }
-                    },
-                    "schema:startDate": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "schema:endDate": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:roleOrder": {
-                        "type": "integer"
                     },
                     "schema:email": {
                         "type": "text",
@@ -252,7 +274,7 @@
                             }
                         }
                     },
-                    "ods:hasIdentifier": {
+                    "ods:hasIdentifiers": {
                         "properties": {
                             "@id": {
                                 "type": "text",
@@ -276,34 +298,10 @@
                                     }
                                 }
                             },
-                            "ods:localTitle": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
+                            "dcterms:type": {
+                                "type": "keyword"
                             },
                             "dcterms:identifier": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:format": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:subject": {
                                 "type": "text",
                                 "fields": {
                                     "keyword": {
@@ -315,11 +313,11 @@
                             "ods:isPartOfLabel": {
                                 "type": "boolean"
                             },
-                            "ods:isBarcodeOrNFC": {
-                                "type": "boolean"
+                            "ods:gupriLevel": {
+                                "type": "keyword"
                             },
-                            "ods:isIDPersistent": {
-                                "type": "boolean"
+                            "ods:identifierStatus": {
+                                "type": "keyword"
                             }
                         }
                     }
@@ -348,6 +346,15 @@
                     "@type": {
                         "type": "keyword"
                     },
+                    "schema:identifier": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
                     "schema:name": {
                         "type": "text",
                         "fields": {
@@ -357,35 +364,52 @@
                             }
                         }
                     },
-                    "schema:roleName": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
+                    "ods:hasRoles": {
+                        "properties": {
+                            "@id": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "@type": {
+                                "type": "constant_keyword",
+                                "value": "schema:Role"
+                            },
+                            "schema:roleName": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:startDate": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:endDate": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:position": {
+                                "type": "integer"
                             }
                         }
-                    },
-                    "schema:startDate": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "schema:endDate": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:roleOrder": {
-                        "type": "integer"
                     },
                     "schema:email": {
                         "type": "text",
@@ -405,7 +429,7 @@
                             }
                         }
                     },
-                    "ods:hasIdentifier": {
+                    "ods:hasIdentifiers": {
                         "properties": {
                             "@id": {
                                 "type": "text",
@@ -429,34 +453,10 @@
                                     }
                                 }
                             },
-                            "ods:localTitle": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
+                            "dcterms:type": {
+                                "type": "keyword"
                             },
                             "dcterms:identifier": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:format": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:subject": {
                                 "type": "text",
                                 "fields": {
                                     "keyword": {
@@ -468,17 +468,17 @@
                             "ods:isPartOfLabel": {
                                 "type": "boolean"
                             },
-                            "ods:isBarcodeOrNFC": {
-                                "type": "boolean"
+                            "ods:gupriLevel": {
+                                "type": "keyword"
                             },
-                            "ods:isIDPersistent": {
-                                "type": "boolean"
+                            "ods:identifierStatus": {
+                                "type": "keyword"
                             }
                         }
                     }
                 }
             },
-            "schema:AggregateRating": {
+            "ods:hasAggregateRating": {
                 "properties": {
                     "@type": {
                         "type": "constant_keyword",
@@ -510,7 +510,7 @@
             "ods:mergingStateChangeDate": {
                 "type": "date"
             },
-            "ods:MergingStateChangedBy": {
+            "ods:hasMergingStateChangedBy": {
                 "properties": {
                     "@id": {
                         "type": "text",
@@ -524,6 +524,15 @@
                     "@type": {
                         "type": "keyword"
                     },
+                    "schema:identifier": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
                     "schema:name": {
                         "type": "text",
                         "fields": {
@@ -533,55 +542,7 @@
                             }
                         }
                     },
-                    "schema:roleName": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "schema:startDate": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "schema:endDate": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:roleOrder": {
-                        "type": "integer"
-                    },
-                    "schema:email": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "schema:url": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:hasIdentifier": {
+                    "ods:hasRoles": {
                         "properties": {
                             "@id": {
                                 "type": "text",
@@ -594,106 +555,7 @@
                             },
                             "@type": {
                                 "type": "constant_keyword",
-                                "value": "ods:Identifier"
-                            },
-                            "dcterms:title": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "ods:localTitle": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:identifier": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:format": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:subject": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "ods:isPartOfLabel": {
-                                "type": "boolean"
-                            },
-                            "ods:isBarcodeOrNFC": {
-                                "type": "boolean"
-                            },
-                            "ods:isIDPersistent": {
-                                "type": "boolean"
-                            }
-                        }
-                    }
-                }
-            },
-            "ods:TombstoneMetadata": {
-                "properties": {
-                    "@type": {
-                        "type": "constant_keyword",
-                        "value": "ods:Tombstone"
-                    },
-                    "ods:tombstoneDate": {
-                        "type": "date"
-                    },
-                    "ods:tombstoneText": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:TombstonedByAgent": {
-                        "properties": {
-                            "@id": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "@type": {
-                                "type": "keyword"
-                            },
-                            "schema:name": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
+                                "value": "schema:Role"
                             },
                             "schema:roleName": {
                                 "type": "text",
@@ -722,8 +584,174 @@
                                     }
                                 }
                             },
-                            "ods:roleOrder": {
+                            "schema:position": {
                                 "type": "integer"
+                            }
+                        }
+                    },
+                    "schema:email": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "schema:url": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "ods:hasIdentifiers": {
+                        "properties": {
+                            "@id": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "@type": {
+                                "type": "constant_keyword",
+                                "value": "ods:Identifier"
+                            },
+                            "dcterms:title": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "dcterms:type": {
+                                "type": "keyword"
+                            },
+                            "dcterms:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "ods:isPartOfLabel": {
+                                "type": "boolean"
+                            },
+                            "ods:gupriLevel": {
+                                "type": "keyword"
+                            },
+                            "ods:identifierStatus": {
+                                "type": "keyword"
+                            }
+                        }
+                    }
+                }
+            },
+            "ods:hasTombstoneMetadata": {
+                "properties": {
+                    "@type": {
+                        "type": "constant_keyword",
+                        "value": "ods:Tombstone"
+                    },
+                    "ods:tombstoneDate": {
+                        "type": "date"
+                    },
+                    "ods:tombstoneText": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "ods:hasAgents": {
+                        "properties": {
+                            "@id": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "schema:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:name": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "ods:hasRoles": {
+                                "properties": {
+                                    "@id": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "@type": {
+                                        "type": "constant_keyword",
+                                        "value": "schema:Role"
+                                    },
+                                    "schema:roleName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:startDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:endDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:position": {
+                                        "type": "integer"
+                                    }
+                                }
                             },
                             "schema:email": {
                                 "type": "text",
@@ -743,7 +771,7 @@
                                     }
                                 }
                             },
-                            "ods:hasIdentifier": {
+                            "ods:hasIdentifiers": {
                                 "properties": {
                                     "@id": {
                                         "type": "text",
@@ -767,34 +795,10 @@
                                             }
                                         }
                                     },
-                                    "ods:localTitle": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
+                                    "dcterms:type": {
+                                        "type": "keyword"
                                     },
                                     "dcterms:identifier": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:format": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:subject": {
                                         "type": "text",
                                         "fields": {
                                             "keyword": {
@@ -806,19 +810,32 @@
                                     "ods:isPartOfLabel": {
                                         "type": "boolean"
                                     },
-                                    "ods:isBarcodeOrNFC": {
-                                        "type": "boolean"
+                                    "ods:gupriLevel": {
+                                        "type": "keyword"
                                     },
-                                    "ods:isIDPersistent": {
-                                        "type": "boolean"
+                                    "ods:identifierStatus": {
+                                        "type": "keyword"
                                     }
                                 }
                             }
                         }
                     },
-                    "ods:hasRelatedPID": {
+                    "ods:hasRelatedPIDs": {
                         "properties": {
-                            "ods:ID": {
+                            "@type": {
+                                "type": "constant_keyword",
+                                "value": "ods:RelatedPID"
+                            },
+                            "dcterms:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:identifier": {
                                 "type": "text",
                                 "fields": {
                                     "keyword": {

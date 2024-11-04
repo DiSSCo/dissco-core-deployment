@@ -26,7 +26,16 @@
                 "type": "constant_keyword",
                 "value": "ods:DigitalMedia"
             },
-            "ods:ID": {
+            "dcterms:identifier": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ods:fdoType": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -52,15 +61,6 @@
             },
             "dcterms:created": {
                 "type": "date"
-            },
-            "ods:type": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                    }
-                }
             },
             "dcterms:type": {
                 "type": "keyword"
@@ -119,7 +119,52 @@
                     }
                 }
             },
-            "dcterms:license": {
+            "ac:metadataLanguage": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:metadataLanguageLiteral": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:subtype": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:subtypeLiteral": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "dcterms:title": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "dcterms:language": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -146,7 +191,7 @@
                     }
                 }
             },
-            "dcterms:accessRights": {
+            "xmpRights:UsageTerms": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -155,7 +200,34 @@
                     }
                 }
             },
-            "dcterms:rightsHolder": {
+            "xmpRights:WebStatement": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "xmpRights:Owner": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "dcterms:available": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:comments": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -173,7 +245,7 @@
                     }
                 }
             },
-            "dcterms:creator": {
+            "Iptc4xmpExt:CVterm": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -182,7 +254,133 @@
                     }
                 }
             },
-            "ods:hasAssertion": {
+            "ac:subjectCategoryVocabulary": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:variant": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:variantLiteral": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:variantDescription": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "exif:PixelYDimension": {
+                "type": "integer"
+            },
+            "exif:PixelXDimension": {
+                "type": "integer"
+            },
+            "xmp:CreateDate": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:timeOfDay": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:subjectOrientation": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:subjectOrientationLiteral": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:subjectPart": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:subjectPartLiteral": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:captureDevice": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:digitizationDate": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ac:frameRate": {
+                "type": "float"
+            },
+            "ac:resourceCreationTechnique": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "ods:hasAssertions": {
                 "properties": {
                     "@id": {
                         "type": "text",
@@ -287,7 +485,34 @@
                             }
                         }
                     },
-                    "ods:AssertionByAgent": {
+                    "dwc:measurementMethod": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "dwciri:measurementMethod": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "dwc:measurementRemarks": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "ods:hasAgents": {
                         "properties": {
                             "@id": {
                                 "type": "text",
@@ -301,6 +526,15 @@
                             "@type": {
                                 "type": "keyword"
                             },
+                            "schema:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
                             "schema:name": {
                                 "type": "text",
                                 "fields": {
@@ -310,35 +544,52 @@
                                     }
                                 }
                             },
-                            "schema:roleName": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
+                            "ods:hasRoles": {
+                                "properties": {
+                                    "@id": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "@type": {
+                                        "type": "constant_keyword",
+                                        "value": "schema:Role"
+                                    },
+                                    "schema:roleName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:startDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:endDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:position": {
+                                        "type": "integer"
                                     }
                                 }
-                            },
-                            "schema:startDate": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "schema:endDate": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "ods:roleOrder": {
-                                "type": "integer"
                             },
                             "schema:email": {
                                 "type": "text",
@@ -358,7 +609,7 @@
                                     }
                                 }
                             },
-                            "ods:hasIdentifier": {
+                            "ods:hasIdentifiers": {
                                 "properties": {
                                     "@id": {
                                         "type": "text",
@@ -382,34 +633,10 @@
                                             }
                                         }
                                     },
-                                    "ods:localTitle": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
+                                    "dcterms:type": {
+                                        "type": "keyword"
                                     },
                                     "dcterms:identifier": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:format": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:subject": {
                                         "type": "text",
                                         "fields": {
                                             "keyword": {
@@ -421,46 +648,248 @@
                                     "ods:isPartOfLabel": {
                                         "type": "boolean"
                                     },
-                                    "ods:isBarcodeOrNFC": {
-                                        "type": "boolean"
+                                    "ods:gupriLevel": {
+                                        "type": "keyword"
                                     },
-                                    "ods:isIDPersistent": {
-                                        "type": "boolean"
+                                    "ods:identifierStatus": {
+                                        "type": "keyword"
                                     }
                                 }
                             }
                         }
                     },
-                    "ods:assertionProtocol": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:assertionProtocolID": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:assertionRemarks": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
+                    "ods:hasCitations": {
+                        "properties": {
+                            "@id": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "@type": {
+                                "type": "constant_keyword",
+                                "value": "ods:Citation"
+                            },
+                            "dcterms:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "dcterms:type": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "dcterms:date": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "dcterms:title": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "ods:pageNumber": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "dcterms:description": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "dcterms:bibliographicCitation": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "ods:isPeerReviewed": {
+                                "type": "boolean"
+                            },
+                            "ods:hasAgents": {
+                                "properties": {
+                                    "@id": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "@type": {
+                                        "type": "keyword"
+                                    },
+                                    "schema:identifier": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:name": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "ods:hasRoles": {
+                                        "properties": {
+                                            "@id": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "@type": {
+                                                "type": "constant_keyword",
+                                                "value": "schema:Role"
+                                            },
+                                            "schema:roleName": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "schema:startDate": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "schema:endDate": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "schema:position": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    },
+                                    "schema:email": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:url": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "ods:hasIdentifiers": {
+                                        "properties": {
+                                            "@id": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "@type": {
+                                                "type": "constant_keyword",
+                                                "value": "ods:Identifier"
+                                            },
+                                            "dcterms:title": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "dcterms:type": {
+                                                "type": "keyword"
+                                            },
+                                            "dcterms:identifier": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "ods:isPartOfLabel": {
+                                                "type": "boolean"
+                                            },
+                                            "ods:gupriLevel": {
+                                                "type": "keyword"
+                                            },
+                                            "ods:identifierStatus": {
+                                                "type": "keyword"
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             },
-            "ods:hasCitation": {
+            "ods:hasCitations": {
                 "properties": {
                     "@id": {
                         "type": "text",
@@ -511,7 +940,37 @@
                             }
                         }
                     },
-                    "dcterms:creator": {
+                    "ods:pageNumber": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "dcterms:description": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "dcterms:bibliographicCitation": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "ods:isPeerReviewed": {
+                        "type": "boolean"
+                    },
+                    "ods:hasAgents": {
                         "properties": {
                             "@id": {
                                 "type": "text",
@@ -525,6 +984,15 @@
                             "@type": {
                                 "type": "keyword"
                             },
+                            "schema:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
                             "schema:name": {
                                 "type": "text",
                                 "fields": {
@@ -534,35 +1002,52 @@
                                     }
                                 }
                             },
-                            "schema:roleName": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
+                            "ods:hasRoles": {
+                                "properties": {
+                                    "@id": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "@type": {
+                                        "type": "constant_keyword",
+                                        "value": "schema:Role"
+                                    },
+                                    "schema:roleName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:startDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:endDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:position": {
+                                        "type": "integer"
                                     }
                                 }
-                            },
-                            "schema:startDate": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "schema:endDate": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "ods:roleOrder": {
-                                "type": "integer"
                             },
                             "schema:email": {
                                 "type": "text",
@@ -582,7 +1067,7 @@
                                     }
                                 }
                             },
-                            "ods:hasIdentifier": {
+                            "ods:hasIdentifiers": {
                                 "properties": {
                                     "@id": {
                                         "type": "text",
@@ -606,34 +1091,10 @@
                                             }
                                         }
                                     },
-                                    "ods:localTitle": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
+                                    "dcterms:type": {
+                                        "type": "keyword"
                                     },
                                     "dcterms:identifier": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:format": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:subject": {
                                         "type": "text",
                                         "fields": {
                                             "keyword": {
@@ -645,70 +1106,19 @@
                                     "ods:isPartOfLabel": {
                                         "type": "boolean"
                                     },
-                                    "ods:isBarcodeOrNFC": {
-                                        "type": "boolean"
+                                    "ods:gupriLevel": {
+                                        "type": "keyword"
                                     },
-                                    "ods:isIDPersistent": {
-                                        "type": "boolean"
+                                    "ods:identifierStatus": {
+                                        "type": "keyword"
                                     }
                                 }
                             }
                         }
-                    },
-                    "ods:citationPageNumber": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:citationRemarks": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:referenceType": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "dcterms:bibliographicCitation": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:referenceYear": {
-                        "type": "integer"
-                    },
-                    "ods:referenceIRI": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:isPeerReviewed": {
-                        "type": "boolean"
                     }
                 }
             },
-            "ods:hasIdentifier": {
+            "ods:hasIdentifiers": {
                 "properties": {
                     "@id": {
                         "type": "text",
@@ -732,34 +1142,10 @@
                             }
                         }
                     },
-                    "ods:localTitle": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
+                    "dcterms:type": {
+                        "type": "keyword"
                     },
                     "dcterms:identifier": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "dcterms:format": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "dcterms:subject": {
                         "type": "text",
                         "fields": {
                             "keyword": {
@@ -771,15 +1157,15 @@
                     "ods:isPartOfLabel": {
                         "type": "boolean"
                     },
-                    "ods:isBarcodeOrNFC": {
-                        "type": "boolean"
+                    "ods:gupriLevel": {
+                        "type": "keyword"
                     },
-                    "ods:isIDPersistent": {
-                        "type": "boolean"
+                    "ods:identifierStatus": {
+                        "type": "keyword"
                     }
                 }
             },
-            "ods:hasEntityRelationship": {
+            "ods:hasEntityRelationships": {
                 "properties": {
                     "@id": {
                         "type": "text",
@@ -833,10 +1219,16 @@
                     "dwc:relationshipEstablishedDate": {
                         "type": "date"
                     },
-                    "ods:entityRelationshipOrder": {
-                        "type": "integer"
+                    "dwc:relationshipRemarks": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
                     },
-                    "ods:RelationshipAccordingToAgent": {
+                    "ods:hasAgents": {
                         "properties": {
                             "@id": {
                                 "type": "text",
@@ -850,6 +1242,15 @@
                             "@type": {
                                 "type": "keyword"
                             },
+                            "schema:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
                             "schema:name": {
                                 "type": "text",
                                 "fields": {
@@ -858,6 +1259,169 @@
                                         "ignore_above": 256
                                     }
                                 }
+                            },
+                            "ods:hasRoles": {
+                                "properties": {
+                                    "@id": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "@type": {
+                                        "type": "constant_keyword",
+                                        "value": "schema:Role"
+                                    },
+                                    "schema:roleName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:startDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:endDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:position": {
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "schema:email": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:url": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "ods:hasIdentifiers": {
+                                "properties": {
+                                    "@id": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "@type": {
+                                        "type": "constant_keyword",
+                                        "value": "ods:Identifier"
+                                    },
+                                    "dcterms:title": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "dcterms:type": {
+                                        "type": "keyword"
+                                    },
+                                    "dcterms:identifier": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "ods:isPartOfLabel": {
+                                        "type": "boolean"
+                                    },
+                                    "ods:gupriLevel": {
+                                        "type": "keyword"
+                                    },
+                                    "ods:identifierStatus": {
+                                        "type": "keyword"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ods:hasAgents": {
+                "properties": {
+                    "@id": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "@type": {
+                        "type": "keyword"
+                    },
+                    "schema:identifier": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "schema:name": {
+                        "type": "text",
+                        "fields": {
+                            "keyword": {
+                                "type": "keyword",
+                                "ignore_above": 256
+                            }
+                        }
+                    },
+                    "ods:hasRoles": {
+                        "properties": {
+                            "@id": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "@type": {
+                                "type": "constant_keyword",
+                                "value": "schema:Role"
                             },
                             "schema:roleName": {
                                 "type": "text",
@@ -886,172 +1450,10 @@
                                     }
                                 }
                             },
-                            "ods:roleOrder": {
+                            "schema:position": {
                                 "type": "integer"
-                            },
-                            "schema:email": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "schema:url": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "ods:hasIdentifier": {
-                                "properties": {
-                                    "@id": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "@type": {
-                                        "type": "constant_keyword",
-                                        "value": "ods:Identifier"
-                                    },
-                                    "dcterms:title": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "ods:localTitle": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:identifier": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:format": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:subject": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "ods:isPartOfLabel": {
-                                        "type": "boolean"
-                                    },
-                                    "ods:isBarcodeOrNFC": {
-                                        "type": "boolean"
-                                    },
-                                    "ods:isIDPersistent": {
-                                        "type": "boolean"
-                                    }
-                                }
                             }
                         }
-                    },
-                    "dwc:relationshipAccordingTo": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "dwc:relationshipRemarks": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    }
-                }
-            },
-            "ods:hasAgent": {
-                "properties": {
-                    "@id": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "@type": {
-                        "type": "keyword"
-                    },
-                    "schema:name": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "schema:roleName": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "schema:startDate": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "schema:endDate": {
-                        "type": "text",
-                        "fields": {
-                            "keyword": {
-                                "type": "keyword",
-                                "ignore_above": 256
-                            }
-                        }
-                    },
-                    "ods:roleOrder": {
-                        "type": "integer"
                     },
                     "schema:email": {
                         "type": "text",
@@ -1071,7 +1473,7 @@
                             }
                         }
                     },
-                    "ods:hasIdentifier": {
+                    "ods:hasIdentifiers": {
                         "properties": {
                             "@id": {
                                 "type": "text",
@@ -1095,34 +1497,10 @@
                                     }
                                 }
                             },
-                            "ods:localTitle": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
+                            "dcterms:type": {
+                                "type": "keyword"
                             },
                             "dcterms:identifier": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:format": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "dcterms:subject": {
                                 "type": "text",
                                 "fields": {
                                     "keyword": {
@@ -1134,17 +1512,17 @@
                             "ods:isPartOfLabel": {
                                 "type": "boolean"
                             },
-                            "ods:isBarcodeOrNFC": {
-                                "type": "boolean"
+                            "ods:gupriLevel": {
+                                "type": "keyword"
                             },
-                            "ods:isIDPersistent": {
-                                "type": "boolean"
+                            "ods:identifierStatus": {
+                                "type": "keyword"
                             }
                         }
                     }
                 }
             },
-            "ods:TombstoneMetadata": {
+            "ods:hasTombstoneMetadata": {
                 "properties": {
                     "@type": {
                         "type": "constant_keyword",
@@ -1162,7 +1540,7 @@
                             }
                         }
                     },
-                    "ods:TombstonedByAgent": {
+                    "ods:hasAgents": {
                         "properties": {
                             "@id": {
                                 "type": "text",
@@ -1176,6 +1554,15 @@
                             "@type": {
                                 "type": "keyword"
                             },
+                            "schema:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
                             "schema:name": {
                                 "type": "text",
                                 "fields": {
@@ -1185,35 +1572,52 @@
                                     }
                                 }
                             },
-                            "schema:roleName": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
+                            "ods:hasRoles": {
+                                "properties": {
+                                    "@id": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "@type": {
+                                        "type": "constant_keyword",
+                                        "value": "schema:Role"
+                                    },
+                                    "schema:roleName": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:startDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:endDate": {
+                                        "type": "text",
+                                        "fields": {
+                                            "keyword": {
+                                                "type": "keyword",
+                                                "ignore_above": 256
+                                            }
+                                        }
+                                    },
+                                    "schema:position": {
+                                        "type": "integer"
                                     }
                                 }
-                            },
-                            "schema:startDate": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "schema:endDate": {
-                                "type": "text",
-                                "fields": {
-                                    "keyword": {
-                                        "type": "keyword",
-                                        "ignore_above": 256
-                                    }
-                                }
-                            },
-                            "ods:roleOrder": {
-                                "type": "integer"
                             },
                             "schema:email": {
                                 "type": "text",
@@ -1233,7 +1637,7 @@
                                     }
                                 }
                             },
-                            "ods:hasIdentifier": {
+                            "ods:hasIdentifiers": {
                                 "properties": {
                                     "@id": {
                                         "type": "text",
@@ -1257,34 +1661,10 @@
                                             }
                                         }
                                     },
-                                    "ods:localTitle": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
+                                    "dcterms:type": {
+                                        "type": "keyword"
                                     },
                                     "dcterms:identifier": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:format": {
-                                        "type": "text",
-                                        "fields": {
-                                            "keyword": {
-                                                "type": "keyword",
-                                                "ignore_above": 256
-                                            }
-                                        }
-                                    },
-                                    "dcterms:subject": {
                                         "type": "text",
                                         "fields": {
                                             "keyword": {
@@ -1296,19 +1676,32 @@
                                     "ods:isPartOfLabel": {
                                         "type": "boolean"
                                     },
-                                    "ods:isBarcodeOrNFC": {
-                                        "type": "boolean"
+                                    "ods:gupriLevel": {
+                                        "type": "keyword"
                                     },
-                                    "ods:isIDPersistent": {
-                                        "type": "boolean"
+                                    "ods:identifierStatus": {
+                                        "type": "keyword"
                                     }
                                 }
                             }
                         }
                     },
-                    "ods:hasRelatedPID": {
+                    "ods:hasRelatedPIDs": {
                         "properties": {
-                            "ods:ID": {
+                            "@type": {
+                                "type": "constant_keyword",
+                                "value": "ods:RelatedPID"
+                            },
+                            "dcterms:identifier": {
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
+                            },
+                            "schema:identifier": {
                                 "type": "text",
                                 "fields": {
                                     "keyword": {
