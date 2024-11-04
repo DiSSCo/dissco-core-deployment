@@ -4,11 +4,11 @@ import requests
 
 schemas = [
   {'file_name': 'digital-specimen.json',
-   'url': 'https://schemas.dissco.tech/schemas/fdo-type/digital-specimen/0.3.0/digital-specimen.json'},
+   'url': 'https://schemas.dissco.tech/schemas/fdo-type/digital-specimen/0.4.0/digital-specimen.json'},
   {'file_name': 'digital-media.json',
-   'url': 'https://schemas.dissco.tech/schemas/fdo-type/digital-media/0.3.0/digital-media.json'},
+   'url': 'https://schemas.dissco.tech/schemas/fdo-type/digital-media/0.4.0/digital-media.json'},
   {'file_name': 'annotation.json',
-   'url': 'https://schemas.dissco.tech/schemas/fdo-type/annotation/0.3.0/annotation.json'}
+   'url': 'https://schemas.dissco.tech/schemas/fdo-type/annotation/0.4.0/annotation.json'}
 ]
 
 
