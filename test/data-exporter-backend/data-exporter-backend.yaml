@@ -16,7 +16,7 @@ spec:
         app: data-exporter-backend
         language: java
     spec:
-      serviceAccountName: secret-manager
+      serviceAccountName: data-exporter-backend-service-account
       automountServiceAccountToken: true
       containers:
         - name: data-exporter-backend
@@ -48,7 +48,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: ses-key-secret
+                  key: ses-access-key-secret
           resources:
             requests:
               memory: "500Mi"
