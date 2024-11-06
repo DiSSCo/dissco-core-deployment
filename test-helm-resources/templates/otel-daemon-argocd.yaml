@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: open-telemetry-argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: otel-collector-daemon
+    repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
+    targetRevision: 0.111.0
+    helm:
+      releaseName: otel-collector-daemon
+      valueFiles:
+      - test-helm-resources/values/otel-daemon-values.yaml
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: otel
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

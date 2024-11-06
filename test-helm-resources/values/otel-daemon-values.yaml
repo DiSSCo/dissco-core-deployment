@@ -1,0 +1,19 @@
+mode: daemonset
+image:
+  repository: otel/opentelemetry-collector-k8s
+presets:
+  kubernetesAttributes:
+    enabled: true
+  logsCollection:
+    enabled: true
+  hostMetrics:
+    enabled: true
+config:
+  exporters:
+    debug:
+      verbosity: detailed
+  service:
+    pipelines:
+      logs:
+        exporters:
+          - debug
