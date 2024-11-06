@@ -4,16 +4,59 @@ image:
 # We only want one of these collectors - any more and we'd produce duplicate data
 replicaCount: 1
 presets:
+  # Configures the collector to collect kubernetes events
+  # Adds the k8sobject receiver to the logs pipeline
   clusterMetrics:
     enabled: true
+
+  # Configures the Kubernetes Cluster Receiver to collect cluster-level metrics
+  # Adds the k8s_cluster receiver to the metrics pipeline
   kubernetesEvents:
     enabled: true
+
 config:
+  extensions:
+    oauth2client/client:
+      client_id: naturalis.bii.dissco
+      client_secret: <secret>
+      token_url: https://keycloak.iam.naturalis.io/realms/observability/protocol/openid-connect/token
+      tls:
+        insecure: true
   exporters:
-    debug:
-      verbosity: detailed
+    otlp/metrics:
+      endpoint: https://metrics.gateway.analytics.naturalis.io:443
+      auth:
+        authenticator: oauth2client/client
+    otlp/logs:
+      endpoint: https://logs.gateway.analytics.naturalis.io:443
+      auth:
+        authenticator: oauth2client/client
+  # Disable some of the helm chart's default configs
+  receivers:
+    jaeger: null
+    zipkin: null
   service:
+    extensions:
+      - oauth2client/client
     pipelines:
       logs:
         exporters:
-          - debug
+          - otlp/logs
+        # Processors: memory_limiter, batch
+        # Receivers: vanilla otlp, filelogs
+      metrics:
+        exporters:
+          - otlp/metrics
+        # Processors: memory_limiter, batch
+        # Receivers: prometheus, vanilla otlp
+
+# Disable some default behaviour
+ports:
+  jaeger-compact:
+    enabled: false
+  jaeger-thrift:
+    enabled: false
+  jaeger-grpc:
+    enabled: false
+  zipkin:
+    enabled: false
