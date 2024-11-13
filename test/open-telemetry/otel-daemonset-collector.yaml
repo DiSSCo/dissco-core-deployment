@@ -74,11 +74,12 @@ spec:
             {
               "context": "datapoint",
               "statements": [
-                'set(attributes["deployment_environment"], "test")',
+                'set(attributes["deployment_environment"], "test-agent")',
                 'set(attributes["service_namespace"], "naturalis.bii.dissco")',
                 'set(attributes["service_name"], "dissco-node")',
                 'set(attributes["service_owner"], "soulaine.theocharides@naturalis.nl")',
-                'set(attributes["service_team"], "dissco")'
+                'set(attributes["service_team"], "dissco")',
+                'set(attributes["node_name"], "${NODE_NAME}")'
               ]
             }
           ]
