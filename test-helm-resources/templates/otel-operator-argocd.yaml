@@ -6,13 +6,15 @@ metadata:
 spec:
   project: default
   source:
-    chart: otel-collector-daemon
+    chart: opentelemetry-operator
     repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
-    targetRevision: 0.111.0
+    targetRevision: 0.74.0
     helm:
       releaseName: otel-collector-daemon
-      valueFiles:
-      - test-helm-resources/values/otel-daemon-values.yaml
+      values: |
+        manager:
+          collectorImage:
+            repository: "otel/opentelemetry-collector-k8s"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: otel
