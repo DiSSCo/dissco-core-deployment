@@ -112,8 +112,13 @@
                     "oa:hasSelector": {
                         "properties": {
                             "@type": {
-                                "type": "constant_keyword",
-                                "value": "oa:FragmentSelector"
+                                "type": "text",
+                                "fields": {
+                                    "keyword": {
+                                        "type": "keyword",
+                                        "ignore_above": 256
+                                    }
+                                }
                             },
                             "ods:term": {
                                 "type": "text",

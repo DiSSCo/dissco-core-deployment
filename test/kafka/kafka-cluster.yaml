@@ -29,13 +29,13 @@ spec:
       volumes:
         - id: 0
           type: persistent-claim
-          size: 60Gi
+          size: 100Gi
           deleteClaim: false
   zookeeper:
     replicas: 3
     storage:
       type: persistent-claim
-      size: 50Gi
+      size: 80Gi
       deleteClaim: false
   entityOperator:
     topicOperator: {}

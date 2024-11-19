@@ -209,15 +209,6 @@
                     }
                 }
             },
-            "xmpRights:Owner": {
-                "type": "text",
-                "fields": {
-                    "keyword": {
-                        "type": "keyword",
-                        "ignore_above": 256
-                    }
-                }
-            },
             "dcterms:available": {
                 "type": "text",
                 "fields": {

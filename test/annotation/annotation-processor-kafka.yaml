@@ -67,6 +67,8 @@ spec:
               value: group
             - name: kafka.consumer.topic
               value: annotation
+            - name: kafka.consumer.topic.auto-accepted
+              value: auto-accepted-annotation
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.id
@@ -84,8 +86,6 @@ spec:
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: application.processor-handle
               value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
-            - name: kafka.consumer.topic.auto-accepted
-              value: auto-accepted
           resources:
             requests:
               memory: "500Mi"
@@ -116,7 +116,7 @@ metadata:
 spec:
   scaleTargetRef:
     name: dissco-core-annotation-processing-kafka
-  minReplicaCount: 0
+  minReplicaCount: 1
   maxReplicaCount:  5
   triggers:
     - type: kafka
@@ -124,4 +124,10 @@ spec:
         bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
         consumerGroup: group
         topic: annotation
+        lagThreshold: '5'
+    - type: kafka
+      metadata:
+        bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+        consumerGroup: group
+        topic: auto-accepted-annotation
         lagThreshold: '5'
