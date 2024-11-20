@@ -170,13 +170,20 @@ spec:
                     "action": "keep",
                     "regex": "node_cpu.*|node_exporter_build_info|node_filesystem.*|node_memory.*|process_cpu_seconds_total|process_resident_memory_bytes"
                   }
+                ],
+                "static_configs": [
+                  {
+                    "targets": [ "${MY_POD_IP}:9100" ]
+                  }
                 ]
+
               }
             ]
           }
+        },
+        "k8s_events": {
+          "namespaces": []
         }
-
-
       },
       "processors": {
         "batch": { },
@@ -184,34 +191,6 @@ spec:
           "check_interval": "5s",
           "limit_percentage": 80,
           "spike_limit_percentage": 25
-        },
-        "k8sattributes": {
-          "passthrough": true,
-          "pod_association": [
-            {
-              "sources": [
-                {
-                  "from": "resource_attribute",
-                  "name": "k8s.pod.ip"
-                }
-              ]
-            },
-            {
-              "sources": [
-                {
-                  "from": "resource_attribute",
-                  "name": "k8s.pod.uid"
-                }
-              ]
-            },
-            {
-              "sources": [
-                {
-                  "from": "connection"
-                }
-              ]
-            }
-          ]
         },
         "transform/host": {
           "metric_statements": [
@@ -250,6 +229,12 @@ spec:
           "auth": {
             "authenticator": "oauth2client/client"
           }
+        },
+        "otlp/logs": {
+          "endpoint": "https://logs.gateway.analytics.naturalis.io:443",
+          "auth": {
+            "authenticator": "oauth2client/client"
+          }
         }
       },
       "service": {
@@ -264,12 +249,24 @@ spec:
             ],
             "processors": [
               "batch",
-              "k8sattributes",
               "memory_limiter",
               "transform/host"
             ],
             "exporters": [
               "otlp/metrics"
+            ]
+          },
+          "logs": {
+            "receivers": [
+              "k8s_events"
+            ],
+            "processors": [
+              "batch",
+              "memory_limiter",
+              "transform/host"
+            ],
+            "exporters": [
+              "otlp/logs"
             ]
           }
         }
