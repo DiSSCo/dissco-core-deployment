@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-state-metrics-argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: kube-state-metrics
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 5.27.0
+    helm:
+      releaseName: kube-state-metrics
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: otel
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
