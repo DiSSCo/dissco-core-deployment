@@ -11,6 +11,9 @@ spec:
     targetRevision: 4.42.0
     helm:
       releaseName: prometheus-node-exporter
+      values: |
+        spec:
+          priorityClassName: system-cluster-critical
   destination:
     server: "https://kubernetes.default.svc"
     namespace: otel

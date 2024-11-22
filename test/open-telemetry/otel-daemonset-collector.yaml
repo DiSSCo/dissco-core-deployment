@@ -6,6 +6,7 @@ metadata:
 spec:
   mode: daemonset
   serviceAccount: otel-service-account
+  priorityClassName: system-cluster-critical
   env:
     - name: AUTH_TOKEN
       valueFrom:
