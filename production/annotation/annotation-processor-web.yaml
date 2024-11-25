@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-core-annotation-processing-web
+  labels:
+    app: dissco-core-annotation-processing-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-core-annotation-processing-web
+  template:
+    metadata:
+      labels:
+        app: dissco-core-annotation-processing-web
+        language: java
+      annotations:
+        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
+        co.elastic.logs/multiline.negate: "false"
+        co.elastic.logs/multiline.match: after
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: dissco-core-annotation-processing-web
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: spring.profiles.active
+              value: web
+            - name: spring.datasource.url
+              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-password
+            - name: elasticsearch.hostname
+              value: elastic-search-es-http.elastic.svc.cluster.local
+            - name: elasticsearch.port
+              value: "9200"
+            - name: elasticsearch.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: elastic-username
+            - name: elasticsearch.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: elastic-password
+            - name: elasticsearch.index-name
+              value: annotation
+            - name: kafka.publisher.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.group
+              value: group
+            - name: kafka.consumer.topic
+              value: annotation
+            - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
+              value: https://login-demo.dissco.eu/auth/realms/dissco
+            - name: token.id
+              value: demo-api-client
+            - name: token.grantType
+              value: client_credentials
+            - name: token.tokenEndpoint
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+            - name: token.secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: handle-endpoint-token
+            - name: endpoint.handle-endpoint
+              value: https://dev.dissco.tech/handle-manager/api/v1/pids/
+            - name: endpoint.token-endpoint
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+            - name: application.processor-handle
+              value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
+            - name: kafka.consumer.topic.auto-accepted
+              value: auto-accepted
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "200m"
+            limits:
+              memory: "500Mi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 60
+            failureThreshold: 2
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false

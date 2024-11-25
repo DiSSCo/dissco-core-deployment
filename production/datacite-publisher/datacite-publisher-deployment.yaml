@@ -18,11 +18,13 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:d669eefec83bec9f2a49a71dfb5d551cd86f1a57fd213d594d3207a39740d26b
+          image: public.ecr.aws/dissco/datacite-publisher:sha-61a47d3  # Nov 25
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
+            - name: doi.prefix
+              value: '10.3535'
             - name: spring.kafka.consumer.group-id
               value: group-1
             - name: kafka.consumer.topic.specimen
@@ -33,7 +35,7 @@ spec:
             - name: datacite.repository-id
               valueFrom:
                 secretKeyRef:
-                  name: datacite-credentials
+                  name: aws-secrets
                   key: datacite-repository-id
             - name: datacite.password
               valueFrom:
@@ -49,6 +51,14 @@ spec:
             limits:
               memory: "500Mi"
               cpu: "200m"
+              ephemeral-storage: "16Mi"
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+      volumes:
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"
