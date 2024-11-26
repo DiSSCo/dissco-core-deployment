@@ -80,8 +80,6 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: handle-endpoint-token
-            - name: application.specimenBaseUrl
-              value: https://hdl.handle.net/
             - name: caching.spring.ttl
               value: PT6H
           resources:
