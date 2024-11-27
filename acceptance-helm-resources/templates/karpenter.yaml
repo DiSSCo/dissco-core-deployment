@@ -8,16 +8,25 @@ spec:
   source:
     chart: karpenter
     repoURL: public.ecr.aws/karpenter
-    targetRevision: 0.35.2
+    targetRevision: 1.0.8
     helm:
       releaseName: karpenter
       values: |
-        serviceAccount:
-          annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::824841205322:role/KarpenterControllerRole-dissco-k8s-acc
         settings:
           clusterName: dissco-k8s-acc
+          interruptionQueue: dissco-k8s-acc
+        controller:
+          resources:
+            requests:
+              cpu: 1
+              memory: 1Gi
+            limits:
+              cpu: 1
+              memory: 1Gi
         dnsPolicy: ClusterFirst
+        webhook:
+          enabled: true
+          port: 8443
   destination:
     server: "https://kubernetes.default.svc"
     namespace: karpenter
