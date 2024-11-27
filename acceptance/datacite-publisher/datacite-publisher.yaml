@@ -15,10 +15,11 @@ spec:
         app: datacite-publisher
         language: java
     spec:
+      serviceAccountName: secret-manager
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-61a47d3
+          image: public.ecr.aws/dissco/datacite-publisher:sha-62857f6
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -35,12 +36,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: datacite_repository_id
+                  key: datacite-repository-id
             - name: datacite.password
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: datacite_password
+                  key: datacite-password
             - name: kafka.consumer.topic.specimen
               value: specimen-doi
             - name: kafka.consumer.topic.media
@@ -48,6 +49,10 @@ spec:
             - name: kafka.consumer.topic.tombstone
               value: tombstone
             - name: spring.kafka.consumer.group-id
+              value: group-1
+            - name: kafka.consumer.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.group
               value: group-1
           resources:
             requests:
@@ -71,3 +76,10 @@ spec:
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+      volumes:
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"
