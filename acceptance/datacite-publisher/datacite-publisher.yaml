@@ -23,7 +23,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-61a47d3
+          image: public.ecr.aws/dissco/datacite-publisher:sha-62857f6
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -53,6 +53,10 @@ spec:
             - name: kafka.consumer.topic.tombstone
               value: tombstone
             - name: spring.kafka.consumer.group-id
+              value: group-1
+            - name: kafka.consumer.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.group
               value: group-1
           resources:
             requests:
