@@ -14,7 +14,6 @@ spec:
       values: |
         settings:
           clusterName: dissco-k8s-acc
-          interruptionQueue: dissco-k8s-acc
         controller:
           resources:
             requests:
