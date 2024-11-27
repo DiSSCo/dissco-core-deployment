@@ -19,10 +19,8 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-62857f6
+          image: public.ecr.aws/dissco/datacite-publisher:sha-1dcdb60
           imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
           env:
             - name: doi.prefix
               value: '10.82621'
@@ -48,12 +46,14 @@ spec:
               value: media-doi
             - name: kafka.consumer.topic.tombstone
               value: tombstone
-            - name: spring.kafka.consumer.group-id
-              value: group-1
-            - name: kafka.consumer.host
+            - name: spring.kafka.bootstrap-servers
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.group
-              value: group-1
+            - name: spring.kafka.consumer.key-deserializer
+              value: org.apache.kafka.common.serialization.StringDeserializer
+            - name: spring.kafka.consumer.value-deserializer
+              value: org.apache.kafka.common.serialization.StringDeserializer
+            - name: spring.kafka.consumer.group-id
+              value: group
           resources:
             requests:
               memory: "500Mi"
