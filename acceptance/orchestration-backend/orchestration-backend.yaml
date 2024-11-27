@@ -62,7 +62,9 @@ spec:
                   name: aws-secrets
                   key: handle-endpoint-token
             - name: translator-job.image
-              value: public.ecr.aws/dissco/dissco-core-translator:sha-c3810a2
+              value: public.ecr.aws/dissco/dissco-core-translator:sha-7e781fc
+            - name: mas.runningEndpoint
+              value: https://dev.dissco.tech/api/v1/mjr
           resources:
             requests:
               memory: "500Mi"
