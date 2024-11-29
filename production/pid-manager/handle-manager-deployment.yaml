@@ -22,7 +22,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-pid-manager-handle
-          image: public.ecr.aws/dissco/handle-manager:sha-8c10914
+          image: public.ecr.aws/dissco/handle-manager:sha-4b02107  # Nov 28
           imagePullPolicy: Always
           ports:
             - containerPort: 80

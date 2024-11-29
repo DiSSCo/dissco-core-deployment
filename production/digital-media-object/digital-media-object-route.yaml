@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dissco-handle-manager-service-doi
+  name: dissco-digital-media-object-processor-service
 spec:
   selector:
-    app: dissco-handle-manager-doi
+    app: dissco-digital-media-object-processor-web
   ports:
     - protocol: TCP
       port: 8080
@@ -12,28 +12,27 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: dissco-handle-manager-doi-route
+  name: dissco-digital-media-object-processor-route
   namespace: default
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/doi-manager/api/v1/pids`)
+    - match: Host(`dissco.eu`) && PathPrefix(`/processing/digitalmedia`)
       kind: Rule
       services:
-        - name: dissco-handle-manager-service-doi
+        - name: dissco-digital-media-object-processor-service
           namespace: default
           port: 8080
       middlewares:
-        - name: dissco-handle-manager-doi-stripprefix
-        - name: dissco-handle-manager-cors-headers
+        - name: dissco-digital-media-object-processor-stripprefix
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: dissco-handle-manager-doi-stripprefix
+  name: dissco-digital-media-object-processor-stripprefix
 spec:
   stripPrefix:
     prefixes:
-      - /doi-manager
+      - /processing/digitalmedia
     forceSlash: false

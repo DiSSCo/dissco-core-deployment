@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dissco-handle-manager-service-doi
+  name: data-exporter-backend-service
 spec:
   selector:
-    app: dissco-handle-manager-doi
+    app: data-exporter-backend
   ports:
     - protocol: TCP
       port: 8080
@@ -12,28 +12,27 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: dissco-handle-manager-doi-route
+  name: data-exporter-backend-route
   namespace: default
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/doi-manager/api/v1/pids`)
+    - match: Host(`dissco.eu`) && PathPrefix(`/api/v1/data-export`)
       kind: Rule
       services:
-        - name: dissco-handle-manager-service-doi
+        - name: data-exporter-backend-service
           namespace: default
           port: 8080
       middlewares:
-        - name: dissco-handle-manager-doi-stripprefix
-        - name: dissco-handle-manager-cors-headers
+        - name: dissco-data-exporter-stripprefix
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: dissco-handle-manager-doi-stripprefix
+  name: dissco-data-exporter-stripprefix
 spec:
   stripPrefix:
     prefixes:
-      - /doi-manager
+      - /api/v1/data-export
     forceSlash: false

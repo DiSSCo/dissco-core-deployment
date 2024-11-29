@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mas-job-timeout-inspector
+  labels:
+    app: mas-job-timeout-inspector
+    language: python
+spec:
+  schedule: "0 * * * *"  # At the start of every hour
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: mas-job-timeout-inspector
+              image: public.ecr.aws/dissco/mas-inspector:latest
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: HOST
+                  value: terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com
+                - name: DATABASE
+                  value: dissco
+                - name: USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-secrets
+                      key: db-username
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: db-secrets
+                      key: db-password
+              securityContext:
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+              resources:
+                requests:
+                  memory: "250Mi"
+                  cpu: "100m"
+                limits:
+                  memory: "250Mi"

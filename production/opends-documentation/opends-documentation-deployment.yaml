@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-opends-documentation
-          image: public.ecr.aws/dissco/opends-terms-documentation:latest
+          image: public.ecr.aws/dissco/opends-terms-documentation:latest  # Oct 23 - We always want this up to-date
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
