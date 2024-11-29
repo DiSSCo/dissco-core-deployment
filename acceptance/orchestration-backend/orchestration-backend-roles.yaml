@@ -9,28 +9,28 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: default
-  name: dissco-orchestration-backend-role
+  namespace: machine-annotation-services
+  name: orchestration-backend-role
 rules:
-  - apiGroups: [""] # "" indicates the core API group
-    resources: ["pods"]
+  - apiGroups: ["apps"] # "" indicates the core API group
+    resources: ["deployments"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: [ "batch" ] # "" indicates the core API group
-    resources: [ "jobs" ]
+  - apiGroups: ["keda.sh"] # "" indicates the core API group
+    resources: ["scaledobjects"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: dissco-orchestration-backend-role
-  namespace: default
+  name: mas-admin-role
+  namespace: machine-annotation-services
 subjects:
   - kind: ServiceAccount
     name: dissco-orchestration-backend-sa
     namespace: default
 roleRef:
   kind: Role
-  name: dissco-orchestration-backend-role
+  name: orchestration-backend-role
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -58,4 +58,17 @@ subjects:
 roleRef:
   kind: Role
   name: orchestration-backend-translator-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: orchestration-backend-secret-manager
+subjects:
+  - kind: ServiceAccount
+    name: dissco-orchestration-backend-sa
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: secret-manager
   apiGroup: rbac.authorization.k8s.io

@@ -14,15 +14,11 @@ spec:
       labels:
         app: dissco-provenance-service
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-provenance-service
-          image: public.ecr.aws/dissco/dissco-core-provenance-service:sha-33bf2e1
+          image: public.ecr.aws/dissco/dissco-core-provenance-service:sha-880d34e
           imagePullPolicy: Always
           ports:
             - containerPort: 80

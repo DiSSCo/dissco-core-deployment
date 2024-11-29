@@ -8,7 +8,7 @@ data:
     - groups:
       - system:bootstrappers
       - system:nodes
-      rolearn: arn:aws:iam::824841205322:role/managed_m5-eks-node-group-20230828071853844900000001
+      rolearn: arn:aws:iam::824841205322:role/managed_nodes-eks-node-group-20241126142334865500000001
       username: system:node:{{EC2PrivateDNSName}}
     - groups:
       - system:bootstrappers

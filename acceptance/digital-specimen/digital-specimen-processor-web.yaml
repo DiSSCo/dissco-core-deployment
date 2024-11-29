@@ -14,15 +14,11 @@ spec:
       labels:
         app: dissco-digital-specimen-processor-web
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-digital-specimen-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-5d76b13
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-5389a90
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -82,6 +78,8 @@ spec:
                   key: handle-endpoint-token
             - name: application.specimenBaseUrl
               value: https://doi.org/
+            - name: caching.spring.ttl
+              value: PT6H
           resources:
             requests:
               memory: "500Mi"
