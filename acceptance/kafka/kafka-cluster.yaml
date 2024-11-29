@@ -5,7 +5,7 @@ metadata:
   namespace: kafka
 spec:
   kafka:
-    version: 3.4.0
+    version: 3.8.0
     replicas: 3
     listeners:
       - name: plain
@@ -22,19 +22,19 @@ spec:
       transaction.state.log.min.isr: 2
       default.replication.factor: 3
       min.insync.replicas: 2
-      inter.broker.protocol.version: "3.4"
+      inter.broker.protocol.version: "3.8"
     storage:
       type: jbod
       volumes:
         - id: 0
           type: persistent-claim
-          size: 50Gi
+          size: 100Gi
           deleteClaim: false
   zookeeper:
     replicas: 3
     storage:
       type: persistent-claim
-      size: 50Gi
+      size: 100Gi
       deleteClaim: false
   entityOperator:
     topicOperator: {}

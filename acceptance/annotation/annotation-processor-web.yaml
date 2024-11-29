@@ -14,15 +14,11 @@ spec:
       labels:
         app: dissco-core-annotation-processing-web
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-core-annotation-processing-web
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-8ba85b8
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-e30a017
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

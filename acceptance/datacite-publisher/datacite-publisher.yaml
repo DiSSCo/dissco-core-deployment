@@ -14,19 +14,13 @@ spec:
       labels:
         app: datacite-publisher
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       serviceAccountName: secret-manager
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-61a47d3
+          image: public.ecr.aws/dissco/datacite-publisher:sha-1dcdb60
           imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
           env:
             - name: doi.prefix
               value: '10.82621'
@@ -52,8 +46,14 @@ spec:
               value: media-doi
             - name: kafka.consumer.topic.tombstone
               value: tombstone
+            - name: spring.kafka.bootstrap-servers
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.kafka.consumer.key-deserializer
+              value: org.apache.kafka.common.serialization.StringDeserializer
+            - name: spring.kafka.consumer.value-deserializer
+              value: org.apache.kafka.common.serialization.StringDeserializer
             - name: spring.kafka.consumer.group-id
-              value: group-1
+              value: group
           resources:
             requests:
               memory: "500Mi"

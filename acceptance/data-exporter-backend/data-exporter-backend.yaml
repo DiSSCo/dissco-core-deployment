@@ -1,31 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-orchestration-backend
+  name: data-exporter-backend-deployment
+  namespace: default
   labels:
-    app: dissco-orchestration-backend
+    app: data-exporter-backend-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-orchestration-backend
+      app: data-exporter-backend
   template:
     metadata:
       labels:
-        app: dissco-orchestration-backend
+        app: data-exporter-backend
         language: java
     spec:
+      serviceAccountName: data-exporter-backend-service-account
       automountServiceAccountToken: true
-      serviceAccountName: dissco-orchestration-backend-sa
       containers:
-        - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:latest
+        - name: data-exporter-backend
+          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-f551b19
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           env:
             - name: spring.datasource.url
-              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -38,39 +39,23 @@ spec:
                   key: db-password
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
-            - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
-              value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
-            - name: jwt.auth.converter.resource-id
-              value: springboot-keycloak-client
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: mas.kafkaHost
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: token.id
-              value: demo-api-client
-            - name: token.grant-type
-              value: client_credentials
-            - name: endpoint.token-endpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
-            - name: endpoint.handle-endpoint
-              value: https://dev.dissco.tech/handle-manager/api/v1/pids/
-            - name: application.baseUrl
-              value: orchestration-dev.dissco.tech
-            - name: token.secret
+            - name: aws.access-key
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: handle-endpoint-token
-            - name: mas.runningEndpoint
-              value: https://dev.dissco.tech/api/v1/mjr
+                  key: ses-access-key
+            - name: aws.secret-access-key
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: ses-access-key-secret
           resources:
             requests:
               memory: "500Mi"
               cpu: "200m"
             limits:
               memory: "500Mi"
-              cpu: "1000m"
-              ephemeral-storage: "1Gi"
+              cpu: "750m"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -87,10 +72,19 @@ spec:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
           volumeMounts:
+            - name: db-secrets
+              mountPath: "/mnt/secrets-store/db-secrets"
+              readOnly: true
             - name: aws-secrets
               mountPath: "/mnt/secrets-store/aws-secrets"
               readOnly: true
       volumes:
+        - name: db-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "db-secrets"
         - name: aws-secrets
           csi:
             driver: secrets-store.csi.k8s.io

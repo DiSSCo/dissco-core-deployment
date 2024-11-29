@@ -14,16 +14,12 @@ spec:
       labels:
         app: dissco-orchestration-backend
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: true
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-c3eb058
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-5388ccb
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -66,7 +62,9 @@ spec:
                   name: aws-secrets
                   key: handle-endpoint-token
             - name: translator-job.image
-              value: public.ecr.aws/dissco/dissco-core-translator:sha-c3810a2
+              value: public.ecr.aws/dissco/dissco-core-translator:sha-7e781fc
+            - name: mas.runningEndpoint
+              value: https://dev.dissco.tech/api/v1/mjr
           resources:
             requests:
               memory: "500Mi"

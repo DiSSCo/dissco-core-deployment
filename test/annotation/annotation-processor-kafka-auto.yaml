@@ -1,36 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-core-annotation-processing-kafka
+  name: dissco-core-annotation-processing-kafka-auto
   labels:
-    app: dissco-core-annotation-processing-kafka
+    app: dissco-core-annotation-processing-kafka-auto
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-core-annotation-processing-kafka
+      app: dissco-core-annotation-processing-kafka-auto
   template:
     metadata:
       labels:
-        app: dissco-core-annotation-processing-kafka
+        app: dissco-core-annotation-processing-kafka-auto
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-core-annotation-processing-kafka
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-8ba85b8
+        - name: dissco-core-annotation-processing-kafka-auto
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: spring.profiles.active
-              value: kafka
+              value: kafka-auto
             - name: spring.datasource.url
-              value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -64,7 +60,7 @@ spec:
             - name: kafka.consumer.group
               value: group
             - name: kafka.consumer.topic
-              value: annotation
+              value: auto-accepted-annotation
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.id
@@ -77,7 +73,7 @@ spec:
                   name: aws-secrets
                   key: handle-endpoint-token
             - name: endpoint.handle-endpoint
-              value: https://sandbox.dissco.tech/handle-manager/api/v1/pids/
+              value: https://dev.dissco.tech/handle-manager/api/v1/pids/
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: application.processor-handle
@@ -88,18 +84,18 @@ spec:
               cpu: "200m"
             limits:
               memory: "500Mi"
-              cpu: "1000m"
+              cpu: "750m"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 45
+            initialDelaySeconds: 60
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true
@@ -108,10 +104,10 @@ spec:
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: dissco-core-annotation-processing-kafka-scaled-object
+  name: dissco-core-annotation-processing-kafka-auto-scaled-object
 spec:
   scaleTargetRef:
-    name: dissco-core-annotation-processing-kafka
+    name: dissco-core-annotation-processing-kafka-auto
   minReplicaCount: 0
   maxReplicaCount:  5
   triggers:
@@ -119,5 +115,5 @@ spec:
       metadata:
         bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
         consumerGroup: group
-        topic: annotation
+        topic: auto-accepted-annotation
         lagThreshold: '5'

@@ -5,10 +5,6 @@ metadata:
   labels:
     app: dissco-nu-search-indexer-job
     language: java
-  annotations:
-    co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-    co.elastic.logs/multiline.negate: "false"
-    co.elastic.logs/multiline.match: after
 spec:
   template:
     spec:
@@ -17,7 +13,7 @@ spec:
       serviceAccountName: nu-search-sa
       containers:
         - name: dissco-nu-search-indexer-job
-          image: public.ecr.aws/dissco/dissco-nusearch-service
+          image: public.ecr.aws/dissco/dissco-nusearch-service:sha-eab04af
           imagePullPolicy: Always
           env:
             - name: spring.profiles.active

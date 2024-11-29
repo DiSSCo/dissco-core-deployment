@@ -14,18 +14,14 @@ spec:
       labels:
         app: dissco-handle-manager-doi
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager
-          image: public.ecr.aws/dissco/handle-manager:sha-6d5eec8
+          image: public.ecr.aws/dissco/handle-manager:sha-8c10914
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           env:
             - name: spring.profiles.active
               value: doi
@@ -41,6 +37,8 @@ spec:
               value: https://orchestration.dissco.tech/api/v1
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.kafka.consumer.group-id
+              value: group-1
             - name: application.maxHandles
               value: '1000'
             - name: spring.datasource.url
@@ -57,6 +55,15 @@ spec:
                   key: db-password
             - name: application.prefix
               value: SANDBOX
+            - name: caching.spring.ttl
+              value: "43200000"
+            - name: mongo.database
+              value: handle
+            - name: mongo.connection-string
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: mongodb-connection
           resources:
             requests:
               memory: "500Mi"

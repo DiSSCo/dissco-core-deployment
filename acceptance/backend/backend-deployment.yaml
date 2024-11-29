@@ -15,16 +15,12 @@ spec:
       labels:
         app: dissco-backend
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       serviceAccountName: secret-manager
       automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-637eefd
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-439fc29
           imagePullPolicy: Always
           ports:
             - containerPort: 80
