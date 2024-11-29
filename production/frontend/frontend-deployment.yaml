@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: disscover
-          image: ppublic.ecr.aws/dissco/disscover:sha-47b9898 # Nov 25
+          image: public.ecr.aws/dissco/disscover:sha-fabed43 # Nov 27
           ports:
             - containerPort: 3000
           resources:
@@ -27,5 +27,4 @@ spec:
             limits:
               memory: "100Mi"
               cpu: "200m"
-              # todo ephemeral storage?
       restartPolicy: Always

@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-handle-manager-doi-deployment
+  name: doi-manager
   labels:
-    app: dissco-handle-manager-doi-deployment
+    app: doi-manager
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-handle-manager-doi
+      app: doi-manager
   template:
     metadata:
       labels:
-        app: dissco-handle-manager-doi
+        app: doi-manager
         language: java
       annotations:
         co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
@@ -32,42 +32,30 @@ spec:
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: application.ui-url
-              value: https://dev.dissco.tech
+              value: https://dissco.eu
             - name: application.api-url
-              value: ${application.ui-url}/api/v1
+              value: https://api.dissco.eu/api/v1
             - name: application.orchestration-url
-              value: https://dev-orchestration.dissco.tech/api/v1
+              value: https://orchestration.dissco.tech/api/v1
             - name: application.maxHandles
               value: '1000'
             - name: spring.profiles.active
               value: doi
-            - name: spring.datasource.url
-              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: spring.kafka.consumer.group-id
               value: group-1
-            - name: spring.datasource.username
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: db-username
-            - name: spring.datasource.password
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: db-password
             - name: application.prefix
-              value: TEST
+              value: "10.3535"
             - name: caching.spring.ttl
-              value: "43200000"
+              value: PT6H
             - name: mongo.database
-              value: handle
+              value: doi
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: mongodb-connection
+                  key: doi-mongodb-connection
           resources:
             requests:
               memory: "500Mi"

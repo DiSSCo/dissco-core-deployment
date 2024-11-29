@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-61a47d3  # Nov 25
+          image: public.ecr.aws/dissco/datacite-publisher:sha-1dcdb60  # Nov 27
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -31,7 +31,8 @@ spec:
               value: specimen-doi
             - name: kafka.consumer.topic.media
               value: media-doi
-              # secrets haven't been set as we don't have a production cluster yet
+            - name: kafka.consumer.topic.tombstone
+              value: tombstone
             - name: datacite.repository-id
               valueFrom:
                 secretKeyRef:

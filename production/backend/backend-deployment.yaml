@@ -30,8 +30,7 @@ spec:
             - containerPort: 80
           env:
             - name: spring.datasource.url
-              # Todo
-              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -78,7 +77,6 @@ spec:
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: application.base-url
-              # todo
               value: https://dissco.eu
             - name: token.grant-type
               value: client_credentials
@@ -90,10 +88,8 @@ spec:
                   name: aws-secrets
                   key: handle-endpoint-token
             - name: endpoint.handle-endpoint
-              # todo
-              value: https://dissco.tech/handle-manager/api/v1/pids/
+              value: https://api.dissco.eu/handle-manager/v1/pids/
             - name: endpoint.token-endpoint
-              # todo
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:
             requests:

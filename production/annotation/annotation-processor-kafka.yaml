@@ -22,7 +22,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-core-annotation-processing-kafka
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-f8cd768 # Nov 25
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-e30a017 # Nov 25
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -30,8 +30,7 @@ spec:
             - name: spring.profiles.active
               value: kafka
             - name: spring.datasource.url
-              # Todo update with production db
-              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -73,7 +72,6 @@ spec:
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.id
-               #Todo make new tokens in keycloak
               value: demo-api-client
             - name: token.grantType
               value: client_credentials

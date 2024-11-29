@@ -22,7 +22,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-core-annotation-processing-web
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-e30a017 # Nov 25
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -30,7 +30,7 @@ spec:
             - name: spring.profiles.active
               value: web
             - name: spring.datasource.url
-              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
