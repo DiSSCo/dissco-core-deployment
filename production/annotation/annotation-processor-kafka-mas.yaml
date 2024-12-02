@@ -1,27 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-core-annotation-processing-kafka
+  name: dissco-core-annotation-processing-kafka-mas
   labels:
-    app: dissco-core-annotation-processing-kafka
+    app: dissco-core-annotation-processing-kafka-mas
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-core-annotation-processing-kafka
+      app: dissco-core-annotation-processing-kafka-mas
   template:
     metadata:
       labels:
-        app: dissco-core-annotation-processing-kafka
+        app: dissco-core-annotation-processing-kafka-mas
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-core-annotation-processing-kafka
+        - name: dissco-core-annotation-processing-kafka-mas
           image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-e30a017 # Nov 25
           imagePullPolicy: Always
           ports:
@@ -70,9 +66,9 @@ spec:
             - name: kafka.consumer.topic.auto-accepted
               value: auto-accepted-annotation
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login-demo.dissco.eu/auth/realms/dissco
+              value: https://login.dissco.eu/auth/realms/dissco
             - name: token.id
-              value: demo-api-client
+              value: dissco-processor
             - name: token.grantType
               value: client_credentials
             - name: token.secret
@@ -83,7 +79,7 @@ spec:
             - name: endpoint.handle-endpoint
               value: https://dissco.eu/handle-manager/api/v1/pids/
             - name: endpoint.token-endpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: application.processor-handle
               value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
           resources:
@@ -114,22 +110,16 @@ spec:
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: dissco-core-annotation-processing-kafka-scaled-object
+  name: dissco-core-annotation-processing-kafka-mas-scaled-object
 spec:
   scaleTargetRef:
-    name: dissco-core-annotation-processing-kafka
-  minReplicaCount: 1
-  maxReplicaCount:  5
+    name: dissco-core-annotation-processing-kafka-mas
+  minReplicaCount: 0
+  maxReplicaCount:  2
   triggers:
     - type: kafka
       metadata:
         bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
         consumerGroup: group
         topic: annotation
-        lagThreshold: '5'
-    - type: kafka
-      metadata:
-        bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-        consumerGroup: group
-        topic: auto-accepted-annotation
         lagThreshold: '5'

@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-digital-specimen-processor-web
+  name: dissco-core-annotation-processing-kafka-auto
   labels:
-    app: dissco-digital-specimen-processor-web
+    app: dissco-core-annotation-processing-kafka-auto
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-digital-specimen-processor-web
+      app: dissco-core-annotation-processing-kafka-auto
   template:
     metadata:
       labels:
-        app: dissco-digital-specimen-processor-web
+        app: dissco-core-annotation-processing-kafka-auto
         language: java
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-digital-specimen-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-5389a90 # Nov 22
+        - name: dissco-core-annotation-processing-kafka-auto
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-e30a017 # Nov 25
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           env:
             - name: spring.profiles.active
-              value: web
+              value: kafka-auto
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
@@ -41,6 +41,8 @@ spec:
               value: elastic-search-es-http.elastic.svc.cluster.local
             - name: elasticsearch.port
               value: "9200"
+            - name: application.batch-page-size
+              value: "50"
             - name: elasticsearch.username
               valueFrom:
                 secretKeyRef:
@@ -52,7 +54,7 @@ spec:
                   name: aws-secrets
                   key: elastic-password
             - name: elasticsearch.index-name
-              value: digital-specimen
+              value: annotation
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: kafka.consumer.host
@@ -60,43 +62,62 @@ spec:
             - name: kafka.consumer.group
               value: group
             - name: kafka.consumer.topic
-              value: digital-specimen
+              value: auto-accepted-annotation
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login.dissco.eu/auth/realms/dissco
-            - name: auth.id
+            - name: token.id
               value: dissco-processor
-            - name: auth.grantType
+            - name: token.grantType
               value: client_credentials
-            - name: auth.tokenEndpoint
-              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
-            - name: handle.endpoint
-              value: https://dissco.eu/doi-manager/api/v1/pids/
-            - name: auth.secret
+            - name: token.secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
                   key: handle-endpoint-token
-            - name: caching.spring.ttl
-              value: PT6H
+            - name: endpoint.handle-endpoint
+              value: https://dissco.eu/handle-manager/api/v1/pids/
+            - name: endpoint.token-endpoint
+              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+            - name: application.processor-handle
+              value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
           resources:
             requests:
               memory: "500Mi"
               cpu: "200m"
+              ephemeral-storage: "2Gi"
             limits:
               memory: "500Mi"
               cpu: "1000m"
+              ephemeral-storage: "4Gi"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 45
+            initialDelaySeconds: 60
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: dissco-core-annotation-processing-kafka-auto-scaled-object
+spec:
+  scaleTargetRef:
+    name: dissco-core-annotation-processing-kafka-auto
+  minReplicaCount: 0
+  maxReplicaCount:  2
+  triggers:
+    - type: kafka
+      metadata:
+        bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+        consumerGroup: group
+        topic: auto-accepted-annotation
+        lagThreshold: '5'

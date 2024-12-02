@@ -15,6 +15,7 @@ spec:
         app: datacite-publisher
         language: java
     spec:
+      serviceAccountName: secret-manager
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
@@ -25,8 +26,18 @@ spec:
           env:
             - name: doi.prefix
               value: '10.3535'
+            - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
+              value: https://login-demo.dissco.eu/auth/realms/dissco
+            - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
+              value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+            - name: spring.kafka.bootstrap-servers
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.kafka.consumer.key-deserializer
+              value: org.apache.kafka.common.serialization.StringDeserializer
+            - name: spring.kafka.consumer.value-deserializer
+              value: org.apache.kafka.common.serialization.StringDeserializer
             - name: spring.kafka.consumer.group-id
-              value: group-1
+              value: group
             - name: kafka.consumer.topic.specimen
               value: specimen-doi
             - name: kafka.consumer.topic.media
@@ -53,6 +64,18 @@ spec:
               memory: "500Mi"
               cpu: "200m"
               ephemeral-storage: "16Mi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 45
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 45
+            failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false

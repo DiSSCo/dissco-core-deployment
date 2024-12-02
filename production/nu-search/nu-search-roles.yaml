@@ -3,5 +3,5 @@ kind: ServiceAccount
 metadata:
   name: nu-search-sa
   annotations: {
-    eks.amazonaws.com/role-arn: "arn:aws:iam::824841205322:role/secret-manager"
+    eks.amazonaws.com/role-arn: "arn:aws:iam::824841205322:role/secret-manager-production"
   }

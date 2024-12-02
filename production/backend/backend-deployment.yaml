@@ -15,10 +15,6 @@ spec:
       labels:
         app: dissco-backend
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       serviceAccountName: secret-manager
       automountServiceAccountToken: true
@@ -81,7 +77,7 @@ spec:
             - name: token.grant-type
               value: client_credentials
             - name: token.id
-              value: demo-api-client
+              value: dissco-backend
             - name: token.secret
               valueFrom:
                 secretKeyRef:
@@ -90,7 +86,7 @@ spec:
             - name: endpoint.handle-endpoint
               value: https://api.dissco.eu/handle-manager/v1/pids/
             - name: endpoint.token-endpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:
             requests:
               memory: "500Mi"

@@ -14,9 +14,9 @@ spec:
       values: |
         serviceAccount:
           annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::824841205322:role/KarpenterControllerRole-dissco-k8s-helm
+            eks.amazonaws.com/role-arn: arn:aws:iam::824841205322:role/KarpenterControllerRole-dissco-k8s-production
         settings:
-          clusterName: dissco-k8s-acc
+          clusterName: dissco-k8s-production
         controller:
           resources:
             requests:

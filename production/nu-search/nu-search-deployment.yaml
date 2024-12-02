@@ -14,10 +14,6 @@ spec:
       labels:
         app: dissco-nu-search-deployment
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: true
       serviceAccountName: nu-search-sa

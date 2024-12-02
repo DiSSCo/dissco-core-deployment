@@ -24,15 +24,3 @@ spec:
         - name: dissco-orchestration-backend-service
           namespace: default
           port: 8080
-      middlewares:
-        - name: dissco-orchestration-backend-stripprefix
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: dissco-orchestration-backend-stripprefix
-spec:
-  stripPrefix:
-    prefixes:
-      - /api/v1
-    forceSlash: false

@@ -84,10 +84,6 @@ spec:
     metadata:
       labels:
         app: traefik
-      annotations:
-        co.elastic.logs/module: traefik
-        co.elastic.logs/fileset.stdout: access
-        co.elastic.logs/fileset.stderr: error
     spec:
       serviceAccountName: traefik-ingress-controller
       automountServiceAccountToken: true

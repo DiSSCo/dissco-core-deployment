@@ -14,10 +14,6 @@ spec:
       labels:
         app: dissco-core-annotation-processing-web
         language: java
-      annotations:
-        co.elastic.logs/multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
-        co.elastic.logs/multiline.negate: "false"
-        co.elastic.logs/multiline.match: after
     spec:
       automountServiceAccountToken: false
       containers:
@@ -66,13 +62,13 @@ spec:
             - name: kafka.consumer.topic
               value: annotation
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login-demo.dissco.eu/auth/realms/dissco
+              value: https://login.dissco.eu/auth/realms/dissco
             - name: token.id
-              value: demo-api-client
+              value: dissco-processor
             - name: token.grantType
               value: client_credentials
             - name: token.tokenEndpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: token.secret
               valueFrom:
                 secretKeyRef:
@@ -81,7 +77,7 @@ spec:
             - name: endpoint.handle-endpoint
               value: https://dissco.eu/handle-manager/api/v1/pids/
             - name: endpoint.token-endpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: application.processor-handle
               value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
             - name: kafka.consumer.topic.auto-accepted

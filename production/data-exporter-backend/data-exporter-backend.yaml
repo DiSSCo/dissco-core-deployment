@@ -38,7 +38,7 @@ spec:
                   name: db-secrets
                   key: db-password
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login-demo.dissco.eu/auth/realms/dissco
+              value: https://login.dissco.eu/auth/realms/dissco
             - name: aws.access-key
               valueFrom:
                 secretKeyRef:

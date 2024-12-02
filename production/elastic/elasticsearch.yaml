@@ -18,7 +18,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 80Gi
+                storage: 120Gi
   http:
     tls:
       selfSignedCertificate:
