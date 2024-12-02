@@ -62,7 +62,7 @@ spec:
             - name: kafka.consumer.group
               value: group
             - name: kafka.consumer.topic
-              value: digital-media-object
+              value: digital-media
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: auth.id
@@ -72,7 +72,7 @@ spec:
             - name: auth.tokenEndpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: handle.endpoint
-              value: https://sandbox.dissco.tech/handle-manager/api/v1/pids/
+              value: https://sandbox.dissco.tech/doi-manager/api/v1/pids/
             - name: auth.secret
               valueFrom:
                 secretKeyRef:
@@ -117,5 +117,5 @@ spec:
       metadata:
         bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
         consumerGroup: group
-        topic: digital-media-object
+        topic: digital-media
         lagThreshold: '5'
