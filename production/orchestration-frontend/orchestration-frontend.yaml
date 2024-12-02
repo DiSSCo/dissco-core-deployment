@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-orchestration-frontend
+  labels:
+    app: dissco-orchestration-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-orchestration-frontend
+  template:
+    metadata:
+      labels:
+        app: dissco-orchestration-frontend
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: dissco-orchestration-frontend
+          image: public.ecr.aws/dissco/orchestration-frontend:sha-63abd0f  # Nov 27
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "100Mi"
+              cpu: "200m"
+      restartPolicy: Always

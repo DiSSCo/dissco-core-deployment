@@ -15,25 +15,39 @@ spec:
         app: datacite-publisher
         language: java
     spec:
+      serviceAccountName: secret-manager
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:d669eefec83bec9f2a49a71dfb5d551cd86f1a57fd213d594d3207a39740d26b
+          image: public.ecr.aws/dissco/datacite-publisher:sha-1dcdb60  # Nov 27
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
+            - name: doi.prefix
+              value: '10.3535'
+            - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
+              value: https://login-demo.dissco.eu/auth/realms/dissco
+            - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
+              value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+            - name: spring.kafka.bootstrap-servers
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.kafka.consumer.key-deserializer
+              value: org.apache.kafka.common.serialization.StringDeserializer
+            - name: spring.kafka.consumer.value-deserializer
+              value: org.apache.kafka.common.serialization.StringDeserializer
             - name: spring.kafka.consumer.group-id
-              value: group-1
+              value: group
             - name: kafka.consumer.topic.specimen
               value: specimen-doi
             - name: kafka.consumer.topic.media
               value: media-doi
-              # secrets haven't been set as we don't have a production cluster yet
+            - name: kafka.consumer.topic.tombstone
+              value: tombstone
             - name: datacite.repository-id
               valueFrom:
                 secretKeyRef:
-                  name: datacite-credentials
+                  name: aws-secrets
                   key: datacite-repository-id
             - name: datacite.password
               valueFrom:
@@ -49,6 +63,26 @@ spec:
             limits:
               memory: "500Mi"
               cpu: "200m"
+              ephemeral-storage: "16Mi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 45
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 45
+            failureThreshold: 2
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+      volumes:
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"

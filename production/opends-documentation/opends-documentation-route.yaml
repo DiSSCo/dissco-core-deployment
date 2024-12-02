@@ -18,26 +18,9 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dev.terms.dissco.tech`)
+    - match: Host(`terms.dissco.eu`)
       kind: Rule
       services:
         - name: dissco-opends-documentation-service
           namespace: default
           port: 8080
-      middlewares:
-        - name: dissco-opends-documentation-headers
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: dissco-opends-documentation-headers
-spec:
-  headers:
-    accessControlAllowMethods:
-      - "GET"
-    accessControlAllowHeaders:
-      - "*"
-    accessControlAllowOriginList:
-      - "*"
-    accessControlMaxAge: 100
-    addVaryHeader: true

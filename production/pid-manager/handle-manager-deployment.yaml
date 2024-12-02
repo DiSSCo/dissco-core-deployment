@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: handle-manager
+  labels:
+    app: handle-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: handle-manager
+  template:
+    metadata:
+      labels:
+        app: handle-manager
+        language: java
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: dissco-pid-manager-handle
+          image: public.ecr.aws/dissco/handle-manager:sha-4b02107  # Nov 28
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
+              value: https://login.dissco.eu/auth/realms/dissco
+            - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
+              value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+            - name: application.ui-url
+              value: https://dissco.eu
+            - name: application.api-url
+              value: https://api.dissco.eu/api/v1
+            - name: application.orchestration-url
+              value: https://orchestration.dissco.tech/api/v1
+            - name: application.maxHandles
+              value: '1000'
+            - name: spring.profiles.active
+              value: handle
+            - name: application.prefix
+              value: 20.5000.1025
+            - name: caching.spring.ttl
+              value: PT6H
+            - name: mongo.database
+              value: handle
+            - name: mongo.connection-string
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: handle-mongodb-connection
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "200m"
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 45
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 45
+            failureThreshold: 2
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false

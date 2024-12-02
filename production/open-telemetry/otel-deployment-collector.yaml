@@ -1,0 +1,285 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-deploy-collector
+  namespace: otel
+spec:
+  mode: deployment
+  serviceAccount: otel-service-account
+  env:
+    - name: AUTH_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: otel-secrets
+          key: naturalis-observability-token
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.nodeName
+    - name: MY_POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    - name: CLUSTER_NAME
+      value: "test-cluster"
+  config:
+    {
+      "connectors": { },
+      "receivers": {
+        "prometheus": {
+          "config": {
+            "scrape_configs": [
+              {
+                "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+                "job_name": "integrations/kubernetes/cadvisor",
+                "kubernetes_sd_configs": [
+                  {
+                    "role": "node"
+                  }
+                ],
+                "relabel_configs": [
+                  {
+                    "replacement": "kubernetes.default.svc.cluster.local:443",
+                    "target_label": "__address__"
+                  },
+                  {
+                    "regex": "(.+)",
+                    "replacement": "/api/v1/nodes/$${1}/proxy/metrics/cadvisor",
+                    "source_labels": [
+                      "__meta_kubernetes_node_name"
+                    ],
+                    "target_label": "__metrics_path__"
+                  }
+                ],
+                "metric_relabel_configs": [
+                  {
+                    "source_labels": [
+                      "__name__"
+                    ],
+                    "action": "keep",
+                    "regex": "container_cpu_cfs_periods_total|container_cpu_cfs_throttled_periods_total|container_cpu_usage_seconds_total|container_fs_reads_bytes_total|container_fs_reads_total|container_fs_writes_bytes_total|container_fs_writes_total|container_memory_cache|container_memory_rss|container_memory_swap|container_memory_working_set_bytes|container_network_receive_bytes_total|container_network_receive_packets_dropped_total|container_network_receive_packets_total|container_network_transmit_bytes_total|container_network_transmit_packets_dropped_total|container_network_transmit_packets_total|machine_memory_bytes"
+                  }
+                ],
+                "scheme": "https",
+                "tls_config": {
+                  "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+                  "insecure_skip_verify": false,
+                  "server_name": "kubernetes"
+                }
+              },
+              {
+                "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+                "job_name": "integrations/kubernetes/kubelet",
+                "kubernetes_sd_configs": [
+                  {
+                    "role": "node"
+                  }
+                ],
+                "relabel_configs": [
+                  {
+                    "replacement": "kubernetes.default.svc.cluster.local:443",
+                    "target_label": "__address__"
+                  },
+                  {
+                    "regex": "(.+)",
+                    "replacement": "/api/v1/nodes/$${1}/proxy/metrics",
+                    "source_labels": [
+                      "__meta_kubernetes_node_name"
+                    ],
+                    "target_label": "__metrics_path__"
+                  }
+                ],
+                "metric_relabel_configs": [
+                  {
+                    "source_labels": [
+                      "__name__"
+                    ],
+                    "action": "keep",
+                    "regex": "container_cpu_usage_seconds_total|kubelet_certificate_manager_client_expiration_renew_errors|kubelet_certificate_manager_client_ttl_seconds|kubelet_certificate_manager_server_ttl_seconds|kubelet_cgroup_manager_duration_seconds_bucket|kubelet_cgroup_manager_duration_seconds_count|kubelet_node_config_error|kubelet_node_name|kubelet_pleg_relist_duration_seconds_bucket|kubelet_pleg_relist_duration_seconds_count|kubelet_pleg_relist_interval_seconds_bucket|kubelet_pod_start_duration_seconds_bucket|kubelet_pod_start_duration_seconds_count|kubelet_pod_worker_duration_seconds_bucket|kubelet_pod_worker_duration_seconds_count|kubelet_running_container_count|kubelet_running_containers|kubelet_running_pod_count|kubelet_running_pods|kubelet_runtime_operations_errors_total|kubelet_runtime_operations_total|kubelet_server_expiration_renew_errors|kubelet_volume_stats_available_bytes|kubelet_volume_stats_capacity_bytes|kubelet_volume_stats_inodes|kubelet_volume_stats_inodes_used|kubernetes_build_info|namespace_workload_pod|rest_client_requests_total|storage_operation_duration_seconds_count|storage_operation_errors_total|volume_manager_total_volumes"
+                  }
+                ],
+                "scheme": "https",
+                "tls_config": {
+                  "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+                  "insecure_skip_verify": false,
+                  "server_name": "kubernetes"
+                }
+              },
+              {
+                "job_name": "integrations/kubernetes/kube-state-metrics",
+                "kubernetes_sd_configs": [
+                  {
+                    "role": "pod"
+                  }
+                ],
+                "relabel_configs": [
+                  {
+                    "action": "keep",
+                    "regex": "kube-state-metrics",
+                    "source_labels": [
+                      "__meta_kubernetes_pod_label_app_kubernetes_io_name"
+                    ]
+                  }
+                ],
+                "metric_relabel_configs": [
+                  {
+                    "source_labels": [
+                      "__name__"
+                    ],
+                    "action": "keep",
+                    "regex": "kube_daemonset.*|kube_deployment_metadata_generation|kube_deployment_spec_replicas|kube_deployment_status_observed_generation|kube_deployment_status_replicas_available|kube_deployment_status_replicas_updated|kube_horizontalpodautoscaler_spec_max_replicas|kube_horizontalpodautoscaler_spec_min_replicas|kube_horizontalpodautoscaler_status_current_replicas|kube_horizontalpodautoscaler_status_desired_replicas|kube_job.*|kube_namespace_status_phase|kube_node.*|kube_persistentvolumeclaim_resource_requests_storage_bytes|kube_pod_container_info|kube_pod_container_resource_limits|kube_pod_container_resource_requests|kube_pod_container_status_last_terminated_reason|kube_pod_container_status_restarts_total|kube_pod_container_status_waiting_reason|kube_pod_info|kube_pod_owner|kube_pod_start_time|kube_pod_status_phase|kube_pod_status_reason|kube_replicaset.*|kube_resourcequota|kube_statefulset.*"
+                  }
+                ]
+              },
+              {
+                "job_name": "integrations/node_exporter",
+                "kubernetes_sd_configs": [
+                  {
+                    "role": "pod"
+                  }
+                ],
+                "relabel_configs": [
+                  {
+                    "action": "keep",
+                    "regex": "prometheus-node-exporter.*",
+                    "source_labels": [
+                      "__meta_kubernetes_pod_label_app_kubernetes_io_name"
+                    ]
+                  },
+                  {
+                    "action": "replace",
+                    "source_labels": [
+                      "__meta_kubernetes_pod_node_name"
+                    ],
+                    "target_label": "instance"
+                  },
+                  {
+                    "action": "replace",
+                    "source_labels": [
+                      "__meta_kubernetes_namespace"
+                    ],
+                    "target_label": "namespace"
+                  }
+                ],
+                "metric_relabel_configs": [
+                  {
+                    "source_labels": [
+                      "__name__"
+                    ],
+                    "action": "keep",
+                    "regex": "node_cpu.*|node_exporter_build_info|node_filesystem.*|node_memory.*|process_cpu_seconds_total|process_resident_memory_bytes"
+                  }
+                ],
+                "static_configs": [
+                  {
+                    "targets": [ "${MY_POD_IP}:9100" ]
+                  }
+                ]
+
+              }
+            ]
+          }
+        },
+        "k8s_events": {
+          "namespaces": []
+        }
+      },
+      "processors": {
+        "batch": { },
+        "memory_limiter": {
+          "check_interval": "5s",
+          "limit_percentage": 80,
+          "spike_limit_percentage": 25
+        },
+        "transform/host": {
+          "metric_statements": [
+            {
+              "context": "datapoint",
+              "statements": [
+                'set(attributes["deployment_environment"], "test")',
+                'set(attributes["service_namespace"], "naturalis.bii.dissco")',
+                'set(attributes["service_name"], "dissco-deploy")',
+                'set(attributes["service_owner"], "soulaine.theocharides@naturalis.nl")',
+                'set(attributes["service_team"], "dissco")',
+                'set(attributes["cluster"], "${CLUSTER_NAME}")',
+                'set(attributes["job"], "integrations/kubernetes/eventhandler")'
+              ]
+            }
+          ]
+        }
+      }
+      ,
+      "extensions": {
+        "health_check": {
+          "endpoint": "${MY_POD_IP}:13133"
+        },
+        "oauth2client/client": {
+          "client_id": "naturalis.bii.dissco",
+          "client_secret": "${AUTH_TOKEN}",
+          "token_url": "https://keycloak.iam.naturalis.io/realms/observability/protocol/openid-connect/token",
+          "tls": {
+            "insecure": true
+          }
+        }
+      },
+      "exporters": {
+        "otlp/metrics": {
+          "endpoint": "https://metrics.gateway.analytics.naturalis.io:443",
+          "auth": {
+            "authenticator": "oauth2client/client"
+          }
+        },
+        "otlp/logs": {
+          "endpoint": "https://logs.gateway.analytics.naturalis.io:443",
+          "auth": {
+            "authenticator": "oauth2client/client"
+          }
+        }
+      },
+      "service": {
+        "extensions": [
+          "oauth2client/client",
+          "health_check"
+        ],
+        "pipelines": {
+          "metrics": {
+            "receivers": [
+              "prometheus"
+            ],
+            "processors": [
+              "batch",
+              "memory_limiter",
+              "transform/host"
+            ],
+            "exporters": [
+              "otlp/metrics"
+            ]
+          },
+          "logs": {
+            "receivers": [
+              "k8s_events"
+            ],
+            "processors": [
+              "batch",
+              "memory_limiter",
+              "transform/host"
+            ],
+            "exporters": [
+              "otlp/logs"
+            ]
+          }
+        }
+      }
+    }
+  volumeMounts:
+    - name: otel-secrets
+      mountPath: "/mnt/secrets-store/otel-secrets"
+      readOnly: true
+  volumes:
+    - name: otel-secrets
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: "otel-secrets"

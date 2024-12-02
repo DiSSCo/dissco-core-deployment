@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::824841205322:role/managed_nodes-20241127150956659200000016
+      username: system:node:{{EC2PrivateDNSName}}
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::824841205322:role/KarpenterNodeRole-dissco-k8s-production
+      username: system:node:{{EC2PrivateDNSName}}
+  mapUsers: |
+    - groups:
+      - system:masters
+      userarn: arn:aws:iam::824841205322:user/tom.dijkema@naturalis.nl
+    - groups:
+      - system:masters
+      userarn: arn:aws:iam::824841205322:user/soulaine.theocharides@naturalis.nl
+    - groups:
+      - system:masters
+      userarn: arn:aws:iam::824841205322:user/sam.leeflang@naturalis.nl

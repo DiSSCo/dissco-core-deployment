@@ -1,0 +1,77 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dissco-nu-search-indexer-job
+  labels:
+    app: dissco-nu-search-indexer-job
+    language: java
+spec:
+  template:
+    spec:
+      automountServiceAccountToken: false
+      restartPolicy: OnFailure
+      serviceAccountName: nu-search-sa
+      containers:
+        - name: dissco-nu-search-indexer-job
+          image: public.ecr.aws/dissco/dissco-nusearch-service:sha-eab04af  # Nov 22
+          imagePullPolicy: Always
+          env:
+            - name: spring.profiles.active
+              value: s3-indexer
+            - name: s3.access-key
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: col-bucket-access-key-id
+            - name: s3.access-secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: col-bucket-access-key-secret
+            - name: kafka.publisher.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.host
+              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: kafka.consumer.topic
+              value: col
+            - name: indexing.col-password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: indexing-col-password
+            - name: indexing.col-username
+              value: sam_leeflang
+            - name: indexing.col-dataset
+              value: "292011"
+            - name: indexing.index-location
+              value: /index-files/index
+            - name: indexing.temp-coldp-location
+              value: /index-files/col-temp.zip
+            - name: JAVA_TOOL_OPTIONS
+              value: -XX:MaxRAMPercentage=85
+          resources:
+            requests:
+              memory: "6Gi"
+              cpu: "500m"
+            limits:
+              memory: "6Gi"
+              cpu: "1000m"
+              ephemeral-storage: "10Gi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /index-files
+              name: temp-volume
+            - name: aws-secrets
+              mountPath: "/mnt/secrets-store/aws-secrets"
+              readOnly: true
+      volumes:
+        - name: temp-volume
+          emptyDir: { }
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"

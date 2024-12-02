@@ -1,0 +1,13 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: security-middleware
+spec:
+  headers:
+    frameDeny: false
+    browserXssFilter: true
+    contentTypeNosniff: true
+    #HSTS
+    stsIncludeSubdomains: true
+    stsPreload: true
+    stsSeconds: 31536000
