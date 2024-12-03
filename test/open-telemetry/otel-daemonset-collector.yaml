@@ -177,7 +177,7 @@ spec:
           "error_mode": "ignore",
           "logs": {
             "log_record": [
-              'resource["namespace"] != "default"'
+              'resource.attributes["namespace"] != "default"'
             ]
           }
         }
