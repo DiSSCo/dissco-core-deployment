@@ -177,7 +177,7 @@ spec:
           "error_mode": "ignore",
           "logs": {
             "log_record": [
-              'resource.attributes["namespace"]!="default"'
+              'resource["namespace"] != "default"'
             ]
           }
         }
@@ -202,6 +202,9 @@ spec:
             "authenticator": "oauth2client/client"
           }
         },
+        "debug": {
+          "verbosity": "detailed"
+        }
       },
       "service": {
         "extensions": [
@@ -222,7 +225,8 @@ spec:
                 "filter/logs_namespace"
               ],
               "exporters": [
-                "otlp/logs"
+                "otlp/logs",
+                "debug"
               ]
             }
           }
