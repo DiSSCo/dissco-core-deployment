@@ -42,13 +42,17 @@ spec:
             - name: indexing.col-username
               value: sam_leeflang
             - name: indexing.col-dataset
-              value: "292011"
+              value: "299029"
             - name: indexing.index-location
               value: /index-files/index
             - name: indexing.temp-coldp-location
               value: /index-files/col-temp.zip
             - name: JAVA_TOOL_OPTIONS
               value: -XX:MaxRAMPercentage=85
+            - name: col.exportStatusRetryTime
+              value: "60000"
+            - name: col.exportStatusRetryCount
+              value: "100"
           resources:
             requests:
               memory: "6Gi"

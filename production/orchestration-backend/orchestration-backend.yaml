@@ -37,7 +37,7 @@ spec:
                   name: db-secrets
                   key: db-password
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login.dissco.eu/auth/realms/dissco
+              value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: jwt.auth.converter.resource-id
@@ -47,11 +47,11 @@ spec:
             - name: mas.kafkaHost
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: token.id
-              value: dissco-orchestration
+              value: production-dissco-orchestration
             - name: token.grant-type
               value: client_credentials
             - name: endpoint.token-endpoint
-              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: endpoint.handle-endpoint
               value: https://dissco.eu/handle-manager/api/v1/pids/
             - name: application.baseUrl
@@ -60,7 +60,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: handle-endpoint-token
+                  key: production-dissco-orchestration-token
             - name: mas.runningEndpoint
               value: https://dissco.eu/api/v1/mjr
           resources:
