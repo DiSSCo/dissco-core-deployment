@@ -62,7 +62,7 @@ spec:
                   name: aws-secrets
                   key: production-dissco-orchestration-token
             - name: mas.runningEndpoint
-              value: https://dissco.eu/api/v1/mjr
+              value: https://api.dissco.eu/v1/mjr
           resources:
             requests:
               memory: "500Mi"
