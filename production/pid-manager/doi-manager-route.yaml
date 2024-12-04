@@ -26,6 +26,14 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-handle-manager-doi-stripprefix
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/doi-manager/actuator/health/liveness`)
+      kind: Rule
+      services:
+        - name: dissco-handle-manager-service-doi
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-handle-manager-doi-health-stripprefix
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -35,4 +43,14 @@ spec:
   stripPrefix:
     prefixes:
       - /v1/doi
+    forceSlash: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-handle-manager-doi-health-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /doi-manager
     forceSlash: false
