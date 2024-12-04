@@ -75,7 +75,7 @@ spec:
                   name: aws-secrets
                   key: production-dissco-processor-token
             - name: endpoint.handle-endpoint
-              value: https://dissco.eu/handle-manager/api/v1/pids/
+              value: https://api.dissco.eu/v1/handle
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: application.processor-handle
