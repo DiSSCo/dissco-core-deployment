@@ -46,7 +46,7 @@ spec:
             - name: caching.spring.ttl
               value: PT6H
             - name: mongo.database
-              value: doi
+              value: PIDs
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
