@@ -17,9 +17,9 @@ spec:
             repository: "otel/opentelemetry-collector-k8s"
         admissionWebhooks:
           certManager:
-            enabled: true
-          autoGenerateCert:
             enabled: false
+          autoGenerateCert:
+            enabled: true
   destination:
     server: "https://kubernetes.default.svc"
     namespace: otel
