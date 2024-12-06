@@ -18,9 +18,71 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`orchestration.dissco.eu`) && PathPrefix(`/api/v1`)
+    - match: Host(`orchestration.dissco.tech`) && PathPrefix(`/api/v1`)
       kind: Rule
       services:
         - name: dissco-orchestration-backend-service
           namespace: default
           port: 8080
+      middlewares:
+        - name: dissco-orchestration-backend-stripprefix-for-frontend
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/data-mapping`)
+      kind: Rule
+      services:
+        - name: dissco-orchestration-backend-service
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-orchestration-backend-stripprefix
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/mas`)
+      kind: Rule
+      services:
+        - name: dissco-orchestration-backend-service
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-orchestration-backend-stripprefix
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/source-system`)
+      kind: Rule
+      services:
+        - name: dissco-orchestration-backend-service
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-orchestration-backend-stripprefix
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/orchestration/actuator/health/liveness`)
+      kind: Rule
+      services:
+        - name: dissco-orchestration-backend-service
+          namespace: default
+          port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-orchestration-backend-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /v1
+    forceSlash: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-orchestration-backend-stripprefix-for-frontend
+spec:
+  stripPrefix:
+    prefixes:
+      - /api/v1
+    forceSlash: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-orchestration-backend-health-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /orchestration
+    forceSlash: false

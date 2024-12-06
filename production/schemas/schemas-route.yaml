@@ -24,20 +24,3 @@ spec:
         - name: dissco-schemas
           namespace: default
           port: 8080
-      middlewares:
-        - name: dissco-schemas-cors-headers
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: dissco-schemas-cors-headers
-spec:
-  headers:
-    accessControlAllowMethods:
-      - "GET"
-    accessControlAllowHeaders:
-      - "*"
-    accessControlAllowOriginList:
-      - "*"
-    accessControlMaxAge: 100
-    addVaryHeader: true

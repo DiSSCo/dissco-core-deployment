@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`orchestration.dissco.tech`)
+    - match: Host(`acc.orchestration.dissco.tech`)
       kind: Rule
       services:
         - name: dissco-orchestration-frontend-service

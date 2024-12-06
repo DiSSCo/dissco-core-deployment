@@ -77,16 +77,16 @@ spec:
             - name: token.grant-type
               value: client_credentials
             - name: token.id
-              value: dissco-backend
+              value: production-dissco-backend
             - name: token.secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: handle-endpoint-token
+                  key: production-dissco-backend-token
             - name: endpoint.handle-endpoint
               value: https://api.dissco.eu/handle-manager/v1/pids/
             - name: endpoint.token-endpoint
-              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:
             requests:
               memory: "500Mi"
