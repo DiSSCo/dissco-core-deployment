@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match:  Host(`api.dissco.eu`) && PathPrefix(`/v1/handle`)
+    - match:  Host(`api.dissco.eu`) && PathPrefix(`/handle/v1`)
       kind: Rule
       services:
         - name: dissco-handle-manager-service-handle
@@ -26,7 +26,7 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-handle-manager-handle-stripprefix
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/handle-manager/actuator/health/liveness`)
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/handle-manager`)
       kind: Rule
       services:
         - name: dissco-handle-manager-service-handle
@@ -42,7 +42,7 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /v1/handle
+      - /handle/v1
     forceSlash: false
 ---
 ---

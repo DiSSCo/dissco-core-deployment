@@ -24,3 +24,31 @@ spec:
         - name: dissco-backend-service
           namespace: default
           port: 8080
+      middlewares:
+        - name: dissco-backend-stripprefix
+        - name: dissco-backend-cors-headers
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-backend-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /api
+    forceSlash: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-backend-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true

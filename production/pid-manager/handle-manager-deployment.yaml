@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: handle-manager
+  name: dissco-handle-manager-handle
   labels:
-    app: handle-manager
+    app: dissco-handle-manager-handle
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: handle-manager
+      app: dissco-handle-manager-handle
   template:
     metadata:
       labels:
-        app: handle-manager
+        app: dissco-handle-manager-handle
         language: java
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-pid-manager-handle
-          image: public.ecr.aws/dissco/handle-manager:sha-4b02107  # Nov 28
+        - name: dissco-handle-manager-handle
+          image: public.ecr.aws/dissco/handle-manager:sha-e6844f7  # Dec 9
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -47,7 +47,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: handle-mongodb-connection
+                  key: pid-mongodb-connection
           resources:
             requests:
               memory: "500Mi"

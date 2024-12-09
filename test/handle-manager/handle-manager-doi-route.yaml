@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dev.dissco.tech`) && PathPrefix(`/doi-manager/api/v1/pids`)
+    - match: Host(`dev.dissco.tech`) && PathPrefix(`/doi-manager/api/pids/v1`)
       kind: Rule
       services:
         - name: dissco-handle-manager-service-doi
@@ -35,5 +35,5 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /doi-manager
+      - /doi-manager/api/pids/v1
     forceSlash: false

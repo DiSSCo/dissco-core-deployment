@@ -73,7 +73,7 @@ spec:
                   name: aws-secrets
                   key: handle-endpoint-token
             - name: endpoint.handle-endpoint
-              value: https://dev.dissco.tech/handle-manager/api/v1/pids/
+              value: https://dev.dissco.tech/handle-manager/api/pids/v1
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: application.processor-handle
@@ -109,7 +109,7 @@ spec:
   scaleTargetRef:
     name: dissco-core-annotation-processing-kafka-mas
   minReplicaCount: 0
-  maxReplicaCount:  5
+  maxReplicaCount:  1
   triggers:
     - type: kafka
       metadata:

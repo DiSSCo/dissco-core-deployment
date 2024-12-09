@@ -26,7 +26,7 @@ spec:
             - name: spring.profiles.active
               value: kafka
             - name: spring.datasource.url
-              value: digital-specimen
+              value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -72,7 +72,7 @@ spec:
             - name: auth.tokenEndpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: handle.endpoint
-              value: https://api.dissco.eu/v1/doi
+              value: https://api.dissco.eu/doi/v1/
             - name: auth.secret
               valueFrom:
                 secretKeyRef:

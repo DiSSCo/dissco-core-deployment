@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`orchestration.dissco.tech`) && PathPrefix(`/api/v1`)
+    - match: Host(`orchestration.dissco.tech`) && PathPrefix(`/api`)
       kind: Rule
       services:
         - name: dissco-orchestration-backend-service
@@ -26,46 +26,39 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-orchestration-backend-stripprefix-for-frontend
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/data-mapping`)
+        - name: dissco-orchestration-backend-cors-headers
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/data-mapping/v1`)
       kind: Rule
       services:
         - name: dissco-orchestration-backend-service
           namespace: default
           port: 8080
       middlewares:
-        - name: dissco-orchestration-backend-stripprefix
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/mas`)
+        - name: dissco-orchestration-backend-cors-headers
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/mas/v1`)
       kind: Rule
       services:
         - name: dissco-orchestration-backend-service
           namespace: default
           port: 8080
       middlewares:
-        - name: dissco-orchestration-backend-stripprefix
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/source-system`)
+        - name: dissco-orchestration-backend-cors-headers
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/source-system/v1`)
       kind: Rule
       services:
         - name: dissco-orchestration-backend-service
           namespace: default
           port: 8080
       middlewares:
-        - name: dissco-orchestration-backend-stripprefix
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/orchestration/actuator/health/liveness`)
+        - name: dissco-orchestration-backend-cors-headers
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/orchestration`)
       kind: Rule
       services:
         - name: dissco-orchestration-backend-service
           namespace: default
           port: 8080
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: dissco-orchestration-backend-stripprefix
-spec:
-  stripPrefix:
-    prefixes:
-      - /v1
-    forceSlash: false
+      middlewares:
+        - name: dissco-orchestration-backend-health-stripprefix
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -74,7 +67,7 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /api/v1
+      - /api
     forceSlash: false
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -86,3 +79,18 @@ spec:
     prefixes:
       - /orchestration
     forceSlash: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-orchestration-backend-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true

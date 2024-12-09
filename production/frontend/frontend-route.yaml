@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dissco.eu`)
+    - match: Host(`disscover.dissco.eu`)
       kind: Rule
       services:
         - name: disscover

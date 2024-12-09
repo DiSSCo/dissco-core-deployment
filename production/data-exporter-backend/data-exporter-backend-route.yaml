@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`disscover.dissco.eu`) && PathPrefix(`api/v1/data-export`)
+    - match: Host(`disscover.dissco.eu`) && PathPrefix(`api/data-export/v1`)
       kind: Rule
       services:
         - name: data-exporter-backend-service
@@ -26,7 +26,7 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-data-exporter-stripprefix-for-frontend
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/data-export`)
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/data-export`)
       kind: Rule
       services:
         - name: data-exporter-backend-service
@@ -42,7 +42,7 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /api/v1/data-export
+      - /api/data-export/v1
     forceSlash: false
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -52,5 +52,5 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /v1/data-export
+      - /data-export
     forceSlash: false

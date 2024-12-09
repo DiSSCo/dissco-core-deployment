@@ -72,7 +72,7 @@ spec:
             - name: auth.tokenEndpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: handle.endpoint
-              value: https://sandbox.dissco.tech/doi-manager/api/v1/pids/
+              value: https://sandbox.dissco.tech/doi-manager/api/pids/v1/
             - name: auth.secret
               valueFrom:
                 secretKeyRef:

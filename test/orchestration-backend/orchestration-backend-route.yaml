@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dev-orchestration.dissco.tech`) && PathPrefix(`/api/v1`)
+    - match: Host(`dev-orchestration.dissco.tech`) && PathPrefix(`/api`)
       kind: Rule
       services:
         - name: dissco-orchestration-backend-service
@@ -26,6 +26,7 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-orchestration-backend-stripprefix
+        - name: dissco-orchestration-backend-cors-headers
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -34,5 +35,20 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /api/v1
+      - /api
     forceSlash: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-orchestration-backend-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true

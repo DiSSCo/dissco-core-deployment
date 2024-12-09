@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/doi`)
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/doi/v1`)
       kind: Rule
       services:
         - name: dissco-handle-manager-service-doi
@@ -26,7 +26,7 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-handle-manager-doi-stripprefix
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/doi-manager/actuator/health/liveness`)
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/doi-manager`)
       kind: Rule
       services:
         - name: dissco-handle-manager-service-doi
@@ -42,7 +42,7 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /v1/doi
+      - /doi/v1
     forceSlash: false
 ---
 apiVersion: traefik.containo.us/v1alpha1
