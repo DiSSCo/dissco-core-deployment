@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: test
+    path: production
     repoURL: https://github.com/DiSSCo/dissco-core-deployment.git
     targetRevision: HEAD
     directory:

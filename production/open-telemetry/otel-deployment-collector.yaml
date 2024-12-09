@@ -22,7 +22,7 @@ spec:
         fieldRef:
           fieldPath: status.podIP
     - name: CLUSTER_NAME
-      value: "test-cluster"
+      value: "production-cluster"
   config:
     {
       "connectors": { },
@@ -197,7 +197,7 @@ spec:
             {
               "context": "datapoint",
               "statements": [
-                'set(attributes["deployment_environment"], "test")',
+                'set(attributes["deployment_environment"], "production")',
                 'set(attributes["service_namespace"], "naturalis.bii.dissco")',
                 'set(attributes["service_name"], "dissco-deploy")',
                 'set(attributes["service_owner"], "soulaine.theocharides@naturalis.nl")',
