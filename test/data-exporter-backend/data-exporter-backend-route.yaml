@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dev.dissco.tech`) && PathPrefix(`/api/v1/data-export`)
+    - match: Host(`dev.dissco.tech`) && PathPrefix(`/api/data-export/v1`)
       kind: Rule
       services:
         - name: data-exporter-backend-service
@@ -34,5 +34,5 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /api/v1/data-export
+      - /api/data-export/v1
     forceSlash: false

@@ -19,7 +19,7 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-5388ccb  # Nov 25
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-f3b7e22  # Dec 9
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -53,7 +53,7 @@ spec:
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: endpoint.handle-endpoint
-              value: https://api.dissco.eu/v1/handle
+              value: https://api.dissco.eu/handle/v1/
             - name: application.baseUrl
               value: orchestration.dissco.eu
             - name: token.secret
@@ -63,6 +63,8 @@ spec:
                   key: production-dissco-orchestration-token
             - name: mas.runningEndpoint
               value: https://api.dissco.eu/v1/mjr
+            - name: translator-job.image
+              value: public.ecr.aws/dissco/dissco-core-translator:sha-af37119
           resources:
             requests:
               memory: "500Mi"

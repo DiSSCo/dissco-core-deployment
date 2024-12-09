@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-439fc29
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-de16d3b
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -90,7 +90,7 @@ spec:
                   name: aws-secrets
                   key: handle-endpoint-token
             - name: endpoint.handle-endpoint
-              value: https://sandbox.dissco.tech/handle-manager/api/v1/pids/
+              value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:

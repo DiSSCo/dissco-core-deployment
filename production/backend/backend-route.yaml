@@ -18,37 +18,48 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`disscover.dissco.eu`) && PathPrefix(`/api/v1`)
+    - match: Host(`disscover.dissco.eu`) && PathPrefix(`/api`)
       kind: Rule
       services:
         - name: dissco-backend-service
           namespace: default
           port: 8080
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/annotation`)
+      middlewares:
+        - name: dissco-backend-cors-headers
+        - name: dissco-backend-stripprefix
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/annotation/v1`)
       kind: Rule
       services:
         - name: dissco-backend-service
           namespace: default
           port: 8080
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/digital-media`)
+      middlewares:
+        - name: dissco-backend-cors-headers
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/digital-media/v1`)
       kind: Rule
       services:
         - name: dissco-backend-service
           namespace: default
           port: 8080
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/digital-specimen`)
+      middlewares:
+        - name: dissco-backend-cors-headers
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/digital-specimen/v1`)
       kind: Rule
       services:
         - name: dissco-backend-service
           namespace: default
           port: 8080
-    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/mjr`)
+      middlewares:
+        - name: dissco-backend-cors-headers
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/mjr/v1`)
       kind: Rule
       services:
         - name: dissco-backend-service
           namespace: default
           port: 8080
-    - match : Host(`api.dissco.eu`) && PathPrefix(`/backend/actuator/health/liveness`)
+      middlewares:
+        - name: dissco-backend-cors-headers
+    - match : Host(`api.dissco.eu`) && PathPrefix(`/backend`)
       kind: Rule
       services:
         - name: dissco-backend-service
@@ -56,11 +67,12 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-backend-health-stripprefix
+        - name: dissco-backend-cors-headers
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: dissco-backend-stripprefix-for-frontend
+  name: dissco-backend-stripprefix
 spec:
   stripPrefix:
     prefixes:
@@ -76,3 +88,18 @@ spec:
     prefixes:
       - /backend
     forceSlash: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-backend-cors-headers
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "*"
+    accessControlMaxAge: 100
+    addVaryHeader: true
