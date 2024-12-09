@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dissco.eu`) && PathPrefix(`/processing/digitalmedia`)
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/processing/digitalmedia`)
       kind: Rule
       services:
         - name: dissco-digital-media-object-processor-service
@@ -34,5 +34,5 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /processing/digitalmedia
+      - /v1/processing/digitalmedia
     forceSlash: false

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-schemas-deployment
+  labels:
+    app: dissco-schemas-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-schemas
+  template:
+    metadata:
+      labels:
+        app: dissco-schemas
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: dissco-schemas-deployment
+          image: public.ecr.aws/dissco/opends:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              memory: "150Mi"
+              cpu: "100m"
+            limits:
+              memory: "150Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 2

@@ -64,20 +64,20 @@ spec:
             - name: kafka.consumer.batchSize
               value: "500"
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login.dissco.eu/auth/realms/dissco
+              value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: auth.id
-              value: dissco-processor
+              value: production-dissco-processor
             - name: auth.grantType
               value: client_credentials
             - name: auth.tokenEndpoint
-              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: handle.endpoint
-              value: https://dissco.eu/doi-manager/api/v1/pids/
+              value: https://api.dissco.eu/v1/doi
             - name: auth.secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: handle-endpoint-token
+                  key: production-dissco-processor-token
             - name: caching.spring.ttl
               value: PT6H
           resources:

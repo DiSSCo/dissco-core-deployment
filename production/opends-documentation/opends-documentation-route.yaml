@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`terms.dissco.eu`)
+    - match: Host(`terms.dissco.tech`)
       kind: Rule
       services:
         - name: dissco-opends-documentation-service

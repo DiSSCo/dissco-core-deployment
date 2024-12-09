@@ -62,22 +62,22 @@ spec:
             - name: kafka.consumer.topic
               value: annotation
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login.dissco.eu/auth/realms/dissco
+              value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.id
-              value: dissco-processor
+              value: production-dissco-processor
             - name: token.grantType
               value: client_credentials
             - name: token.tokenEndpoint
-              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: token.secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: handle-endpoint-token
+                  key: production-dissco-processor-token
             - name: endpoint.handle-endpoint
-              value: https://dissco.eu/handle-manager/api/v1/pids/
+              value: https://api.dissco.eu/v1/handle
             - name: endpoint.token-endpoint
-              value: https://login.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: application.processor-handle
               value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
             - name: kafka.consumer.topic.auto-accepted

@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`api.dissco.eu`) && PathPrefix(`handle-manager/api/v1/pids`)
+    - match:  Host(`api.dissco.eu`) && PathPrefix(`/v1/handle`)
       kind: Rule
       services:
         - name: dissco-handle-manager-service-handle
@@ -26,11 +26,30 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-handle-manager-handle-stripprefix
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/handle-manager/actuator/health/liveness`)
+      kind: Rule
+      services:
+        - name: dissco-handle-manager-service-handle
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-handle-manager-handle-health-stripprefix
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: dissco-handle-manager-handle-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /v1/handle
+    forceSlash: false
+---
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-handle-manager-handle-health-stripprefix
 spec:
   stripPrefix:
     prefixes:

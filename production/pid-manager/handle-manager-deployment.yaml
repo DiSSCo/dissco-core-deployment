@@ -24,7 +24,7 @@ spec:
             - containerPort: 80
           env:
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login.dissco.eu/auth/realms/dissco
+              value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: application.ui-url

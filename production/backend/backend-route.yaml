@@ -18,9 +18,61 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`api.dissco.eu`)
+    - match: Host(`disscover.dissco.eu`) && PathPrefix(`/api/v1`)
       kind: Rule
       services:
         - name: dissco-backend-service
           namespace: default
           port: 8080
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/annotation`)
+      kind: Rule
+      services:
+        - name: dissco-backend-service
+          namespace: default
+          port: 8080
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/digital-media`)
+      kind: Rule
+      services:
+        - name: dissco-backend-service
+          namespace: default
+          port: 8080
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/digital-specimen`)
+      kind: Rule
+      services:
+        - name: dissco-backend-service
+          namespace: default
+          port: 8080
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/v1/mjr`)
+      kind: Rule
+      services:
+        - name: dissco-backend-service
+          namespace: default
+          port: 8080
+    - match : Host(`api.dissco.eu`) && PathPrefix(`/backend/actuator/health/liveness`)
+      kind: Rule
+      services:
+        - name: dissco-backend-service
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-backend-health-stripprefix
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-backend-stripprefix-for-frontend
+spec:
+  stripPrefix:
+    prefixes:
+      - /api
+    forceSlash: false
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: dissco-backend-health-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /backend
+    forceSlash: false
