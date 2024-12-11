@@ -24,9 +24,9 @@ spec:
           env:
             - name: doi.prefix
               value: '10.82621'
-            - name: doi.landingPageSpecimen
+            - name: doi.landing-page-specimen
               value: 'https://sandbox.dissco.tech/ds/'
-            - name: doi.landingPageMedia
+            - name: doi.landing-page-media
               value: 'https://sandbox.dissco.tech/dm/'
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
