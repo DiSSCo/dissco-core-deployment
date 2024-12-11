@@ -19,7 +19,7 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-f3b7e22
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-fd83f45
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

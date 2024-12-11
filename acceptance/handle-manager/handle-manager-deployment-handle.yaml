@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager
-          image: public.ecr.aws/dissco/handle-manager:sha-7b3ed7b
+          image: public.ecr.aws/dissco/handle-manager:sha-a24c92e
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -32,9 +32,9 @@ spec:
             - name: application.ui-url
               value: https://sandbox.dissco.tech
             - name: application.api-url
-              value: ${application.ui-url}/api/v1
+              value: ${application.ui-url}/api
             - name: application.orchestration-url
-              value: https://orchestration.dissco.tech/api/v1
+              value: https://orchestration.dissco.tech/api
             - name: application.maxHandles
               value: '1000'
             - name: spring.datasource.url
