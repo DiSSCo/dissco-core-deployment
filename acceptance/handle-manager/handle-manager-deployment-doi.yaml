@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager
-          image: public.ecr.aws/dissco/handle-manager:sha-7b3ed7b
+          image: public.ecr.aws/dissco/handle-manager:sha-a24c92e
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -30,9 +30,9 @@ spec:
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: application.ui-url
-              value: https://sandbox.dissco.tech
+              value: https://sandbox.dissco.tech/api
             - name: application.api-url
-              value: ${application.ui-url}/api/v1
+              value: ${application.ui-url}/api
             - name: application.orchestration-url
               value: https://orchestration.dissco.tech/api/v1
             - name: kafka.publisher.host

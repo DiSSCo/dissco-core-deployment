@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: data-exporter-backend
-          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-f551b19
+          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-bbdbc24
           imagePullPolicy: Always
           ports:
             - containerPort: 80

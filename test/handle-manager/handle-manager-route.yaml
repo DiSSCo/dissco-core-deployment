@@ -18,7 +18,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`dev.dissco.tech`) && PathPrefix(`/handle-manager/api/v1/pids`)
+    - match: Host(`dev.dissco.tech`) && PathPrefix(`/handle-manager/api/pids/v1`)
       kind: Rule
       services:
         - name: dissco-handle-manager-service-handle
@@ -35,7 +35,7 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /handle-manager/api/v1/pids
+      - /handle-manager/api/pids/v1
     forceSlash: false
 ---
 apiVersion: traefik.io/v1alpha1
