@@ -11,6 +11,9 @@ spec:
     targetRevision: v1.16.2
     helm:
       releaseName: cert-manager
+      values: |
+        crds:
+          enabled=true
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cert-manager
