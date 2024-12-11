@@ -19,16 +19,16 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-8c99cb5  # Dec 9
+          image: public.ecr.aws/dissco/datacite-publisher:sha-6f832ea # Dec 11
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: doi.prefix
               value: '10.3535'
-            - name: doi.landingPageSpecimen
+            - name: doi.landing-page-specimen
               value: 'https://disscover.dissco.eu/ds/'
-            - name: doi.landingPageMedia
+            - name: doi.landing-page-media
               value: 'https://disscover.dissco.eu/dm/'
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
