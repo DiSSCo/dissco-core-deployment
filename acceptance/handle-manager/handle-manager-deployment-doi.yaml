@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager
-          image: public.ecr.aws/dissco/handle-manager:sha-7b3ed7b
+          image: public.ecr.aws/dissco/handle-manager:sha-ac4b16d  # Dec 12
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -33,8 +33,10 @@ spec:
               value: https://sandbox.dissco.tech
             - name: application.api-url
               value: ${application.ui-url}/api/v1
-            - name: application.orchestration-url
-              value: https://orchestration.dissco.tech/api/v1
+            - name: application.orchestration-api
+              value: https://acc.orchestration.dissco.tech/api
+            - name: application.orchestration-ui
+              value: https://acc.orchestration.dissco.tech
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: spring.kafka.consumer.group-id

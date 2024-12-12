@@ -31,8 +31,10 @@ spec:
               value: https://dissco.eu
             - name: application.api-url
               value: https://api.dissco.eu/api/v1
-            - name: application.orchestration-url
-              value: https://orchestration.dissco.tech/api/v1
+            - name: application.orchestration-api
+              value: https://api.orchestration.dissco.tech
+            - name: application.orchestration-ui
+              value: https://orchestration.dissco.tech
             - name: application.maxHandles
               value: '1000'
             - name: spring.profiles.active
