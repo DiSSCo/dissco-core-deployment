@@ -59,6 +59,14 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-orchestration-backend-health-stripprefix
+    - match: Host(`disscover.dissco.eu`) && PathPrefix(`/api/source-system/v1`)
+      kind: Rule
+      services:
+        - name: dissco-orchestration-backend-service
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-orchestration-backend-stripprefix-for-frontend
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware

@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-core-annotation-processing-web
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-e30a017 # Nov 25
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-ec9e638 # Dec 11
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -78,8 +78,6 @@ spec:
               value: https://api.dissco.eu/handle/v1/
             - name: endpoint.token-endpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
-            - name: application.processor-handle
-              value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
             - name: kafka.consumer.topic.auto-accepted
               value: auto-accepted
           resources:

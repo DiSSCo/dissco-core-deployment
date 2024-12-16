@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-de16d3b # nov 25
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-b7d5228 # Dec 16
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -73,7 +73,7 @@ spec:
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: application.base-url
-              value: https://dissco.eu
+              value: https://disscover.dissco.eu
             - name: token.grant-type
               value: client_credentials
             - name: token.id

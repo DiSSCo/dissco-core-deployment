@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-6f832ea # Dec 11
+          image: public.ecr.aws/dissco/datacite-publisher:sha-b51257c # Dec 12
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

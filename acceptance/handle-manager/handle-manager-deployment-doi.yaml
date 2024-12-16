@@ -30,7 +30,7 @@ spec:
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: application.ui-url
-              value: https://sandbox.dissco.tech
+              value: https://sandbox.dissco.tech/api
             - name: application.api-url
               value: ${application.ui-url}/api/v1
             - name: application.orchestration-api

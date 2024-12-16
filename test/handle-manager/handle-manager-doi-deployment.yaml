@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-handle-manager-doi-deployment
+  name: dissco-handle-manager-doi
   labels:
-    app: dissco-handle-manager-doi-deployment
+    app: dissco-handle-manager-doi
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-handle-manager
+        - name: dissco-handle-manager-doi
           image: public.ecr.aws/dissco/handle-manager
           imagePullPolicy: Always
           ports:
@@ -31,7 +31,9 @@ spec:
               value: https://dev.dissco.tech
             - name: application.api-url
               value: ${application.ui-url}/api/v1
-            - name: application.orchestration-url
+            - name: application.orchestration-ui
+              value: https://dev-orchestration.dissco.tech/api/v1
+            - name: application.orchestration-api
               value: https://dev-orchestration.dissco.tech/api/v1
             - name: application.maxHandles
               value: '1000'
