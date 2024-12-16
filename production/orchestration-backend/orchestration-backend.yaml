@@ -19,7 +19,7 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-f3b7e22  # Dec 9
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-fd83f45  # Dec 11
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -64,7 +64,7 @@ spec:
             - name: mas.runningEndpoint
               value: https://api.dissco.eu/v1/mjr
             - name: translator-job.image
-              value: public.ecr.aws/dissco/dissco-core-translator:sha-af37119
+              value: public.ecr.aws/dissco/dissco-core-translator:sha-35230c2 # Dec 16
           resources:
             requests:
               memory: "500Mi"

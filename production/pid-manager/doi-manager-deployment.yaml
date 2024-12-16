@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager-doi
-          image: public.ecr.aws/dissco/handle-manager:sha-e6844f7  # Dec 9
+          image: public.ecr.aws/dissco/handle-manager:sha-ac4b16d # Dec 16
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -28,11 +28,13 @@ spec:
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: application.ui-url
-              value: https://dissco.eu
+              value: https://disscover.dissco.eu
             - name: application.api-url
-              value: https://api.dissco.eu/api/v1
-            - name: application.orchestration-url
-              value: https://orchestration.dissco.tech/api/v1
+              value: https://api.dissco.eu
+            - name: application.orchestration-ui
+              value: https://orchestration.dissco.tech
+            - name: application.orchestration-api
+              value: https://api.dissco.eu
             - name: application.maxHandles
               value: '1000'
             - name: spring.profiles.active
