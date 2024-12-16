@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager-doi
-          image: public.ecr.aws/dissco/handle-manager:sha-a24c92e # Dec 11
+          image: public.ecr.aws/dissco/handle-manager:sha-ac4b16d # Dec 16
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -31,7 +31,9 @@ spec:
               value: https://disscover.dissco.eu
             - name: application.api-url
               value: https://api.dissco.eu
-            - name: application.orchestration-url
+            - name: application.orchestration-ui
+              value: https://orchestration.dissco.tech
+            - name: application.orchestration-api
               value: https://api.dissco.eu
             - name: application.maxHandles
               value: '1000'

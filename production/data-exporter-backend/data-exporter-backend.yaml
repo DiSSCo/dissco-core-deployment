@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: data-exporter-backend
-          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-bbdbc24 # Dec 11
+          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-9a45828 # Dec 16
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -49,6 +49,8 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: ses-access-key-secret
+            - name: job.image
+              value: public.ecr.aws/dissco/dissco-export-job:sha-447371c # Dec 16
           resources:
             requests:
               memory: "500Mi"
