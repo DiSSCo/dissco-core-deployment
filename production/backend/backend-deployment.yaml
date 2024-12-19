@@ -73,7 +73,7 @@ spec:
             - name: kafka.publisher.host
               value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
             - name: application.base-url
-              value: https://disscover.dissco.eu
+              value: https://api.dissco.eu
             - name: token.grant-type
               value: client_credentials
             - name: token.id

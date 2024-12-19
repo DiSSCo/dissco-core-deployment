@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-b51257c # Dec 12
+          image: public.ecr.aws/dissco/datacite-publisher:sha-e4d7752 # Dec 18
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -60,26 +60,19 @@ spec:
               value: org.apache.kafka.common.serialization.StringDeserializer
             - name: spring.kafka.consumer.group-id
               value: group
+            - name: handle.endpoint
+              value: https://api.dissco.eu/doi/v1/records
+            - name: logging.level.eu.dissco.core.datacitepublisher
+              value: INFO
           resources:
             requests:
               memory: "500Mi"
               cpu: "200m"
+              ephemeral-storage: "1Gi"
             limits:
               memory: "500Mi"
               cpu: "200m"
-              ephemeral-storage: "16Mi"
-          livenessProbe:
-            httpGet:
-              path: /actuator/health/liveness
-              port: 8080
-            initialDelaySeconds: 120
-            periodSeconds: 3
-          readinessProbe:
-            httpGet:
-              path: /actuator/health/readiness
-              port: 8080
-            initialDelaySeconds: 120
-            failureThreshold: 3
+              ephemeral-storage: "1Gi"
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
