@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-core-annotation-processing-kafka-mas
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-ec9e638 # Dec 11
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-817fd78 # Dec 18
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -63,8 +63,6 @@ spec:
               value: group
             - name: kafka.consumer.topic
               value: annotation
-            - name: kafka.consumer.topic.auto-accepted
-              value: auto-accepted-annotation
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.id
