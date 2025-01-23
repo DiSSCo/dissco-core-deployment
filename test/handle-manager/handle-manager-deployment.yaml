@@ -39,6 +39,8 @@ spec:
               value: '1000'
             - name: spring.profiles.active
               value: handle
+            - name: springdoc.swagger-ui.path
+              value: /docs/swagger-ui.html
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
