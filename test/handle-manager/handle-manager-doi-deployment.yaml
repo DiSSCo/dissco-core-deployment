@@ -41,6 +41,12 @@ spec:
               value: doi
             - name: springdoc.swagger-ui.path
               value: /docs/swagger-ui.html
+            - name: springdoc.api-docs.path
+              value: /docs/api-docs
+            - name: springdoc.swagger-ui.config-url
+              value: /doi-manager/api/pids/v1/docs/api-docs/swagger-config
+            - name: springdoc.swagger-ui.url
+              value: /doi-manager/api/pids/v1/docs/api-docs
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: kafka.publisher.host
