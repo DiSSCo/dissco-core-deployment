@@ -107,8 +107,16 @@ def update_images(image_list: List[Image]) -> None:
                         file.write(line)
 
 
+def export_images(image_dict: Dict[str, List[str]]) -> None:
+    file_names = set([file for file_list in image_dict.values() for file in file_list])
+    with open('file_names.txt', 'w+') as file:
+        for file_name in file_names:
+            file.write(file_name + "\n")
+
 if __name__ == '__main__':
     env = Environment.ACC  ## Set this to PROD if you want to update production environment
     image_dict = get_image_names(env)
     image_list = get_latest_tags(image_dict)
     update_images(image_list)
+    export_images(image_dict)
+

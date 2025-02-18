@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-digital-media-object-processor-kafka
-          image: public.ecr.aws/dissco/dissco-core-digital-media-object-processor:sha-d2cb5b3   # Jan-09-2025
+          image: public.ecr.aws/dissco/dissco-core-digital-media-object-processor:sha-0ae4294   # Feb-17-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
