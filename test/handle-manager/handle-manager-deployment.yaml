@@ -18,11 +18,13 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager-handle
-          image: public.ecr.aws/dissco/handle-manager
+          image: public.ecr.aws/dissco/handle-manager:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
+            - name: spring.profiles.active
+              value: handle
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
@@ -30,15 +32,13 @@ spec:
             - name: application.ui-url
               value: https://dev.dissco.tech
             - name: application.api-url
-              value: ${application.ui-url}/api/v1
+              value: ${application.ui-url}/api
             - name: application.orchestration-api
               value: https://dev-orchestration.dissco.tech/api
             - name: application.orchestration-ui
               value: https://dev-orchestration.dissco.tech
             - name: application.maxHandles
               value: '1000'
-            - name: spring.profiles.active
-              value: handle
             - name: springdoc.swagger-ui.path
               value: /docs/swagger-ui.html
             - name: springdoc.api-docs.path

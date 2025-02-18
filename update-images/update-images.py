@@ -54,8 +54,8 @@ def get_image_names(environment: Environment) -> Dict[str, List[str]]:
                     for line in file:
                         if re.search(IMG_PATTERN, line):
                             image = line.split(':', 2)[1]  # Removes everything after image tag ('latest' or SHA)
-                            image = image.replace('public.ecr.aws/dissco/', '') # Removes image repo name
-                            image = re.sub('#.+', '', image) # Removes "latest" or sha tag from image name
+                            image = image.replace('public.ecr.aws/dissco/', '')  # Removes image repo name
+                            image = re.sub('#.+', '', image)  # Removes "latest" or sha tag from image name
                             image = image.strip()  # Clean up trailing spaces
                             if image not in image_dict:
                                 image_dict[image] = [entry.path]
@@ -99,7 +99,7 @@ def update_images(image_list: List[Image]) -> None:
                 old = file.readlines()
                 file.seek(0)
                 for line in old:
-                    if re.search(IMG_PATTERN, line):
+                    if re.search(IMG_PATTERN, line) and image.image_name in line:
                         new_line = ':'.join(line.split(':', 2)[:-1])
                         new_line = new_line + ':' + image.latest_tag + "   # " + image.pushed_date + '\n'
                         file.write(new_line)
@@ -112,6 +112,7 @@ def export_images(image_dict: Dict[str, List[str]]) -> None:
     with open('file_names.txt', 'w+') as file:
         for file_name in file_names:
             file.write(file_name + "\n")
+
 
 if __name__ == '__main__':
     env = Environment.ACC  ## Set this to PROD if you want to update production environment

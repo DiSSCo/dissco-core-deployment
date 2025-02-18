@@ -34,6 +34,8 @@ spec:
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: datacite.endpoint
               value: https://api.test.datacite.org/dois
+            - name: handle.endpoint
+              value: https://sandbox.dissco.tech/doi-manager/api/pids/v1/
             - name: datacite.repository-id
               valueFrom:
                 secretKeyRef:
