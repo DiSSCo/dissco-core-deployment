@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-digital-media-object-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-media-object-processor:sha-d6302da
+          image: public.ecr.aws/dissco/dissco-core-digital-media-object-processor:sha-d2cb5b3   # Jan-09-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
