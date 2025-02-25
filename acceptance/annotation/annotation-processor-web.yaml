@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-core-annotation-processing-web
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-fdda894   # Jan-09-2025
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-5d718fb   # Jan-09-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

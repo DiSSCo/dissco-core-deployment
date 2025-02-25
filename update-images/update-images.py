@@ -4,21 +4,17 @@ import re
 from typing import Dict, List
 from enum import Enum
 
-class Image:
-    image_name: str
-    related_files = List[os.DirEntry]
-    latest_tag = str
-    pushed_date = str
 
-    def __init__(self, image_name, related_files, latest_tag, pushed_date):
+class Image:
+    def __init__(self, image_name: str, related_files: List[str], latest_tag: str, pushed_date: str):
         self.image_name = image_name
         self.related_files = related_files
         self.latest_tag = latest_tag
         self.pushed_date = pushed_date
+        
 
-    def __get_files__(self) -> List[str]:
-        return [self.related_files]
-
+US_REGION = 'us-east-1' # We use this region because us-east-1 is what is used for ecr
+ECR_PUBLIC = 'ecr-public'
 
 # Add other directories to exclude if you don't want to update everything
 EXCLUDE_SERVICES = [
@@ -32,13 +28,15 @@ EXCLUDE_SERVICES = [
     'translator-services'
 ]
 
-# Pattern that identifies image name (May contain "latest" or a specific sha image tag)
-IMG_PATTERN = 'public\\.ecr\\.aws/dissco/[\\w-]+:.+'
+# Pattern that identifies image name (May contain 'latest' or a specific sha image tag)
+IMG_PATTERN = r'.+public\.ecr\.aws\/dissco\/([\w-]+):(sha-\w{7}).+'
+pattern = re.compile(IMG_PATTERN)
 # Pattern that identifies image tag
-TAG_PATTERN = ':sha-\\w{7}'
 
-Environment = Enum('Environment', [('ACC', 'acceptance'), ('PROD', 'production')])
-
+class Environment(Enum):
+    ACC = 'acceptance'
+    PROD = 'production'
+    
 
 def get_image_names(environment: Environment) -> Dict[str, List[str]]:
     """
@@ -48,15 +46,12 @@ def get_image_names(environment: Environment) -> Dict[str, List[str]]:
     """
     image_dict = {}
     for curr_dir in os.scandir(environment.value):
-        if curr_dir.is_dir() and curr_dir.name.__str__() not in EXCLUDE_SERVICES:
+        if curr_dir.is_dir() and curr_dir.name not in EXCLUDE_SERVICES:
             for entry in os.scandir(curr_dir):
-                with (open(entry) as file):
+                with open(entry) as file:
                     for line in file:
-                        if re.search(IMG_PATTERN, line):
-                            image = line.split(':', 2)[1]  # Removes everything after image tag ('latest' or SHA)
-                            image = image.replace('public.ecr.aws/dissco/', '')  # Removes image repo name
-                            image = re.sub('#.+', '', image)  # Removes "latest" or sha tag from image name
-                            image = image.strip()  # Clean up trailing spaces
+                        if match := pattern.match(line):  # Match = pattern.match(line); if match
+                            image = match.group(1)
                             if image not in image_dict:
                                 image_dict[image] = [entry.path]
                             else:
@@ -68,9 +63,9 @@ def get_latest_tags(image_dict: Dict[str, List[str]]) -> List[Image]:
     """
     Calls AWS API to retrieve the latest image tags from AWS ECR.
     :param image_dict: Dict containing image names and the files that are associated with these images
-    :return:
+    :return: List of images
     """
-    ecr_client = boto3.client('ecr-public', region_name='us-east-1')
+    ecr_client = boto3.client(ECR_PUBLIC, region_name=US_REGION)
     image_list = []
     for image_name, files in image_dict.items():
         response = ecr_client.describe_images(
@@ -80,29 +75,35 @@ def get_latest_tags(image_dict: Dict[str, List[str]]) -> List[Image]:
                     'imageTag': 'latest'
                 }
             ])
-        image_tag = response['imageDetails'][0]['imageTags']
+        # Image_tags is a list of tags on a given image. We need to remove the 'latest' image tag and use what remains
+        image_tags = response['imageDetails'][0]['imageTags']
+        assert len(image_tags) == 2
         pushed_date = response['imageDetails'][0]['imagePushedAt'].strftime('%b-%d-%Y')
-        if len(image_tag) == 2:
-            image_tag.remove('latest')
-        else:
-            print('Warning: image ' + image_name + ' has no SHA tag. Using latest tag instead')
-        image_tag = image_tag[0]
-        print("Image: " + image_name + ", tag: " + image_tag, ", pushed at: " + pushed_date)
+        image_tags.remove('latest')
+        image_tag = image_tags[0]
+        print(f'Image: {image_name} , tag: {image_tag},  pushed at: {pushed_date}')
         image_list.append(Image(image_name, files, image_tag, pushed_date))
     return image_list
 
 
 def update_images(image_list: List[Image]) -> None:
+    """
+    Replaces old image tags with latest version
+    :param image_list: List of Images (files and tags) to update
+    :return: None
+    """
     for image in image_list:
         for related_file in image.related_files:
             with open(related_file, 'r+') as file:
                 old = file.readlines()
                 file.seek(0)
                 for line in old:
-                    if re.search(IMG_PATTERN, line) and image.image_name in line:
-                        new_line = ':'.join(line.split(':', 2)[:-1])
-                        new_line = new_line + ':' + image.latest_tag + "   # " + image.pushed_date + '\n'
-                        file.write(new_line)
+                    if pattern.match(line) and image.image_name in line:
+                        match = pattern.match(line)
+                        old_tag = match.group(2)  # Gets the group which points to the tag
+                        updated_line = line.replace(old_tag, image.latest_tag)  # Replace old tag with the new tag
+                        re.sub('#.+', image.pushed_date, updated_line)  # Updates the last updated comment
+                        file.write(updated_line)
                     else:
                         file.write(line)
 
@@ -111,7 +112,7 @@ def export_images(image_dict: Dict[str, List[str]]) -> None:
     file_names = set([file for file_list in image_dict.values() for file in file_list])
     with open('file_names.txt', 'w+') as file:
         for file_name in file_names:
-            file.write(file_name + "\n")
+            file.write(file_name + '\n')
 
 
 if __name__ == '__main__':
@@ -120,4 +121,3 @@ if __name__ == '__main__':
     image_list = get_latest_tags(image_dict)
     update_images(image_list)
     export_images(image_dict)
-

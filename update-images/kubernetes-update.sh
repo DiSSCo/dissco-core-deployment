@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 parent_path=$( cd "$(dirname "$0")" ; pwd -P )
 cd "$parent_path"
 
