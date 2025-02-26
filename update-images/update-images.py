@@ -4,17 +4,14 @@ import re
 from typing import Dict, List
 from enum import Enum
 
-
-class Image:
-    def __init__(self, image_name: str, related_files: List[str], latest_tag: str, pushed_date: str):
-        self.image_name = image_name
-        self.related_files = related_files
-        self.latest_tag = latest_tag
-        self.pushed_date = pushed_date
-        
-
-US_REGION = 'us-east-1' # We use this region because us-east-1 is what is used for ecr
+US_REGION = 'us-east-1'  # We use this region because us-east-1 is what is used for all public ECRs
 ECR_PUBLIC = 'ecr-public'
+
+# Pattern that identifies image name (May contain 'latest' or a specific sha image tag)
+# Group 1 = image name (e.g. "annotation-processing-service")
+# Group 2 = image tag (e.g. sha-17c02bb)
+IMG_PATTERN = r'.+public\.ecr\.aws\/dissco\/([\w-]+):(sha-\w{7}).+'
+pattern = re.compile(IMG_PATTERN)
 
 # Add other directories to exclude if you don't want to update everything
 EXCLUDE_SERVICES = [
@@ -28,15 +25,19 @@ EXCLUDE_SERVICES = [
     'translator-services'
 ]
 
-# Pattern that identifies image name (May contain 'latest' or a specific sha image tag)
-IMG_PATTERN = r'.+public\.ecr\.aws\/dissco\/([\w-]+):(sha-\w{7}).+'
-pattern = re.compile(IMG_PATTERN)
-# Pattern that identifies image tag
 
 class Environment(Enum):
     ACC = 'acceptance'
     PROD = 'production'
-    
+
+
+class Image:
+    def __init__(self, image_name: str, related_files: List[str], latest_tag: str, pushed_date: str):
+        self.image_name = image_name
+        self.related_files = related_files
+        self.latest_tag = latest_tag
+        self.pushed_date = pushed_date
+
 
 def get_image_names(environment: Environment) -> Dict[str, List[str]]:
     """
@@ -50,8 +51,8 @@ def get_image_names(environment: Environment) -> Dict[str, List[str]]:
             for entry in os.scandir(curr_dir):
                 with open(entry) as file:
                     for line in file:
-                        if match := pattern.match(line):  # Match = pattern.match(line); if match
-                            image = match.group(1)
+                        if match := pattern.match(line):
+                            image = match.group(1)  # Gets the image name without the tag
                             if image not in image_dict:
                                 image_dict[image] = [entry.path]
                             else:
@@ -102,7 +103,7 @@ def update_images(image_list: List[Image]) -> None:
                         match = pattern.match(line)
                         old_tag = match.group(2)  # Gets the group which points to the tag
                         updated_line = line.replace(old_tag, image.latest_tag)  # Replace old tag with the new tag
-                        re.sub('#.+', image.pushed_date, updated_line)  # Updates the last updated comment
+                        updated_line = re.sub('#.+', f'# {image.pushed_date}', updated_line)  # Updates the last updated comment
                         file.write(updated_line)
                     else:
                         file.write(line)
