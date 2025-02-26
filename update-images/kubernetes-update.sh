@@ -9,7 +9,16 @@ cd "$parent_path"
 ENV="acc"
 kubectl config set-context arn:aws:eks:eu-west-2:824841205322:cluster/dissco-k8s-"$ENV"
 
-# Read the output of update-images.py, apply the changed files
-while read p; do
-  kubectl apply -f ../"$p"
-done <../file_names.txt
+echo "Changed to ${ENV} environment. Continue with update? (y)"
+
+read RESPONSE
+
+if  [[ "$RESPONSE" = "y" ]]; then
+  # Read the output of update-images.py, apply the changed files
+  while read p; do
+    kubectl apply -f ../"$p"
+  done <../file_names.txt
+  else
+    echo "Images not updated. Exiting program"
+fi
+
