@@ -73,7 +73,7 @@ def get_latest_tags(image_dict: Dict[str, List[str]]) -> List[Image]:
             repositoryName=image_name,
             imageIds=[
                 {
-                    'imageTag': 'latest'
+                    'imageTag': 'latest'  # Only return latest images
                 }
             ])
         # Image_tags is a list of tags on a given image. We need to remove the 'latest' image tag and use what remains
@@ -81,7 +81,7 @@ def get_latest_tags(image_dict: Dict[str, List[str]]) -> List[Image]:
         assert len(image_tags) == 2
         pushed_date = response['imageDetails'][0]['imagePushedAt'].strftime('%b-%d-%Y')
         image_tags.remove('latest')
-        image_tag = image_tags[0]
+        image_tag = image_tags[0]  # Get what image tag remains
         print(f'Image: {image_name} , tag: {image_tag},  pushed at: {pushed_date}')
         image_list.append(Image(image_name, files, image_tag, pushed_date))
     return image_list
@@ -89,7 +89,7 @@ def get_latest_tags(image_dict: Dict[str, List[str]]) -> List[Image]:
 
 def update_images(image_list: List[Image]) -> None:
     """
-    Replaces old image tags with latest version
+    Replaces old image tags with latest version.
     :param image_list: List of Images (files and tags) to update
     :return: None
     """
@@ -109,8 +109,13 @@ def update_images(image_list: List[Image]) -> None:
                         file.write(line)
 
 
-def export_images(image_dict: Dict[str, List[str]]) -> None:
-    file_names = set([file for file_list in image_dict.values() for file in file_list])
+def export_updated_files(image_dict: Dict[str, List[str]]) -> None:
+    """
+    Identifies what files have been changed and writes to a file for our k8s script to read from
+    :param image_dict: Dict containing image names and the files that are associated with these images
+    :return: None
+    """
+    file_names = {file for file_list in image_dict.values() for file in file_list}
     with open('file_names.txt', 'w+') as file:
         for file_name in file_names:
             file.write(file_name + '\n')
@@ -121,4 +126,4 @@ if __name__ == '__main__':
     image_dict = get_image_names(env)
     image_list = get_latest_tags(image_dict)
     update_images(image_list)
-    export_images(image_dict)
+    export_updated_files(image_dict)
