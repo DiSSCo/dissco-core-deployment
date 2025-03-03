@@ -28,7 +28,6 @@ EXCLUDE_SERVICES = [
 # Mutually exclusive - if you only want to update specific services, include here
 # Otherwise, leave blank
 INCLUDE_SERVICES = [
-    'annotation'
 ]
 
 
