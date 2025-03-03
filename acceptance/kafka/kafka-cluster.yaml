@@ -23,12 +23,13 @@ spec:
       default.replication.factor: 3
       min.insync.replicas: 2
       inter.broker.protocol.version: "3.8"
+      log.retention.hours: 48
     storage:
       type: jbod
       volumes:
         - id: 0
           type: persistent-claim
-          size: 100Gi
+          size: 110Gi
           deleteClaim: false
   zookeeper:
     replicas: 3

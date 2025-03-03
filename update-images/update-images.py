@@ -25,6 +25,12 @@ EXCLUDE_SERVICES = [
     'translator-services'
 ]
 
+# Mutually exclusive - if you only want to update specific services, include here
+# Otherwise, leave blank
+INCLUDE_SERVICES = [
+    'annotation'
+]
+
 
 class Environment(Enum):
     ACC = 'acceptance'
@@ -47,7 +53,7 @@ def get_image_names(environment: Environment) -> Dict[str, List[str]]:
     """
     image_dict = {}
     for curr_dir in os.scandir(environment.value):
-        if curr_dir.is_dir() and curr_dir.name not in EXCLUDE_SERVICES:
+        if curr_dir.is_dir() and is_dir_of_interest(curr_dir.name):
             for entry in os.scandir(curr_dir):
                 with open(entry) as file:
                     for line in file:
@@ -58,6 +64,18 @@ def get_image_names(environment: Environment) -> Dict[str, List[str]]:
                             else:
                                 image_dict[image].append(entry.path)
     return image_dict
+
+
+def is_dir_of_interest(dir_name: str) -> bool:
+    """
+    Given user parameters, checks whether or not the directory should be included
+    :param dir_name: name of directory
+    :return: if the dir should be included in our update
+    """
+    if INCLUDE_SERVICES:
+        return dir_name in INCLUDE_SERVICES
+    else:
+        return dir_name not in EXCLUDE_SERVICES
 
 
 def get_latest_tags(image_dict: Dict[str, List[str]]) -> List[Image]:
