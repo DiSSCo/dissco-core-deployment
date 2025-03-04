@@ -78,8 +78,6 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: handle-endpoint-token
-            - name: caching.spring.ttl
-              value: PT6H
           resources:
             requests:
               memory: "500Mi"
