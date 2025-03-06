@@ -23,6 +23,8 @@ spec:
           ports:
             - containerPort: 80
           env:
+            - name: spring.profiles.active
+              value: doi
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
@@ -30,15 +32,13 @@ spec:
             - name: application.ui-url
               value: https://dev.dissco.tech
             - name: application.api-url
-              value: ${application.ui-url}/api/v1
+              value: ${application.ui-url}/api
             - name: application.orchestration-ui
               value: https://dev-orchestration.dissco.tech/api/v1
             - name: application.orchestration-api
               value: https://dev-orchestration.dissco.tech/api/v1
             - name: application.maxHandles
               value: '1000'
-            - name: spring.profiles.active
-              value: doi
             - name: springdoc.swagger-ui.path
               value: /docs/swagger-ui.html
             - name: springdoc.api-docs.path
