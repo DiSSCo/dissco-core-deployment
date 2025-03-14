@@ -1,10 +1,11 @@
 import boto3
 import os
 import re
+import json
 from typing import Dict, List
-from Environment import Environment
-from Service import Service
-from github_service import get_release_notes, publish_releases
+from environment import Environment
+from service import Service
+from github import Github
 
 
 US_REGION = "us-east-1"  # We use this region because us-east-1 is what is used for all public ECRs
@@ -37,7 +38,7 @@ def get_image_names(environment: Environment) -> Dict[str, Service]:
     """
     Given an environment, return a dict of image names and the services associated with them.
     :param environment: The environment to update. Either 'production' or 'acceptance'
-    :return: List of image names and the data associated with them associated with these images
+    :return: List of image names and the data associated with them associated with these services
     """
     service_dict = {}
     for curr_dir in os.scandir(environment.value):
@@ -73,8 +74,8 @@ def is_dir_of_interest(dir_name: str) -> bool:
 def get_latest_tags(service_dict: Dict[str, Service]) -> List[Service]:
     """
     Calls AWS API to retrieve the latest image tags from AWS ECR.
-    :param service_dict: Dict containing image names and the service data
-    :return: List of Serivces
+    :param service_dict: Dict containing service names and the service data
+    :return: List of services
     """
     ecr_client = boto3.client(ECR_PUBLIC, region_name=US_REGION)
     updated_service_list = []
@@ -146,17 +147,13 @@ def export_updated_files(service_list: List[Service]) -> None:
 
 if __name__ == "__main__":
     env = None  # Match to desired environment
-    if (env == None):
+    if env == None:
         raise ValueError("Environment variable not set")
     service_dict = get_image_names(env)
     service_list = get_latest_tags(service_dict)
-    release_name = get_release_notes(service_list, env)
-    print("Release notes updated.")
-    update = input("Do you wish to update deployment files? (y)")
-    if update == "y":
-        update_deployment_files(service_list)
-        print("Successfully updated and exported deployment files")
-    else:
-        print("Deployment files not updated")
+    github_service = Github(env)
+    release_name = github_service.generate_release_notes(service_list)
+    print("Release notes updated")
+    update_deployment_files(service_list)
     export_updated_files(service_list)
-    publish_releases(service_list, env, release_name)
+    github_service.publish_releases(service_list)
