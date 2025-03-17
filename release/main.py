@@ -1,8 +1,7 @@
 import boto3
 import os
 import re
-import json
-from typing import Dict, List
+from typing import Dict, List, Any
 from environment import Environment
 from service import Service
 from github import Github
@@ -17,8 +16,8 @@ ECR_PUBLIC = "ecr-public"
 IMG_PATTERN = r".+public\.ecr\.aws\/dissco\/([\w-]+):(sha-\w{7}).+"
 pattern = re.compile(IMG_PATTERN)
 
-# Add other directories to exclude if you don't want to update everything
-EXCLUDE_SERVICES = [
+# Default directories we wish to exclude
+DEFAULT_EXCLUDE_DIRECTORIES = [
     "kafka",
     "elastic",
     "karpenter",
@@ -26,15 +25,10 @@ EXCLUDE_SERVICES = [
     "traefik",
     "data-export-job",
     "release",
-    "translator-services",
 ]
 
-# Mutually exclusive - if you only want to update specific services, include here
-# Otherwise, leave blank
-INCLUDE_SERVICES = []
 
-
-def get_image_names(environment: Environment) -> Dict[str, Service]:
+def get_image_names(environment: Environment, config: Dict[str, Any]) -> Dict[str, Service]:
     """
     Given an environment, return a dict of image names and the services associated with them.
     :param environment: The environment to update. Either 'production' or 'acceptance'
@@ -42,7 +36,7 @@ def get_image_names(environment: Environment) -> Dict[str, Service]:
     """
     service_dict = {}
     for curr_dir in os.scandir(environment.value):
-        if curr_dir.is_dir() and is_dir_of_interest(curr_dir.name):
+        if curr_dir.is_dir() and is_dir_of_interest(curr_dir.name, config):
             for entry in os.scandir(curr_dir):
                 with open(entry) as file:
                     for line in file:
@@ -59,16 +53,16 @@ def get_image_names(environment: Environment) -> Dict[str, Service]:
     return service_dict
 
 
-def is_dir_of_interest(dir_name: str) -> bool:
+def is_dir_of_interest(dir_name: str, config: Dict[str, Any]) -> bool:
     """
     Given user parameters, checks whether or not the directory should be included
     :param dir_name: name of directory
     :return: if the dir should be included in our update
     """
-    if INCLUDE_SERVICES:
-        return dir_name in INCLUDE_SERVICES
+    if config["include_directories"]:
+        return dir_name in config["include_directories"]
     else:
-        return dir_name not in EXCLUDE_SERVICES
+        return dir_name not in config["exclude_directories"]
 
 
 def get_latest_tags(service_dict: Dict[str, Service]) -> List[Service]:
@@ -144,16 +138,29 @@ def export_updated_files(service_list: List[Service]) -> None:
         for file_name in file_names:
             file.write(file_name + "\n")
 
-
 if __name__ == "__main__":
-    env = None  # Match to desired environment
-    if env == None:
+    """
+    User to set desired configuration!
+    """
+    config = {
+        "env": None,  # Match to desired environment
+        "do_update": False,  # set to True to update files and create new Github release
+        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES + [],  # Add services you wish to exclude to this list -- all others will be included
+        "include_directories": [],  # If this list is not empty, we will only update services from this list
+    }
+    env = config.get("env")
+    if env is None:
         raise ValueError("Environment variable not set")
-    service_dict = get_image_names(env)
+    service_dict = get_image_names(env, config)
     service_list = get_latest_tags(service_dict)
     github_service = Github(env)
-    release_name = github_service.generate_release_notes(service_list)
+    github_service.generate_release_notes(service_list)
     print("Release notes updated")
     update_deployment_files(service_list)
     export_updated_files(service_list)
-    github_service.publish_releases(service_list)
+    if config["do_update"]:
+        print("Updating deployment files")
+        update_deployment_files(service_list)
+        print(f"Publishing GitHub release {github_service.release_name}")
+        github_service.publish_releases(service_list)
+        github_service.update_release_file()

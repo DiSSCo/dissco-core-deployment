@@ -1,8 +1,6 @@
-import logging
-
 from service import Service
 from environment import Environment
-from typing import Dict, List, Tuple
+from typing import Dict, List
 import requests
 import os
 import json
@@ -12,6 +10,7 @@ from datetime import datetime
 
 NO_CHANGES = "No change since last release\n"
 GITHUB_API = "https://api.github.com/repos/dissco/"
+RELEASE_FILE = "release/release-notes/latest_release.json"
 
 
 def github_auth() -> Dict[str, str]:
@@ -73,7 +72,7 @@ def get_acceptance_release_name(latest_releases: Dict[str, str]) -> str:
             f"v{Version.next_patch(current_acceptance_release).next_patch()}-alpha"
         )
     else:
-        release_name = f"v{current_production_release.minor()}-alpha"
+        release_name = f"v{current_production_release.next_patch()}-alpha"
     latest_releases[Environment.ACCEPTANCE.value] = release_name
     return release_name
 
@@ -125,16 +124,14 @@ class Github:
         Given local records, calculates next release name
         :return: Semantically incremented release name
         """
-        with open(
-            "release/release-notes/latest_release.json", "r"
-        ) as read_file:
+        with open(RELEASE_FILE, "r") as read_file:
             latest_releases = json.load(read_file)
             if self.env == Environment.PRODUCTION:
                 return get_production_release_name(latest_releases)
             else:
                 return get_acceptance_release_name(latest_releases)
 
-    def generate_release_notes(self, service_list: List[Service]) -> str:
+    def generate_release_notes(self, service_list: List[Service]):
         """
         Generates release notes for a given list of services
         :param service_list: list of services to generate release notes for
@@ -149,7 +146,6 @@ class Github:
             for service in service_list:
                 f.write(fetch_release_notes(service))
         print(f"Compiled release notes for release {self.release_name}")
-        return self.release_name
 
     def publish_releases(self, service_list: List[Service]) -> None:
         """
@@ -237,3 +233,13 @@ class Github:
         )
         result.raise_for_status()
         print(f"Created new release for {service.image_name}")
+
+    def update_release_file(self):
+        with open(RELEASE_FILE, "r") as read_file:
+            latest_releases = json.load(read_file)
+        with open(RELEASE_FILE, "w+") as write_file:
+            if self.env == Environment.ACCEPTANCE:
+                latest_releases[Environment.ACCEPTANCE.value] = self.release_name
+            else:
+                latest_releases[Environment.PRODUCTION.value] = self.release_name
+            json.dump(latest_releases, write_file)
