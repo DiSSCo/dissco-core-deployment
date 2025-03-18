@@ -16,10 +16,10 @@ echo "Continue with update? (y)"
 read RESPONSE
 
 if  [[ "$RESPONSE" = "y" ]]; then
-  # Read the output of update-images.py, apply the changed files
+  # Read the output of main.py, apply the changed files
   while read p; do
     kubectl apply -f ../"$p"
-  done <../file_names.txt
+  done <file_names.txt
   else
     echo "Images not updated. Exiting program"
 fi
