@@ -117,3 +117,9 @@ spec:
         consumerGroup: group
         topic: annotation
         lagThreshold: '5'
+    - type: kafka
+      metadata:
+        bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+        consumerGroup: group
+        topic: mas-failed
+        lagThreshold: '5'
