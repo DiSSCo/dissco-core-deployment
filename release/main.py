@@ -156,7 +156,6 @@ if __name__ == "__main__":
     github_service = Github(env)
     github_service.generate_release_notes(service_list)
     print("Release notes updated")
-    update_deployment_files(service_list)
     export_updated_files(service_list)
     if config["do_update"]:
         print("Updating deployment files")

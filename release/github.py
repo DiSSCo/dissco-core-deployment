@@ -21,15 +21,15 @@ def github_auth() -> Dict[str, str]:
 
 
 def format_release_notes(service: Service, raw_notes: str) -> str:
-    no_changes = f"## {service.image_name}\n{NO_CHANGES}"
+    no_changes = f"## {service.image_name}\n{NO_CHANGES}\n\n"
     if not raw_notes:
         service.add_release_notes(no_changes)
         return no_changes
     notes = raw_notes
     notes = re.sub(r"by @.+", "", notes)
     notes = re.sub(r"\*\*Full Changelog\*\*:.+", "", notes)
-    notes = re.sub(r"## What's Changed\n.+", "", notes)
-    notes = notes.replace(r"## New Contributors", "")
+    notes = notes.replace("## What's Changed\n", "")
+    notes = re.sub(r"## New Contributors\n.+", "", notes)
     notes = re.sub(r"\* @\w+ made.+", "", notes)
     notes = f"{notes.strip()}\n"
     if not notes or notes == "\n":
@@ -141,7 +141,7 @@ class Github:
             print("Compiling release notes")
             f.write(f"# Release {self.release_name}\n")
             f.write(
-                f'{self.env.value} release - {datetime.now().strftime("%b-%d-%Y")}\n'
+                f'{self.env.value} release - {datetime.now().strftime("%b-%d-%Y")}\n\n'
             )
             for service in service_list:
                 f.write(fetch_release_notes(service))
