@@ -84,6 +84,7 @@ def fetch_release_notes(service: Service) -> str:
     :return: Unformatted release notes
     """
     if service.prev_tag == service.latest_tag:
+        service.add_release_notes(NO_CHANGES)
         return f"## {service.image_name}\n{NO_CHANGES}"
     body = {"tag_name": service.latest_tag, "previous_tag_name": service.prev_tag}
     repository_name = get_repository_name(service)
