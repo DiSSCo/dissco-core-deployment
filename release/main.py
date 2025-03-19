@@ -143,7 +143,7 @@ if __name__ == "__main__":
     User to set desired configuration!
     """
     config = {
-        "env": None,  # Match to desired environment
+        "env": Environment.ACCEPTANCE,  # Match to desired environment
         "do_update": False,  # set to True to update files and create new Github release
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES + [],  # Add services you wish to exclude to this list -- all others will be included
         "include_directories": [],  # If this list is not empty, we will only update services from this list
@@ -156,7 +156,6 @@ if __name__ == "__main__":
     github_service = Github(env)
     github_service.generate_release_notes(service_list)
     print("Release notes updated")
-    update_deployment_files(service_list)
     export_updated_files(service_list)
     if config["do_update"]:
         print("Updating deployment files")
