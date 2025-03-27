@@ -24,6 +24,10 @@ create index annotation_id_creator_id_index
 create index annotation_id_target_id_index
     on annotation (id, target_id);
 
+create index annotation_hash_index
+    on annotation (annotation_hash);
+
+
 create type job_state as enum ('SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED', 'NOTIFICATION_FAILED', 'QUEUED');
 create type mjr_target_type as enum ('DIGITAL_SPECIMEN', 'MEDIA_OBJECT');
 create type error_code as enum ('TIMEOUT', 'DISSCO_EXCEPTION');
