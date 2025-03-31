@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-core-annotation-processing-kafka-auto
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-817fd78 # Dec 18
+          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-01783fa # Mar-18-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

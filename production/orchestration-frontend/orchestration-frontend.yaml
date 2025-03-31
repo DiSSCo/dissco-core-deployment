@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-orchestration-frontend
-          image: public.ecr.aws/dissco/orchestration-frontend:sha-c6226fb  # Dec 16
+          image: public.ecr.aws/dissco/orchestration-frontend:sha-c6226fb  # Dec-16-2024
           ports:
             - containerPort: 3000
           resources:
