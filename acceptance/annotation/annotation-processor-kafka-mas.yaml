@@ -108,7 +108,7 @@ metadata:
 spec:
   scaleTargetRef:
     name: dissco-core-annotation-processing-kafka-mas
-  minReplicaCount: 0
+  minReplicaCount: 1
   maxReplicaCount:  2
   triggers:
     - type: kafka
