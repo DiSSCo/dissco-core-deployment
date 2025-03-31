@@ -1,3 +1,6 @@
+import logging
+from urllib.error import HTTPError
+
 from service import Service
 from environment import Environment
 from typing import Dict, List
@@ -86,30 +89,52 @@ def fetch_release_notes(service: Service) -> str:
     if service.prev_tag == service.latest_tag:
         service.add_release_notes(NO_CHANGES)
         return f"## {service.image_name}\n{NO_CHANGES}"
-    body = {"tag_name": service.latest_tag, "previous_tag_name": service.prev_tag}
-    repository_name = get_repository_name(service)
+    body = {"tag_name": get_github_tag_name(service, False), "previous_tag_name": get_github_tag_name(service, True)}
+    repository_name = get_github_repository_name(service)
     result = requests.post(
         f"{GITHUB_API}{repository_name}/releases/generate-notes",
         headers=github_auth(),
         data=json.dumps(body),
     )
-    result.raise_for_status()
+    try:
+        result.raise_for_status()
+    except Exception:
+        logging.error(f"Failed to fetch release notes for {service.image_name}")
+        return f"## {service.image_name}\nUnable to automatically generate notes\n\n"
     if "application/json" in result.headers.get("content-type"):
         return format_release_notes(service, result.json().get("body"))
     else:
         raise ValueError(f"Unexpected response from GitHub endpoint: '{result.text}'.")
 
 
-def get_repository_name(service: Service) -> str:
+def get_github_repository_name(service: Service) -> str:
     """
     We need to clean our repository name for one edge case
-    :param service: service we want the GitHub repsitory name
+    :param service: service we want the GitHub repository name for
     :return: Repository name
     """
     return (
         service.image_name
         if service.image_name != "disscover-production"
         else "disscover"
+    )
+
+def get_github_tag_name(service: Service, prev_tag: bool) -> str:
+    """
+    DiSSCover github tags have "-orchestration-service" appended to them
+    :param service: service we want the GitHub tag name for
+    :return: tag name
+    """
+    if prev_tag:
+        return (
+            service.prev_tag
+            if service.image_name != "disscover-production"
+            else f"{service.prev_tag}-orchestration-service"
+        )
+    return (
+        service.latest_tag
+        if service.image_name != "disscover-production"
+        else f"{service.latest_tag}-orchestration-service"
     )
 
 
@@ -180,7 +205,7 @@ class Github:
         :param service: Service we want to check
         :return: id of the release, if it exists
         """
-        repository_name = get_repository_name(service)
+        repository_name = get_github_repository_name(service)
         result = requests.get(
             f"{GITHUB_API}{repository_name}/releases/tags/{service.latest_tag}",
             headers=github_auth(),
@@ -200,7 +225,7 @@ class Github:
                 f"Release already exists for repository {service.image_name}-{service.latest_tag}"
             )
             return
-        repository_name = get_repository_name(service)
+        repository_name = get_github_repository_name(service)
         body = {
             "tag_name": service.latest_tag,
             "name": self.release_name,
@@ -220,7 +245,7 @@ class Github:
         :return: None
         """
         is_prerelease = self.env == Environment.ACCEPTANCE
-        repository_name = get_repository_name(service)
+        repository_name = get_github_repository_name(service)
         body = {
             "tag_name": service.latest_tag,
             "name": self.release_name,
