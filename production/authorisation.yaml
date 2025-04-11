@@ -18,9 +18,6 @@ data:
   mapUsers: |
     - groups:
       - system:masters
-      userarn: arn:aws:iam::824841205322:user/tom.dijkema@naturalis.nl
-    - groups:
-      - system:masters
       userarn: arn:aws:iam::824841205322:user/soulaine.theocharides@naturalis.nl
     - groups:
       - system:masters
