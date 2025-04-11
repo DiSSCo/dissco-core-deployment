@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: rabbitmq-argocd
-  namespace: rabbitmq
+  namespace: argocd
 spec:
   project: default
   source:
