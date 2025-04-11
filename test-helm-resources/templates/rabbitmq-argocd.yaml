@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rabbitmq-argocd
+  namespace: rabbitmq
+spec:
+  project: default
+  source:
+    chart: rabbitmq-cluster-operator
+    repoURL: oci://registry-1.docker.io/bitnamicharts
+    targetRevision: 4.4.7
+    helm:
+      releaseName: rabbitmq-operator
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: rabbitmq
