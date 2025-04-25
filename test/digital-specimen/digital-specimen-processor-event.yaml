@@ -24,7 +24,7 @@ spec:
             - containerPort: 80
           env:
             - name: spring.profiles.active
-              value: rabbitMQ
+              value: rabbitmq
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
