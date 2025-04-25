@@ -1,0 +1,37 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: auto-accepted-annotation-exchange-dlq
+  namespace: rabbitmq
+spec:
+  name: auto-accepted-annotation-exchange-dlq # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: auto-accepted-annotation-binding-dlq
+  namespace: rabbitmq
+spec:
+  source: auto-accepted-annotation-exchange-dlq # an existing exchange
+  destination: auto-accepted-annotation-queue-dlq # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "auto-accepted-annotation-dlq"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: auto-accepted-annotation-queue-dlq # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: auto-accepted-annotation-queue-dlq # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster

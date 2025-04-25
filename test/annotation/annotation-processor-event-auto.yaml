@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-core-annotation-processing-kafka-auto
+  name: dissco-core-annotation-processing-event-auto
   labels:
-    app: dissco-core-annotation-processing-kafka-auto
+    app: dissco-core-annotation-processing-event-auto
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-core-annotation-processing-kafka-auto
+      app: dissco-core-annotation-processing-event-auto
   template:
     metadata:
       labels:
-        app: dissco-core-annotation-processing-kafka-auto
+        app: dissco-core-annotation-processing-event-auto
         language: java
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-core-annotation-processing-kafka-auto
+        - name: dissco-core-annotation-processing-event-auto
           image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
             - name: spring.profiles.active
-              value: kafka-auto
+              value: rabbitmq-auto
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
@@ -53,14 +53,18 @@ spec:
                   key: elastic-password
             - name: elasticsearch.index-name
               value: annotation
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.group
-              value: group
-            - name: kafka.consumer.topic
-              value: auto-accepted-annotation
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.id
@@ -104,16 +108,17 @@ spec:
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: dissco-core-annotation-processing-kafka-auto-scaled-object
+  name: dissco-core-annotation-processing-event-auto-scaled-object
 spec:
   scaleTargetRef:
-    name: dissco-core-annotation-processing-kafka-auto
+    name: dissco-core-annotation-processing-event-auto
   minReplicaCount: 0
   maxReplicaCount:  1
   triggers:
-    - type: kafka
+    - type: rabbitmq
       metadata:
-        bootstrapServers: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-        consumerGroup: group
-        topic: auto-accepted-annotation
-        lagThreshold: '5'
+        mode: QueueLength
+        value: "1"
+        queueName: auto-accepted-annotation-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn

@@ -74,8 +74,18 @@ spec:
                   key: mongodb-connection
             - name: mongo.database
               value: dissco
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: application.base-url
               value: https://dev.dissco.tech
             - name: token.grant-type

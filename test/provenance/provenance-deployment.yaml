@@ -23,16 +23,18 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: spring.kafka.bootstrap-servers
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: spring.kafka.consumer.key-deserializer
-              value: org.apache.kafka.common.serialization.StringDeserializer
-            - name: spring.kafka.consumer.value-deserializer
-              value: org.apache.kafka.common.serialization.StringDeserializer
-            - name: spring.kafka.consumer.group-id
-              value: group
-            - name: spring.kafka.consumer.topic
-              value: createUpdateDeleteTopic
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
