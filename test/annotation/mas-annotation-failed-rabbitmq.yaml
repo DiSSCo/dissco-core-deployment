@@ -24,21 +24,6 @@ spec:
     name: rabbitmq-cluster # name of the RabbitMQ cluster
 ---
 apiVersion: rabbitmq.com/v1beta1
-kind: Policy
-metadata:
-  name: mas-annotation-failed-dlq-policy # name of this custom resource
-  namespace: rabbitmq
-spec:
-  name: mas-annotation-failed-dlq-policy
-  pattern: "mas-annotation-failed-queue"
-  applyTo: "queues"
-  definition:
-    dead-letter-exchange: mas-annotation-failed-exchange-dlq
-    dead-letter-routing-key: mas-annotation-failed-dlq
-  rabbitmqClusterReference:
-    name: rabbitmq-cluster
----
-apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
   name: mas-annotation-failed-queue # name of this custom resource; does not have to the same as the actual queue name
