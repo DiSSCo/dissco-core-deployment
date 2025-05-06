@@ -1,0 +1,10 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: keda-trigger-auth-rabbitmq-conn
+  namespace: machine-annotation-services
+spec:
+  secretTargetRef:
+    - parameter: host
+      name: aws-secrets
+      key: rabbitmq-host-full

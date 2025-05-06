@@ -1,0 +1,52 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: create-update-tombstone-exchange
+  namespace: rabbitmq
+spec:
+  name: create-update-tombstone-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: create-update-tombstone-binding
+  namespace: rabbitmq
+spec:
+  source: create-update-tombstone-exchange # an existing exchange
+  destination: create-update-tombstone-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "create-update-tombstone"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: create-update-tombstone-dlq-policy # name of this custom resource
+  namespace: rabbitmq
+spec:
+  name: create-update-tombstone-dlq-policy
+  pattern: "create-update-tombstone-queue"
+  applyTo: "queues"
+  definition:
+    dead-letter-exchange: create-update-tombstone-exchange-dlq
+    dead-letter-routing-key: create-update-tombstone-dlq
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: create-update-tombstone-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: create-update-tombstone-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
