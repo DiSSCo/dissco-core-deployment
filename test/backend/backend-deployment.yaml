@@ -87,7 +87,7 @@ spec:
             - name: spring.rabbitmq.host
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: application.base-url
-              value: https://dev.dissco.tech/api/
+              value: https://dev.dissco.tech/api
             - name: token.grant-type
               value: client_credentials
             - name: token.id
