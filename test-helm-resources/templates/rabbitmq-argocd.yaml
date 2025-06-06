@@ -8,7 +8,7 @@ spec:
   source:
     chart: rabbitmq-cluster-operator
     repoURL: registry-1.docker.io/bitnamicharts
-    targetRevision: 4.4.7
+    targetRevision: 4.4.11
     helm:
       releaseName: rabbitmq-operator
   destination:
