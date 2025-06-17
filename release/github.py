@@ -203,9 +203,9 @@ class Github:
                 f"{self.env.value} release - {datetime.now().strftime('%b-%d-%Y')}\n\n"
             )
             for service in service_list:
-                logging.info(f"Combiling release notes for {service.image_name}")
+                print(f"Compiling release notes for {service.image_name}")
                 f.write(fetch_release_notes(service))
-        print(f"Compiled release notes for release {self.release_name}")
+        print(f"Finished compiling release notes for release {self.release_name}")
 
     def publish_releases(self, service_list: List[Service]) -> None:
         """
