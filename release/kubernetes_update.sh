@@ -5,7 +5,7 @@ set -euo pipefail
 parent_path=$( cd "$(dirname "$0")" ; pwd -P )
 cd "$parent_path"
 
-# Set context to desired environment (acc) or production
+# Set context to desired environment: acc or production
 ENV="acc"
 kubectl config use-context arn:aws:eks:eu-west-2:824841205322:cluster/dissco-k8s-"$ENV"
 

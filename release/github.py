@@ -1,5 +1,4 @@
 import logging
-from urllib.error import HTTPError
 
 from service import Service
 from environment import Environment
@@ -18,7 +17,7 @@ RELEASE_FILE = "release/release-notes/latest_release.json"
 
 def github_auth() -> Dict[str, str]:
     return {
-        "Authorization": f'Bearer {os.environ["GITHUB_TOKEN"]}',
+        "Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}",
         "X-GitHub-Api-Version": "2022-11-28",
     }
 
@@ -89,7 +88,10 @@ def fetch_release_notes(service: Service) -> str:
     if service.prev_tag == service.latest_tag:
         service.add_release_notes(NO_CHANGES)
         return f"## {service.image_name}\n{NO_CHANGES}"
-    body = {"tag_name": get_github_tag_name(service, False), "previous_tag_name": get_github_tag_name(service, True)}
+    body = {
+        "tag_name": get_github_tag_name(service, False),
+        "previous_tag_name": get_github_tag_name(service, True),
+    }
     repository_name = get_github_repository_name(service)
     result = requests.post(
         f"{GITHUB_API}{repository_name}/releases/generate-notes",
@@ -119,27 +121,58 @@ def get_github_repository_name(service: Service) -> str:
         else "disscover"
     )
 
+
 def get_github_tag_name(service: Service, prev_tag: bool) -> str:
     """
     DiSSCover github tags have "-orchestration-service" appended to them
     :param service: service we want the GitHub tag name for
+    :param: prev_tag: whether we're fetching a previous tag or latest tag
     :return: tag name
     """
     if prev_tag:
         return (
             service.prev_tag
-            if service.image_name != "disscover-production"
-            else f"{service.prev_tag}-orchestration-service"
+            if service.image_name != "disscover"
+            else get_github_tag_name_disscover(service.prev_tag)
         )
     return (
         service.latest_tag
-        if service.image_name != "disscover-production"
-        else f"{service.latest_tag}-orchestration-service"
+        if service.image_name != "disscover"
+        else get_github_tag_name_disscover(service.latest_tag)
     )
 
 
-class Github:
+def get_github_tag_name_disscover(image_tag_name: str) -> str:
+    """
+    Searches the Github API for the appropriate tag for disscover
+    This is because the disscover tag is longer on github than what is pushed to aws
+    :param image_tag_name: image tag name to match
+    :return: github tag name
+    """
+    has_next = True
+    page_number = 1
+    while has_next:
+        tags_response = requests.get(
+            f"{GITHUB_API}disscover/tags?page={page_number}",
+            headers=github_auth(),
+        )
+        try:
+            tags_response.raise_for_status()
+        except Exception:
+            logging.info("Unable to retrieve disscover tag name from GITHUB API")
+            return ""
+        for tag in tags_response.json():
+            if image_tag_name in tag["name"]:
+                return tag["name"]
+        if 'rel="next"' in tags_response.headers["Link"]:
+            page_number += 1
+        else:
+            has_next = False
+    logging.info("Unable to match disscover tag")
+    return ""
 
+
+class Github:
     def __init__(self, env: Environment):
         self.env = env
         self.is_update = False
@@ -167,9 +200,10 @@ class Github:
             print("Compiling release notes")
             f.write(f"# Release {self.release_name}\n")
             f.write(
-                f'{self.env.value} release - {datetime.now().strftime("%b-%d-%Y")}\n\n'
+                f"{self.env.value} release - {datetime.now().strftime('%b-%d-%Y')}\n\n"
             )
             for service in service_list:
+                logging.info(f"Combiling release notes for {service.image_name}")
                 f.write(fetch_release_notes(service))
         print(f"Compiled release notes for release {self.release_name}")
 
@@ -177,7 +211,6 @@ class Github:
         """
         Creates a new release for every service we're looking at
         :param service_list: List of service to generate releases for
-        :param release_name: calculated name of new release
         :return: None
         """
         for service in service_list:
@@ -185,9 +218,8 @@ class Github:
 
     def publish_release(self, service: Service) -> None:
         """
-        Given an service, create a new release on github
+        Given a service, create a new release on github
         :param service: service we're creating the release for
-        :param release_name: release name
         :return: None
         """
         if NO_CHANGES in service.release_notes:

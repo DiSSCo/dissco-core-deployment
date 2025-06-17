@@ -19,16 +19,24 @@ pattern = re.compile(IMG_PATTERN)
 # Default directories we wish to exclude
 DEFAULT_EXCLUDE_DIRECTORIES = [
     "kafka",
+    "rabbitmq",
     "elastic",
     "karpenter",
     "secret-manager",
     "traefik",
     "data-export-job",
     "release",
+    "keda",
+    "kube_green",
+    "machine-annotation-service",
+    "mas_inspector",
+    "open-telemetry",
 ]
 
 
-def get_image_names(environment: Environment, config: Dict[str, Any]) -> Dict[str, Service]:
+def get_image_names(
+    environment: Environment, config: Dict[str, Any]
+) -> Dict[str, Service]:
     """
     Given an environment, return a dict of image names and the services associated with them.
     :param environment: The environment to update. Either 'production' or 'acceptance'
@@ -138,14 +146,16 @@ def export_updated_files(service_list: List[Service]) -> None:
         for file_name in file_names:
             file.write(file_name + "\n")
 
+
 if __name__ == "__main__":
     """
     User to set desired configuration!
     """
     config = {
-        "env": None,  # Match to desired environment
+        "env": Environment.ACCEPTANCE,  # Match to desired environment
         "do_update": False,  # set to True to update files and create new Github release
-        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES + [],  # Add services you wish to exclude to this list -- all others will be included
+        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
+        + [],  # Add services you wish to exclude to this list -- all others will be included
         "include_directories": [],  # If this list is not empty, we will only update services from this list
     }
     env = config.get("env")
