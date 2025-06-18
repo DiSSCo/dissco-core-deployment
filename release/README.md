@@ -19,7 +19,7 @@ This service automates some of the more tedious parts of updating the acceptance
     * `include_directories`: Overwrites `exclude_directories` to only update services in the given directories.
 * Run the `update_images.py` script, followed by the `kubernetes_update.sh` script.
 
-## 1. Updating Image tags in Deployment files
+## 1. Updating Image Tags in Deployment Files
 
 The script runs through all directories specified in the configuration (either through `exclude_directories` or `include_directories`).
 For each image, it pulls the latest image tag using the AWS ECR API.
@@ -38,7 +38,7 @@ be added to git.
 
 The release notes are always compiled, regardless of what `config.do_update` is set to. 
 
-### Determining release name
+### Determining Release Name
 
 The file `latest_release.json` captures the current release numbers for each environment. This file will determine the
 release names for each service.
@@ -73,4 +73,4 @@ Manually running the script `kubernetes_update.sh` will update the desired envir
 files. These file names were compiled when we updated the image tags (feature 1).
 
 ### Important 
-**Be sure you are updating the correct environment before proceeding**
+**Be sure you are updating the correct environment before proceeding. You will need to set the environment in the script**
