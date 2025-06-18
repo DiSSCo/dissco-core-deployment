@@ -152,7 +152,7 @@ if __name__ == "__main__":
     User to set desired configuration!
     """
     config = {
-        "env": Environment.ACCEPTANCE,  # Match to desired environment
+        "env": None,  # Match to desired environment
         "do_update": False,  # set to True to update files and create new Github release
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
         + [],  # Add services you wish to exclude to this list -- all others will be included
