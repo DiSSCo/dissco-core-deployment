@@ -124,7 +124,6 @@ def get_github_repository_name(service: Service) -> str:
 
 def get_github_tag_name(service: Service, prev_tag: bool) -> str:
     """
-    DiSSCover github tags have "-orchestration-service" appended to them
     :param service: service we want the GitHub tag name for
     :param: prev_tag: whether we're fetching a previous tag or latest tag
     :return: tag name

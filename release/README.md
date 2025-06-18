@@ -34,7 +34,7 @@ The deployment files are updated only if `config.do_update` is set to `True`
 ## 2. Release Notes
 
 Using the GitHub API, the script generates a changelog for each service. The changelog consists of the commits between
-the previous tag and the latest tag.
+the **previous tag and the latest tag**.
 
 These changes for all the services are compiled under a file named after the current release. The generated file should
 be added to git.
@@ -70,6 +70,15 @@ case, we update the existing pre-release to become a full release.
 
 Releases are only created if `config.do_update` is set to `True`
 
+### DiSSCover Release
+
+For nearly all services, the image tag is the same tag as the commit tag on GitHub. We can use these image tags (
+obtained from the AWS image store) to identify which commits we're comparing in the release notes, and to generate
+GitHub releases.
+
+The exception to this is DiSSCover, which pushes a slightly longer tag to GitHub. To identify the correct commits in
+GitHub, we call the GitHub `/tags` endpoint and match the DiSSCover image tag to the correct GitHub commit tag.
+
 ## 4. Deploying to Kubernetes
 
 Manually running the script `kubernetes_update.sh` will update the desired environment based on the updated deployment
@@ -86,5 +95,6 @@ A breaking change is a change that depends on a change from outside the codebase
 changes, deployment changes, etc. **This release script does not automatically manage any breaking changes**.
 
 You can identify where breaking changes have occurred by looking at the release notes. Any breaking change should be
-identified with a "!" in the note. You can use this notification to refer back to the relevant Pull Request and update the
+identified with a "!" in the note. You can use this notification to refer back to the relevant Pull Request and update
+the
 environment accordingly before proceeding. 
