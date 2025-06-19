@@ -42,10 +42,18 @@ spec:
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: mas.kafkaHost
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: token.id
               value: demo-api-client
             - name: token.grant-type
@@ -55,7 +63,7 @@ spec:
             - name: endpoint.handle-endpoint
               value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
             - name: application.baseUrl
-              value: orchestration.dissco.tech
+              value: acc-orchestration.dissco.tech
             - name: token.secret
               valueFrom:
                 secretKeyRef:
@@ -77,13 +85,13 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 45
+            initialDelaySeconds: 60
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true

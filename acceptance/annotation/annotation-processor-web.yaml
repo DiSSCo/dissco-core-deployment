@@ -53,14 +53,18 @@ spec:
                   key: elastic-password
             - name: elasticsearch.index-name
               value: annotation
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.group
-              value: group
-            - name: kafka.consumer.topic
-              value: annotation
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.id
@@ -91,13 +95,13 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 45
+            initialDelaySeconds: 60
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true

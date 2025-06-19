@@ -1,0 +1,52 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: nu-search-exchange
+  namespace: rabbitmq
+spec:
+  name: nu-search-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: nu-search-binding
+  namespace: rabbitmq
+spec:
+  source: nu-search-exchange # an existing exchange
+  destination: nu-search-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "nu-search"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: nu-search-dlq-policy # name of this custom resource
+  namespace: rabbitmq
+spec:
+  name: nu-search-dlq-policy
+  pattern: "nu-search-queue"
+  applyTo: "queues"
+  definition:
+    dead-letter-exchange: nu-search-exchange-dlq
+    dead-letter-routing-key: nu-search-dlq
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: nu-search-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: nu-search-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster

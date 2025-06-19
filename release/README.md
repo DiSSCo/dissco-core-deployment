@@ -89,9 +89,9 @@ files. These file names were compiled when we updated the image tags (feature 1)
 **Be sure you are updating the correct environment before proceeding. You will need to set the environment in the script
 **
 
-## Managing Breaking Changes
+## Managing Interdependent Change
 
-A breaking change is a change that depends on a change from outside the codebase -- database changes, data model
+These kinds of changes depend on a change from outside the codebase -- database changes, data model
 changes, deployment changes, etc. **This release script does not automatically manage any breaking changes**.
 
 You can identify where breaking changes have occurred by looking at the release notes. Any breaking change should be

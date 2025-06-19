@@ -34,10 +34,18 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: col-bucket-access-key-secret
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: kafka.consumer.topic
               value: col
             - name: indexing.col-password
@@ -59,6 +67,8 @@ spec:
               value: /index-files/col-temp.zip
             - name: JAVA_TOOL_OPTIONS
               value: -XX:MaxRAMPercentage=85
+            - name: logging.level.root
+              value: INFO
           resources:
             requests:
               memory: "2Gi"

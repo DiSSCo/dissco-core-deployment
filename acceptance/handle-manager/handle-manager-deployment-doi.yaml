@@ -33,14 +33,10 @@ spec:
               value: https://sandbox.dissco.tech
             - name: application.api-url
               value: ${application.ui-url}/api
-            - name: application.orchestration-api
-              value: https://acc.orchestration.dissco.tech/api
             - name: application.orchestration-ui
-              value: https://acc.orchestration.dissco.tech
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: spring.kafka.consumer.group-id
-              value: group-1
+              value: https://acc.orchestration.dissco.tech/api/v1
+            - name: application.orchestration-api
+              value: https://dev-orchestration.dissco.tech/api/v1
             - name: application.maxHandles
               value: '1000'
             - name: springdoc.swagger-ui.path
@@ -53,6 +49,18 @@ spec:
               value: /doi-manager/api/pids/v1/docs/api-docs
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -80,7 +88,7 @@ spec:
               cpu: "200m"
             limits:
               memory: "500Mi"
-              cpu: "750m"
+              cpu: "500m"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

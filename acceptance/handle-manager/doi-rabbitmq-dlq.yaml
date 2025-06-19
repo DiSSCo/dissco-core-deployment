@@ -1,0 +1,89 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: doi-exchange-dlq
+  namespace: rabbitmq
+spec:
+  name: doi-exchange-dlq # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: media-doi-binding-dlq
+  namespace: rabbitmq
+spec:
+  source: doi-exchange-dlq # an existing exchange
+  destination: media-doi-queue-dlq # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "media-doi-dlq"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: media-doi-queue-dlq # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: media-doi-queue-dlq # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: specimen-doi-binding-dlq
+  namespace: rabbitmq
+spec:
+  source: doi-exchange-dlq # an existing exchange
+  destination: specimen-doi-queue-dlq # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "specimen-doi-dlq"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: specimen-doi-queue-dlq # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: specimen-doi-queue-dlq # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: tombstone-doi-binding-dlq
+  namespace: rabbitmq
+spec:
+  source: doi-exchange-dlq # an existing exchange
+  destination: tombstone-doi-queue-dlq # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "tombstone-doi-dlq"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: tombstone-doi-queue-dlq # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: tombstone-doi-queue-dlq # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
