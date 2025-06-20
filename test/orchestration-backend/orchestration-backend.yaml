@@ -71,6 +71,16 @@ spec:
                   key: handle-endpoint-token
             - name: mas.runningEndpoint
               value: https://dev.dissco.tech/api/v1/mjr
+            - name: s3.accessSecret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: orchestration-s3-access-key-secret
+            - name: s3.accessKey
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: orchestration-s3-access-key
           resources:
             requests:
               memory: "500Mi"
