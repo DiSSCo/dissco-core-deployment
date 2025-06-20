@@ -19,6 +19,8 @@ This service automates some of the more tedious parts of updating the acceptance
     * `exclude_directories`: Consists of default list of directories not to update. The user may add more directories to
       exclude from the given release
     * `include_directories`: Overwrites `exclude_directories` to only update services in the given directories.
+    * `release_name`: Allows user to manually set release name. If not set, follows rules according
+      to [Determining Release Names](#determining-release-name)
 * Run the `update_images.py` script, followed by the `kubernetes_update.sh` script.
 
 ## 1. Updating Image Tags in Deployment Files
@@ -43,15 +45,19 @@ The release notes are always compiled, regardless of what `config.do_update` is 
 
 ### Determining Release Name
 
-The file `latest_release.json` captures the current release numbers for each environment. This file will determine the
-release names for each service.
+The following section gives an outline for automatic increments of release names. If `release-names` is set in the
+configuration, the user's input overrides these rules. The user's input is implemented **verbatim**, meaning any
+additional tags (e.g. `-alpha` for acceptance releases) must be included in the release name. 
 
-* **Production Environment** increments in minor versions (1.1.0, 1.2.0, etc.)
-* **Acceptance Environment** increments in patches (1.1.1-alpha, 1.1.2-alpha, etc.). However, if there has been a
+The file `latest_release.json` captures the current release numbers for each environment. This file will determine the
+release names for each service if no release name has been set according to the following rules:
+
+* **Production Environment** increments in minor versions (v1.1.0, v1.2.0, etc.)
+* **Acceptance Environment** increments in patches (v1.1.1-alpha, v1.1.2-alpha, etc.). However, if there has been a
   production release since the last
   acceptance release, it will increment a patch from the latest production release.
-    * i.e., if the latest acceptance release is 1.1.1-alpha, and the latest production release is 1.2.0, the next
-      acceptance release will be 1.2.1-alpha
+    * i.e., if the latest acceptance release is 1.1.1-alpha, and the latest production release is v1.2.0, the next
+      acceptance release will be v1.2.1-alpha
     * The keyword "-alpha" is appended to acceptance releases to indicate these are pre-releases.
 
 In each new release, all updated services will have the same release number. If a service hasn't been updated in a

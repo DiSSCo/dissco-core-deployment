@@ -135,18 +135,6 @@ def update_deployment_files(service_list: List[Service]) -> None:
                         file.write(line)
 
 
-def export_updated_files(service_list: List[Service]) -> None:
-    """
-    Identifies what files have been changed and writes to a file for our k8s script to read from
-    :param service_list: List of service objects we collected
-    :return: None
-    """
-    file_names = {file for service in service_list for file in service.related_files}
-    with open("release/file_names.txt", "w+") as file:
-        for file_name in file_names:
-            file.write(file_name + "\n")
-
-
 if __name__ == "__main__":
     """
     User to set desired configuration!
@@ -155,18 +143,20 @@ if __name__ == "__main__":
         "env": Environment.ACCEPTANCE,  # Match to desired environment
         "do_update": False,  # set to True to update files and create new Github release
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
-        + [],  # Add services you wish to exclude to this list -- all others will be included
-        "include_directories": [],  # If this list is not empty, we will only update services from this list
+        + [
+            "frontend"
+        ],  # Add services you wish to exclude to this list -- all others will be included
+        "include_directories": [],  # If this list is not empty, we will only update services from this list,
+        "release_name": "v1.1.0-alpha",  # Set this to the desired release name; otherwise, will follow release rules in readme
     }
     env = config.get("env")
     if env is None:
         raise ValueError("Environment variable not set")
     service_dict = get_image_names(env, config)
     service_list = get_latest_tags(service_dict)
-    github_service = Github(env)
+    github_service = Github(env, config["release_name"])
     github_service.generate_release_notes(service_list)
     print("Release notes updated")
-    export_updated_files(service_list)
     if config["do_update"]:
         print("Updating deployment files")
         update_deployment_files(service_list)

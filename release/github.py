@@ -172,16 +172,19 @@ def get_github_tag_name_disscover(image_tag_name: str) -> str:
 
 
 class Github:
-    def __init__(self, env: Environment):
+    def __init__(self, env: Environment, release_name: str = ""):
         self.env = env
         self.is_update = False
-        self.release_name = self.get_release_name()
+        self.release_name = self.get_release_name(release_name)
 
-    def get_release_name(self) -> str:
+    def get_release_name(self, release_name: str) -> str:
         """
         Given local records, calculates next release name
         :return: Semantically incremented release name
+        :param release_name: (Optional) name of the release (set in user configs)
         """
+        if release_name:
+            return release_name
         with open(RELEASE_FILE, "r") as read_file:
             latest_releases = json.load(read_file)
             if self.env == Environment.PRODUCTION:
@@ -243,6 +246,7 @@ class Github:
         )
         if result.status_code == 200:
             return result.json()["id"]
+        return None
 
     def update_release(self, service: Service, release_id: str) -> None:
         """
