@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-provenance-service
-          image: public.ecr.aws/dissco/dissco-core-provenance-service:sha-1ac8c0c   # Jan-13-2025
+          image: public.ecr.aws/dissco/dissco-core-provenance-service:sha-a1d5e2d   # Apr-25-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80

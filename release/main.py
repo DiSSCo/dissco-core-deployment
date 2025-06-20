@@ -141,7 +141,7 @@ if __name__ == "__main__":
     """
     config = {
         "env": Environment.ACCEPTANCE,  # Match to desired environment
-        "do_update": False,  # set to True to update files and create new Github release
+        "do_update": True,  # set to True to update files and create new Github release
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
         + [
             "frontend"
