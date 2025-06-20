@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datacite-publisher
+  labels:
+    app: datacite-publisher-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datacite-publisher
+  template:
+    metadata:
+      labels:
+        app: datacite-publisher
+        language: java
+    spec:
+      serviceAccountName: secret-manager
+      automountServiceAccountToken: false
+      containers:
+        - name: datacite-publisher
+          image: public.ecr.aws/dissco/datacite-publisher:latest
+          imagePullPolicy: Always
+          env:
+            - name: doi.prefix
+              value: 'TEST'
+            - name: doi.landing-page-specimen
+              value: 'https://dev.dissco.tech/ds/'
+            - name: doi.landing-page-media
+              value: 'https://dev.dissco.tech/dm/'
+            - name: spring.profiles.active
+              value: test
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "200m"
+            limits:
+              memory: "500Mi"
+              cpu: "750m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 45
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 45
+            failureThreshold: 2
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: datacite-publisher-scaled-object
+spec:
+  scaleTargetRef:
+    name: datacite-publisher
+  minReplicaCount: 0
+  maxReplicaCount:  2
+  triggers:
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: specimen-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: media-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: tombstone-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
