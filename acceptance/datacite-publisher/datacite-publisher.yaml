@@ -48,7 +48,7 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: datacite-password
-             - name: spring.rabbitmq.password
+            - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
