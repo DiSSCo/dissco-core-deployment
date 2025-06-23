@@ -180,13 +180,11 @@ if __name__ == "__main__":
     User to set desired configuration!
     """
     config = {
-        "env": Environment.PRODUCTION,  # Match to desired environment
-        "do_update": True,  # set to True to update files and create new Github release
+        "env": None,  # Match to desired environment
+        "do_update": False,  # set to True to update files and create new Github release
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES,  # Add services you wish to exclude to this list -- all others will be included
-        "include_directories": [
-            "backend"
-        ],  # If this list is not empty, we will only update services from this list,
-        "release_name": "v1.1.0",  # Set this to the desired release name; otherwise, will follow release rules in readme
+        "include_directories": [],  # If this list is not empty, we will only update services from this list,
+        "release_name": "",  # Set this to the desired release name; otherwise, will follow release rules in readme
     }
     env = config.get("env")
     if env is None:
@@ -200,5 +198,5 @@ if __name__ == "__main__":
         print("Updating deployment files")
         update_deployment_files(service_list)
         print(f"Publishing GitHub release {github_service.release_name}")
-        # github_service.publish_releases(service_list)
-        # github_service.update_release_file()
+        github_service.publish_releases(service_list)
+        github_service.update_release_file()
