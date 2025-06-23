@@ -1,0 +1,3 @@
+crds:
+  additionalAnnotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true
