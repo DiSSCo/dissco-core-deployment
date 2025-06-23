@@ -13,8 +13,11 @@ ECR_PUBLIC = "ecr-public"
 # Pattern that identifies image name (May contain 'latest' or a specific sha image tag)
 # Group 1 = image name (e.g. "annotation-processing-service")
 # Group 2 = image tag (e.g. sha-17c02bb)
-IMG_PATTERN = r".+public\.ecr\.aws\/dissco\/([\w-]+):(sha-\w{7}).+"
-pattern = re.compile(IMG_PATTERN)
+IMG_REGEX = r".+public\.ecr\.aws\/dissco\/([\w-]+):(sha-\w{7}).+"
+IMG_PATTERN = re.compile(IMG_REGEX)
+
+DATE_REGEX = r".+(\w{3}-\d{2}-\d{4})"
+DATE_PATTERN = re.compile(DATE_REGEX)
 
 # Default directories we wish to exclude
 DEFAULT_EXCLUDE_DIRECTORIES = [
@@ -48,7 +51,7 @@ def get_image_names(
             for entry in os.scandir(curr_dir):
                 with open(entry) as file:
                     for line in file:
-                        if match := pattern.match(line):
+                        if match := IMG_PATTERN.match(line):
                             image_name = match.group(
                                 1
                             )  # Gets the image name without the tag
@@ -73,7 +76,44 @@ def is_dir_of_interest(dir_name: str, config: Dict[str, Any]) -> bool:
         return dir_name not in config["exclude_directories"]
 
 
-def get_latest_tags(service_dict: Dict[str, Service]) -> List[Service]:
+def get_latest_tags(
+    env: Environment, service_dict: Dict[str, Service]
+) -> List[Service]:
+    if env == Environment.PRODUCTION:
+        return get_latest_tags_prod(service_dict)
+    else:
+        return get_latest_tags_acc(service_dict)
+
+
+def get_latest_tags_prod(service_dict: Dict[str, Service]) -> List[Service]:
+    """
+    Gets the latest tags for a service based on what is deployed in the acceptance environment
+    :param service_dict:
+    :return:
+    """
+    updated_services = set()
+    # We look at the acc directory to find which tags to put in the production files
+    for curr_dir in os.scandir(Environment.ACCEPTANCE.value):
+        if curr_dir.is_dir() and is_dir_of_interest(curr_dir.name, config):
+            for entry in os.scandir(curr_dir):
+                with open(entry) as file:
+                    for line in file:
+                        if match := IMG_PATTERN.match(line):
+                            image_name = match.group(
+                                1
+                            )  # Gets the image name without the tag
+                            if image_name not in updated_services:
+                                image_tag = match.group(2)
+                                pushed_date = DATE_PATTERN.match(line).group(1)
+                                prev_version = service_dict[image_name]
+                                prev_version.set_latest_tag(image_tag)
+                                prev_version.set_pushed_date(pushed_date)
+                                updated_services.add(image_name)
+
+    return [val for val in service_dict.values()]
+
+
+def get_latest_tags_acc(service_dict: Dict[str, Service]) -> List[Service]:
     """
     Calls AWS API to retrieve the latest image tags from AWS ECR.
     :param service_dict: Dict containing service names and the service data
@@ -119,8 +159,8 @@ def update_deployment_files(service_list: List[Service]) -> None:
                 old = file.readlines()
                 file.seek(0)
                 for line in old:
-                    if pattern.match(line) and service.image_name in line:
-                        match = pattern.match(line)
+                    if IMG_PATTERN.match(line) and service.image_name in line:
+                        match = IMG_PATTERN.match(line)
                         old_tag = match.group(
                             2
                         )  # Gets the group which points to the tag
@@ -140,20 +180,19 @@ if __name__ == "__main__":
     User to set desired configuration!
     """
     config = {
-        "env": Environment.ACCEPTANCE,  # Match to desired environment
+        "env": Environment.PRODUCTION,  # Match to desired environment
         "do_update": True,  # set to True to update files and create new Github release
-        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
-        + [
-            "frontend"
-        ],  # Add services you wish to exclude to this list -- all others will be included
-        "include_directories": ["digital-specimen"],  # If this list is not empty, we will only update services from this list,
-        "release_name": "v1.1.0-alpha",  # Set this to the desired release name; otherwise, will follow release rules in readme
+        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES,  # Add services you wish to exclude to this list -- all others will be included
+        "include_directories": [
+            "backend"
+        ],  # If this list is not empty, we will only update services from this list,
+        "release_name": "v1.1.0",  # Set this to the desired release name; otherwise, will follow release rules in readme
     }
     env = config.get("env")
     if env is None:
         raise ValueError("Environment variable not set")
     service_dict = get_image_names(env, config)
-    service_list = get_latest_tags(service_dict)
+    service_list = get_latest_tags(env, service_dict)
     github_service = Github(env, config["release_name"])
     github_service.generate_release_notes(service_list)
     print("Release notes updated")
@@ -161,5 +200,5 @@ if __name__ == "__main__":
         print("Updating deployment files")
         update_deployment_files(service_list)
         print(f"Publishing GitHub release {github_service.release_name}")
-        github_service.publish_releases(service_list)
-        github_service.update_release_file()
+        # github_service.publish_releases(service_list)
+        # github_service.update_release_file()

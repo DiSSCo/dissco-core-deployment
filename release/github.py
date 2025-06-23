@@ -25,7 +25,7 @@ def github_auth() -> Dict[str, str]:
 def format_release_notes(service: Service, raw_notes: str) -> str:
     no_changes = f"## {service.image_name}\n{NO_CHANGES}\n\n"
     if not raw_notes:
-        service.add_release_notes(no_changes)
+        service.set_release_notes(no_changes)
         return no_changes
     notes = raw_notes
     notes = re.sub(r"by @.+", "", notes)
@@ -35,9 +35,9 @@ def format_release_notes(service: Service, raw_notes: str) -> str:
     notes = re.sub(r"\* @\w+ made.+", "", notes)
     notes = f"{notes.strip()}\n"
     if not notes or notes == "\n":
-        service.add_release_notes(no_changes)
+        service.set_release_notes(no_changes)
         return no_changes
-    service.add_release_notes(notes)
+    service.set_release_notes(notes)
     return f"## {service.image_name}\n{notes}\n"
 
 
@@ -86,7 +86,7 @@ def fetch_release_notes(service: Service) -> str:
     :return: Unformatted release notes
     """
     if service.prev_tag == service.latest_tag:
-        service.add_release_notes(NO_CHANGES)
+        service.set_release_notes(NO_CHANGES)
         return f"## {service.image_name}\n{NO_CHANGES}"
     body = {
         "tag_name": get_github_tag_name(service, False),
