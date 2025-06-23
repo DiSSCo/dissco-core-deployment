@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-digital-specimen-processor-event
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-8354577   # Jun-16-2025
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-0db68a3   # Jun-20-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80

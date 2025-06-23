@@ -146,7 +146,7 @@ if __name__ == "__main__":
         + [
             "frontend"
         ],  # Add services you wish to exclude to this list -- all others will be included
-        "include_directories": [],  # If this list is not empty, we will only update services from this list,
+        "include_directories": ["digital-specimen"],  # If this list is not empty, we will only update services from this list,
         "release_name": "v1.1.0-alpha",  # Set this to the desired release name; otherwise, will follow release rules in readme
     }
     env = config.get("env")
