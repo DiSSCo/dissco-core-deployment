@@ -46,8 +46,6 @@ spec:
                   key: rabbitmq-username
             - name: spring.rabbitmq.host
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
-            - name: kafka.consumer.topic
-              value: col
             - name: indexing.col-password
               valueFrom:
                 secretKeyRef:
