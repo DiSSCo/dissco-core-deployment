@@ -16,6 +16,8 @@ spec:
       recurse: true
   syncPolicy:
     automated: { }
+    syncOptions:
+      - ServerSideApply=true
   ignoreDifferences:
     - group: apps
       kind: Deployment
