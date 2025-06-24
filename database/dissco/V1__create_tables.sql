@@ -30,7 +30,7 @@ create index annotation_hash_index
 
 create type job_state as enum ('SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED', 'NOTIFICATION_FAILED', 'QUEUED');
 create type mjr_target_type as enum ('DIGITAL_SPECIMEN', 'MEDIA_OBJECT');
-create type error_code as enum ('TIMEOUT', 'DISSCO_EXCEPTION');
+create type error_code as enum ('TIMEOUT', 'DISSCO_EXCEPTION', 'MAS_EXCEPTION');
 create type export_type as enum ('DOI_LIST', 'DWC_DP', 'DWCA');
 
 create table mas_job_record
