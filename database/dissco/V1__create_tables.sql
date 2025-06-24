@@ -31,7 +31,7 @@ create index annotation_hash_index
 create type job_state as enum ('SCHEDULED', 'RUNNING', 'FAILED', 'COMPLETED', 'NOTIFICATION_FAILED', 'QUEUED');
 create type mjr_target_type as enum ('DIGITAL_SPECIMEN', 'MEDIA_OBJECT');
 create type error_code as enum ('TIMEOUT', 'DISSCO_EXCEPTION');
-create type export_type as enum ('DOI_LIST');
+create type export_type as enum ('DOI_LIST', 'DWC_DP', 'DWCA');
 
 create table mas_job_record
 (
@@ -48,7 +48,8 @@ create table mas_job_record
     target_type        mjr_target_type,
     batching_requested boolean,
     error              error_code,
-    expires_on         timestamp with time zone not null
+    expires_on         timestamp with time zone not null,
+    error_message      text
 );
 
 create index mas_job_record_created_idx
@@ -64,7 +65,6 @@ create table digital_media_object
             primary key,
     version             integer                  not null,
     type                text,
-    digital_specimen_id text                     not null,
     media_url           text                     not null,
     created             timestamp with time zone not null,
     last_checked        timestamp with time zone not null,

@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-493aaed   # Jan-15-2025
+          image: public.ecr.aws/dissco/datacite-publisher:sha-984b648   # Jun-24-2025
           imagePullPolicy: Always
           env:
             - name: doi.prefix
@@ -28,6 +28,8 @@ spec:
               value: 'https://sandbox.dissco.tech/ds/'
             - name: doi.landing-page-media
               value: 'https://sandbox.dissco.tech/dm/'
+            - name: spring.profiles.active
+              value: publish
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
@@ -46,20 +48,18 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: datacite-password
-            - name: kafka.consumer.topic.specimen
-              value: specimen-doi
-            - name: kafka.consumer.topic.media
-              value: media-doi
-            - name: kafka.consumer.topic.tombstone
-              value: tombstone
-            - name: spring.kafka.bootstrap-servers
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: spring.kafka.consumer.key-deserializer
-              value: org.apache.kafka.common.serialization.StringDeserializer
-            - name: spring.kafka.consumer.value-deserializer
-              value: org.apache.kafka.common.serialization.StringDeserializer
-            - name: spring.kafka.consumer.group-id
-              value: group
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
           resources:
             requests:
               memory: "500Mi"
