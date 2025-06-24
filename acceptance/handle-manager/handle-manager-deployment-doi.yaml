@@ -33,10 +33,10 @@ spec:
               value: https://sandbox.dissco.tech
             - name: application.api-url
               value: ${application.ui-url}/api
-            - name: application.orchestration-ui
-              value: https://acc.orchestration.dissco.tech/api/v1
             - name: application.orchestration-api
-              value: https://dev-orchestration.dissco.tech/api/v1
+              value: https://acc.orchestration.dissco.tech/api
+            - name: application.orchestration-ui
+              value: https://acc.orchestration.dissco.tech
             - name: application.maxHandles
               value: '1000'
             - name: springdoc.swagger-ui.path
