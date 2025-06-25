@@ -1,0 +1,52 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: mas-annotation-exchange
+  namespace: rabbitmq
+spec:
+  name: mas-annotation-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: mas-annotation-binding
+  namespace: rabbitmq
+spec:
+  source: mas-annotation-exchange # an existing exchange
+  destination: mas-annotation-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "mas-annotation"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: mas-annotation-dlq-policy # name of this custom resource
+  namespace: rabbitmq
+spec:
+  name: mas-annotation-dlq-policy
+  pattern: "mas-annotation-queue"
+  applyTo: "queues"
+  definition:
+    dead-letter-exchange: mas-annotation-exchange-dlq
+    dead-letter-routing-key: mas-annotation-dlq
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: mas-annotation-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: mas-annotation-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster

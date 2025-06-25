@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-6e1518e   # Mar-31-2025
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-058feb9   # Jun-18-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -62,7 +62,7 @@ spec:
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
             - name: feign.annotations
-              value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080
+              value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
@@ -70,8 +70,18 @@ spec:
                   key: mongodb-connection
             - name: mongo.database
               value: dissco
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: application.base-url
               value: https://api.dissco.eu
             - name: token.grant-type
@@ -99,13 +109,13 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true

@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: data-exporter-backend
-          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-74f9ce7 # Jan-09-2025
+          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-57b0d88   # Jun-18-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -37,8 +37,14 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: db-password
+            - name: job.endpoint
+              value: https://dev.dissco.tech/api/data-export/v1/internal
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
+            - name: token.IdName
+              value: demo-api-client
+            - name: token.SecretName
+              value: handle-endpoint-token
             - name: aws.access-key
               valueFrom:
                 secretKeyRef:
@@ -49,8 +55,6 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: ses-access-key-secret
-            - name: job.image
-              value: public.ecr.aws/dissco/dissco-export-job:sha-da791ed # Jan-09-2025
           resources:
             requests:
               memory: "500Mi"
