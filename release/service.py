@@ -20,5 +20,11 @@ class Service:
     def add_file(self, file: str):
         self.related_files.append(file)
 
-    def add_release_notes(self, notes: str):
+    def set_release_notes(self, notes: str):
         self.release_notes = notes
+
+    def set_latest_tag(self, latest_tag: str):
+        self.latest_tag = latest_tag
+
+    def set_pushed_date(self, date: str):
+        self.pushed_date = date
