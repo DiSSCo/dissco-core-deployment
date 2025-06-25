@@ -73,6 +73,16 @@ spec:
               value: public.ecr.aws/dissco/dissco-core-translator:sha-8737bc4   # Jun-11-2025
             - name: mas.runningEndpoint
               value: https://sandbox.dissco.tech/api/v1/mjr
+            - name: s3.accessKey
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: orchestration-s3-access-key
+            - name: s3.accessSecret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: orchestration-s3-access-key-secret
           resources:
             requests:
               memory: "500Mi"
