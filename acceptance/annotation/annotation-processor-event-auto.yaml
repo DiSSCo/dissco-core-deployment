@@ -84,10 +84,10 @@ spec:
               value: https://hdl.handle.net/20.5000.1025/ANNOTATION-PROCESSOR
           resources:
             requests:
-              memory: "500Mi"
+              memory: "1Gi"
               cpu: "200m"
             limits:
-              memory: "500Mi"
+              memory: "1Gi"
               cpu: "750m"
           livenessProbe:
             httpGet:
@@ -113,7 +113,7 @@ spec:
   scaleTargetRef:
     name: dissco-core-annotation-processing-event-auto
   minReplicaCount: 0
-  maxReplicaCount:  2
+  maxReplicaCount:  1
   triggers:
     - type: rabbitmq
       metadata:
