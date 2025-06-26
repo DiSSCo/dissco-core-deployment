@@ -39,6 +39,8 @@ spec:
                   key: db-password
             - name: job.endpoint
               value: https://dev.dissco.tech/api/data-export/v1/internal
+            - name: job.image
+              value: public.ecr.aws/dissco/dissco-export-job:sha-77df19d  # June 25, 2025
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.IdName
