@@ -103,3 +103,35 @@ spec:
         queueName: tombstone-doi-queue
       authenticationRef:
         name: keda-trigger-auth-rabbitmq-conn
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: datacite-publisher-scaled-object
+spec:
+  scaleTargetRef:
+    name: datacite-publisher
+  minReplicaCount: 0
+  maxReplicaCount:  1
+  triggers:
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: specimen-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: media-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: tombstone-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
