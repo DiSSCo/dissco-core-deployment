@@ -1,0 +1,52 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: digital-media-exchange
+  namespace: rabbitmq
+spec:
+  name: digital-media-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: digital-media-binding
+  namespace: rabbitmq
+spec:
+  source: digital-media-exchange # an existing exchange
+  destination: digital-media-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "digital-media"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: digital-media-dlq-policy # name of this custom resource
+  namespace: rabbitmq
+spec:
+  name: digital-media-dlq-policy
+  pattern: "digital-media-queue"
+  applyTo: "queues"
+  definition:
+    dead-letter-exchange: digital-media-exchange-dlq
+    dead-letter-routing-key: digital-media-dlq
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: digital-media-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: digital-media-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster

@@ -1,0 +1,20 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq-cluster
+  namespace: rabbitmq
+  annotations:
+    rabbitmq.com/topology-allowed-namespaces: "machine-annotation-services"
+spec:
+  replicas: 3
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_management
+      - rabbitmq_shovel
+      - rabbitmq_shovel_management
+      - rabbitmq_prometheus
+    additionalConfig: |
+      cluster_partition_handling = pause_minority
+  persistence:
+    storageClassName: gp3
+    storage: "100Gi"
