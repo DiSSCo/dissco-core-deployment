@@ -1,0 +1,12 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: mas-exchange
+  namespace: machine-annotation-services
+spec:
+  name: mas-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+    namespace: rabbitmq

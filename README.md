@@ -20,7 +20,7 @@ The helm charts contain:
 - Metrics servers, deploys Kubernetes native metrics service, required for things such as `kubectl top node`
 - Secret Driver AWS, deploys application for the secret driver for AWS
 - Secret Manager, deploys application for the management of secrets (needs AWS driver for AWS Secret Store)
-- Strimzi, adds CRDs and operator for the management of Kafka
+- RabbitMQ, adds CRDs for rabbitMQ
 
 ## Deployment of DiSSCo resources
 The deployment of the DiSSCo resources happens by deploying the `argocd-deployment.yaml`.

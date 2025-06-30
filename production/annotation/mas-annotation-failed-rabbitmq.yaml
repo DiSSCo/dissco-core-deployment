@@ -1,0 +1,37 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: mas-annotation-failed-exchange
+  namespace: rabbitmq
+spec:
+  name: mas-annotation-failed-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: mas-annotation-failed-binding
+  namespace: rabbitmq
+spec:
+  source: mas-annotation-failed-exchange # an existing exchange
+  destination: mas-annotation-failed-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "mas-annotation-failed"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: mas-annotation-failed-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: mas-annotation-failed-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
