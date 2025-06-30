@@ -47,8 +47,6 @@ spec:
               value: /handle-manager/api/pids/v1/docs/api-docs/swagger-config
             - name: springdoc.swagger-ui.url
               value: /handle-manager/api/pids/v1/docs/api-docs
-            - name: spring.datasource.url
-              value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:

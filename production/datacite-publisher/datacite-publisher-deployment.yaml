@@ -37,9 +37,9 @@ spec:
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: datacite.endpoint
-              value: https://api.test.datacite.org/dois
+              value: https://api.datacite.org/dois
             - name: handle.endpoint
-              value: https://sandbox.dissco.tech/doi-manager/api/pids/v1/
+              value: https://api.dissco.eu/doi/v1/records
             - name: datacite.repository-id
               valueFrom:
                 secretKeyRef:
@@ -92,3 +92,35 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: "aws-secrets"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: datacite-publisher-scaled-object
+spec:
+  scaleTargetRef:
+    name: datacite-publisher
+  minReplicaCount: 0
+  maxReplicaCount:  1
+  triggers:
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: specimen-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: media-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: tombstone-doi-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn

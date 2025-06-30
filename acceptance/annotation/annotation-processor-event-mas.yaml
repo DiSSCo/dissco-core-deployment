@@ -111,7 +111,7 @@ spec:
   scaleTargetRef:
     name: dissco-core-annotation-processing-event-mas
   minReplicaCount: 0
-  maxReplicaCount:  1
+  maxReplicaCount:  2
   triggers:
     - type: rabbitmq
       metadata:
