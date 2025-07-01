@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-digital-specimen-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-07e449b # Mar-03-2025
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-0db68a3   # Jun-20-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -53,14 +53,18 @@ spec:
                   key: elastic-password
             - name: elasticsearch.index-name
               value: digital-specimen
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.group
-              value: group
-            - name: kafka.consumer.topic
-              value: digital-specimen
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: auth.id

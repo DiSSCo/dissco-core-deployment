@@ -19,7 +19,7 @@ spec:
       serviceAccountName: nu-search-sa
       containers:
         - name: dissco-nu-search-deployment
-          image: public.ecr.aws/dissco/dissco-nusearch-service:sha-8cbd7a3 # Jan-27-2025
+          image: public.ecr.aws/dissco/dissco-nusearch-service:sha-8672639   # May-28-2025
           imagePullPolicy: Always
           env:
             - name: spring.profiles.active
@@ -34,12 +34,18 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: col-bucket-access-key-secret
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.topic
-              value: col
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: indexing.col-password
               valueFrom:
                 secretKeyRef:
@@ -59,8 +65,6 @@ spec:
               value: /index-files/col-temp.zip
             - name: JAVA_TOOL_OPTIONS
               value: -XX:MaxRAMPercentage=85
-            - name: logging.level.root
-              value: INFO
           resources:
             requests:
               memory: "2Gi"

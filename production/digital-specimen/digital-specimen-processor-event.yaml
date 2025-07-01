@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-digital-media-object-processor-web
+  name: dissco-digital-specimen-processor-event
   labels:
-    app: dissco-digital-media-object-processor-web
+    app: dissco-digital-specimen-processor-event
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-digital-media-object-processor-web
+      app: dissco-digital-specimen-processor-event
   template:
     metadata:
       labels:
-        app: dissco-digital-media-object-processor-web
+        app: dissco-digital-specimen-processor-event
         language: java
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-digital-media-object-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-media-object-processor:sha-51635c0 # Mar-06-2025
+        - name: dissco-digital-specimen-processor-event
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-0db68a3   # Jun-20-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
             - name: spring.profiles.active
-              value: web
+              value: rabbitmq
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
@@ -37,8 +37,6 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: db-password
-            - name: springdoc.show-actuator
-              value: "false"
             - name: elasticsearch.hostname
               value: elastic-search-es-http.elastic.svc.cluster.local
             - name: elasticsearch.port
@@ -54,15 +52,19 @@ spec:
                   name: aws-secrets
                   key: elastic-password
             - name: elasticsearch.index-name
-              value: digital-media
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: kafka.consumer.group
-              value: group
-            - name: kafka.consumer.topic
-              value: digital-media
+              value: digital-specimen
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: auth.id
@@ -78,14 +80,12 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: production-dissco-processor-token
-            - name: caching.spring.ttl
-              value: PT6H
           resources:
             requests:
-              memory: "500Mi"
-              cpu: "200m"
+              memory: "1Gi"
+              cpu: "500m"
             limits:
-              memory: "500Mi"
+              memory: "1Gi"
               cpu: "1000m"
           livenessProbe:
             httpGet:
@@ -102,3 +102,21 @@ spec:
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: dissco-digital-specimen-processor-event-scaled-object
+spec:
+  scaleTargetRef:
+    name: dissco-digital-specimen-processor-event
+  minReplicaCount: 0
+  maxReplicaCount:  1
+  triggers:
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: digital-specimen-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn

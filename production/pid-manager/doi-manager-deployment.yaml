@@ -18,11 +18,13 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager-doi
-          image: public.ecr.aws/dissco/handle-manager:sha-c89a201 # Mar-18-2025
+          image: public.ecr.aws/dissco/handle-manager:sha-98636be   # Jun-16-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
+            - name: spring.profiles.active
+              value: doi
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
@@ -31,18 +33,42 @@ spec:
               value: https://disscover.dissco.eu
             - name: application.api-url
               value: https://api.dissco.eu
-            - name: application.orchestration-ui
-              value: https://orchestration.dissco.tech
             - name: application.orchestration-api
               value: https://api.dissco.eu
+            - name: application.orchestration-ui
+              value: https://orchestration.dissco.tech
             - name: application.maxHandles
               value: '1000'
-            - name: spring.profiles.active
-              value: doi
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: spring.kafka.consumer.group-id
-              value: group-1
+            - name: springdoc.swagger-ui.path
+              value: /docs/swagger-ui.html
+            - name: springdoc.api-docs.path
+              value: /docs/api-docs
+            - name: springdoc.swagger-ui.config-url
+              value: /doi-manager/api/pids/v1/docs/api-docs/swagger-config
+            - name: springdoc.swagger-ui.url
+              value: /doi-manager/api/pids/v1/docs/api-docs
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-password
             - name: application.prefix
               value: "10.3535"
             - name: caching.spring.ttl

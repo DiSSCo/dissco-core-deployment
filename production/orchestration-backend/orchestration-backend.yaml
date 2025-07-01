@@ -19,7 +19,7 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-bcf35ed  # Mar-19-2025
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-da6cda1   # Jun-18-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -42,10 +42,18 @@ spec:
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
-            - name: kafka.publisher.host
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
-            - name: mas.kafkaHost
-              value: kafka-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: token.id
               value: production-dissco-orchestration
             - name: token.grant-type
@@ -64,7 +72,17 @@ spec:
             - name: mas.runningEndpoint
               value: https://api.dissco.eu/v1/mjr
             - name: translator-job.image
-              value: public.ecr.aws/dissco/dissco-core-translator:sha-aa4d477 # Mar-19-2025
+              value: public.ecr.aws/dissco/dissco-core-translator:sha-8737bc4   # Jun-11-2025          resources:
+            - name: s3.accessKey
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: orchestration-s3-access-key
+            - name: s3.accessSecret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: orchestration-s3-access-key-secret
           resources:
             requests:
               memory: "500Mi"

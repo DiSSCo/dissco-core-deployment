@@ -217,7 +217,9 @@ spec:
               "processors": [
                 "batch",
                 "memory_limiter",
-                "transform/host"
+                "transform/host",
+                "transform/logs",
+                "filter/logs_namespace"
               ],
               "exporters": [
                 "otlp/logs"
