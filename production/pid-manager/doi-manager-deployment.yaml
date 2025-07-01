@@ -101,4 +101,4 @@ spec:
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true
-            allowPrivilegeEscalation: falseilegeEscalation: false
+            allowPrivilegeEscalation: false
