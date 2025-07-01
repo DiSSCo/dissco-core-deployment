@@ -9,7 +9,7 @@ spec:
     - protocol: TCP
       port: 8080
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: dissco-handle-manager-handle-route
@@ -28,7 +28,7 @@ spec:
         - name: dissco-handle-manager-handle-stripprefix
         - name: dissco-handle-manager-cors-headers
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: dissco-handle-manager-handle-stripprefix
@@ -36,7 +36,6 @@ spec:
   stripPrefix:
     prefixes:
       - /handle-manager/api/pids/v1
-    forceSlash: false
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
