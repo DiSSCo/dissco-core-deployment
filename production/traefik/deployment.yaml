@@ -13,10 +13,18 @@ rules:
       - ""
     resources:
       - services
-      - endpoints
       - secrets
+      - nodes
+      - configmaps
     verbs:
       - get
+      - list
+      - watch
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
       - list
       - watch
   - apiGroups:
@@ -38,7 +46,6 @@ rules:
       - update
   - apiGroups:
       - traefik.io
-      - traefik.containo.us
     resources:
       - middlewares
       - middlewaretcps
@@ -49,6 +56,7 @@ rules:
       - tlsoptions
       - tlsstores
       - serverstransports
+      - serverstransporttcps
     verbs:
       - get
       - list
@@ -98,7 +106,7 @@ spec:
                       - managed_nodes-20241127150956659200000016
       containers:
         - name: traefik
-          image: traefik:v2.11
+          image: traefik:v3.4
           resources:
             requests:
               memory: "250Mi"
