@@ -9,7 +9,7 @@ spec:
     - protocol: TCP
       port: 8080
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: dissco-orchestration-backend-route
@@ -68,7 +68,7 @@ spec:
       middlewares:
         - name: dissco-orchestration-backend-stripprefix-for-frontend
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: dissco-orchestration-backend-stripprefix-for-frontend
@@ -76,9 +76,8 @@ spec:
   stripPrefix:
     prefixes:
       - /api
-    forceSlash: false
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: dissco-orchestration-backend-health-stripprefix
@@ -86,9 +85,8 @@ spec:
   stripPrefix:
     prefixes:
       - /orchestration
-    forceSlash: false
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: dissco-orchestration-backend-cors-headers
