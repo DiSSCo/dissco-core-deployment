@@ -76,7 +76,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: translator-admin-role
+  name: data-export-cron-manager-role
   namespace: data-export-job
 subjects:
   - kind: ServiceAccount
