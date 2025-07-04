@@ -82,11 +82,11 @@ spec:
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:
             requests:
-              memory: "500Mi"
+              memory: "1Gi"
               cpu: "200m"
               ephemeral-storage: "2Gi"
             limits:
-              memory: "500Mi"
+              memory: "1Gi"
               cpu: "1000m"
               ephemeral-storage: "4Gi"
           livenessProbe:
