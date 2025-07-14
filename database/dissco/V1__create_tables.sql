@@ -224,7 +224,6 @@ create table virtual_collection
     version         integer default 1        not null,
     name            text                     not null,
     collection_type collection_type         not null,
-    endpoint        text                     not null,
     created         timestamp with time zone not null,
     modified        timestamp with time zone not null,
     tombstoned      timestamp with time zone,
