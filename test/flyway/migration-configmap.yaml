@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: migration-configmap
   namespace: flyway
+  annotations:
+    argocd.argoproj.io/hook: PreSync
 data:
   V1_1__update_test_table.sql: |
     alter table migration_test.test_table
