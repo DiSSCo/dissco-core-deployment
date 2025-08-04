@@ -36,4 +36,3 @@ spec:
   stripPrefix:
     prefixes:
       - /doi-manager/api/pids/v1
-  forceSlash: false
