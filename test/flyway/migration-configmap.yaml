@@ -6,6 +6,6 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_1__update_test_table.sql: |
+  V1_2__update_test_table.sql: |
     alter table migration_test.test_table
-    add some_col integer;
+    add another_col text;

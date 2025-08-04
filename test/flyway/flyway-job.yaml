@@ -1,16 +1,19 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: schema-migrate-
+  #generateName: schema-migrate-
+  name: migration-1
   namespace: flyway
   annotations:
     argocd.argoproj.io/hook: PreSync
 spec:
   template:
     spec:
+      serviceAccountName: flyway-secret-manager
+      automountServiceAccountToken: true
       containers:
         - name: flyway
-          image: redgate/flyway:11-azure-mongo
+          image: redgate/flyway:11-alpine
           args:
             - info
             - repair
@@ -18,22 +21,37 @@ spec:
             - info
           env:
             - name: FLYWAY_URL
-              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: "jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco"
             - name: FLYWAY_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
+                  name: db-secrets-flyway
                   key: db-username
             - name: FLYWAY_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
+                  name: db-secrets-flyway
                   key: db-password
+            - name: FLYWAY_BASELINE_ON_MIGRATE
+              value: "true"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
           volumeMounts:
-            - mountPath: /flyway/sql
-              name: sql
+          - mountPath: /flyway/sql
+            name: sql
+          - name: db-secrets-flyway
+            mountPath: "/mnt/secrets-store/db-secrets-flyway"
+            readOnly: true
       volumes:
         - name: sql
           configMap:
             name: migration-configmap
+        - name: db-secrets-flyway
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "db-secrets-flyway"
       restartPolicy: Never
