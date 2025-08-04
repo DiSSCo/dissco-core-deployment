@@ -1,8 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  #generateName: schema-migrate-
-  name: migration-1
+  name: db-migration
   namespace: flyway
   annotations:
     argocd.argoproj.io/hook: PreSync
