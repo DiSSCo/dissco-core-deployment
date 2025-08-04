@@ -36,6 +36,7 @@ spec:
   stripPrefix:
     prefixes:
       - /handle-manager/api/pids/v1
+  forceSlash: false
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
