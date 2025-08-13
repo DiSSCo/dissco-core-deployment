@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: db-migration
+  generateName: db-migration-
   namespace: flyway
   annotations:
     argocd.argoproj.io/hook: PreSync
