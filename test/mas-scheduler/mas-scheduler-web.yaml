@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: mas-scheduler-web
-          image: public.ecr.aws/dissco/dissc-mas-scheduler-service
+          image: public.ecr.aws/dissco/dissco-mas-scheduler-service
           imagePullPolicy: Always
           ports:
             - containerPort: 80
