@@ -35,7 +35,12 @@ We can align flyway's naming convention with the release naming convention of Di
 acceptance, we should make sure the version of the flyway migration always matches the new release version. (e.g.
 1.2.1).
 
-Once a migration is completed, the migration script in `migration-configmap.yaml` can be removed. To track
-what is the latest version of the database schema, and thus to manage Flyway versions, the latest migration script
-should be kept. This will not trigger any changes in the database if re-run. Older database migration scripts should be
-removed to keep the configmap clean. 
+To track what is the latest version of the database schema, and thus to manage Flyway versions, the latest migration
+script should be kept. This will not trigger any changes in the database if re-run. Older database migration scripts
+should be removed to keep the configmap clean.
+
+## Managing the ConfigMap
+
+Once a migration is completed, the migration script in `migration-configmap.yaml` can be removed. Completed migrations
+should be moved to the `completed-migrations` directory. To prevent the migration configmap from getting too large, only
+the latest release's migration should be stored there. The file should be renamed to the release version, e.g. `database-migration-v1.2.3.yaml`
