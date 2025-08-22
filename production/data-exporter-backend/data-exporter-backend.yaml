@@ -41,12 +41,14 @@ spec:
               value: https://disscover.dissco.eu/api/data-export/v1/internal
             - name: job.image
               value: public.ecr.aws/dissco/dissco-export-job:sha-77df19d  # June 25, 2025
+            - name: job.bucketName
+              value: dissco-data-export-production
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.IdName
-              value: demo-api-client
+              value: production-dissco-data-export-job
             - name: token.SecretName
-              value: handle-endpoint-token
+              value: production-dissco-data-export-job-token
             - name: aws.access-key
               valueFrom:
                 secretKeyRef:
