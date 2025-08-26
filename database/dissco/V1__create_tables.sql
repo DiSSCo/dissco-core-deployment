@@ -133,7 +133,9 @@ create table source_system
     id              text                     not null
         primary key,
     version         integer default 1        not null,
-    name            text                     not null,
+    name            text                     not null
+        constraint name_unique
+            unique,
     endpoint        text                     not null,
     created         timestamp with time zone not null,
     modified        timestamp with time zone not null,
@@ -144,7 +146,10 @@ create table source_system
     data            jsonb                    not null,
     dwc_dp_link     text,
     dwca_link       text,
-    eml             bytea
+    eml             bytea,
+    filters         text[],
+    constraint endpoint_unique
+        unique nulls not distinct (endpoint, tombstoned, filters)
 );
 
 create table machine_annotation_service
