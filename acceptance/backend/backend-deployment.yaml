@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-1db6722   # Jun-18-2025
+          image: public.ecr.aws/dissco/dissco-core-backend:acc-patch-08-27-2025   # Aug 27, 2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
