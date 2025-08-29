@@ -49,6 +49,8 @@ spec:
                   key: rabbitmq-username
             - name: spring.rabbitmq.host
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
+            - name: rabbitmq.queue-name
+              value: mas-scheduler-queue
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
             - name: token.id

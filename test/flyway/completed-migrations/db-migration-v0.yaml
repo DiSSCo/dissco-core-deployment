@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: migration-configmap
+  namespace: flyway
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+data:
+  V1_2__update_test_table.sql: |
+    alter table migration_test.test_table
+    add another_col text;
+  V1_3__update_test_table_again.sql: |
+    alter table migration_test.test_table
+    add another_col_again text;
