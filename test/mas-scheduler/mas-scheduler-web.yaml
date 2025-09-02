@@ -58,7 +58,7 @@ spec:
             - name: endpoint.tokenEndpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: endpoint.handleEndpoint
-              value: https://dev.dissco.tech/doi-manager/api/pids/v1/
+              value: https://dev.dissco.tech/handle-manager/api/pids/v1/
             - name: token.secret
               valueFrom:
                 secretKeyRef:
