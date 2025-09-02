@@ -7,6 +7,13 @@ metadata:
     rabbitmq.com/topology-allowed-namespaces: "machine-annotation-services"
 spec:
   replicas: 3
+  resources:
+    requests:
+      cpu: 4000m
+      memory: 4Gi
+    limits:
+      cpu: 4000m
+      memory: 4Gi
   rabbitmq:
     additionalPlugins:
       - rabbitmq_management
