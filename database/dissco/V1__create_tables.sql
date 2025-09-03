@@ -22,7 +22,7 @@ create index annotation_id_creator_id_index
     on annotation (id, creator);
 
 create index annotation_id_target_id_index
-    on annotation (id, target_id);
+    on annotation (target_id);
 
 create index annotation_hash_index
     on annotation (annotation_hash);
