@@ -6,6 +6,6 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_2_1__update_test_table.sql: |
-    ALTER TABLE public.source_system
-    ADD COLUMN filters TEXT[];
+  V1_2_2__update_annotation_target_index.sql: |
+    DROP INDEX public.annotation_id_target_id_index;
+    CREATE INDEX annotation_target_id_index ON public.annotation (target_id);
