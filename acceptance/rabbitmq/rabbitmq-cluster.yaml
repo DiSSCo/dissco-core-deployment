@@ -19,6 +19,7 @@ spec:
       - rabbitmq_shovel_management
       - rabbitmq_prometheus
     additionalConfig: |
+      vm_memory_high_watermark.absolute = 4Gi
       cluster_partition_handling = pause_minority
   persistence:
     storageClassName: gp3
