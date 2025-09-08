@@ -67,6 +67,8 @@ spec:
               value: springboot-keycloak-client
             - name: feign.annotations
               value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation
+            - name: feign.mas
+              value: mas-scheduler-web.default.svc.cluster.local:8080/
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
