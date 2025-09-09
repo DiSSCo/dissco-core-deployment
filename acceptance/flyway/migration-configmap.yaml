@@ -6,7 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_2_3__add_temp_doi_table: |
+  V1_2_3__add_temp_doi_table.sql: |
     create table manual_pid
     (
         pid      text,
