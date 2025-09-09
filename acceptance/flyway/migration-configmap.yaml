@@ -6,6 +6,12 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_2_2__update_annotation_target_index.sql: |
-    DROP INDEX public.annotation_id_target_id_index;
-    CREATE INDEX annotation_target_id_index ON public.annotation (target_id);
+  V1_2_3__add_temp_doi_table: |
+    create table manual_pid
+    (
+        pid      text,
+        prefix   text
+    );
+    comment on table manual_pid is 'PIDs from which the PID manager may pull';
+    comment on column manual_pid.pid is 'Persistent identifier';
+    comment on column manual_pid.prefix is 'One of: TEST, SANDBOX, 20.5000.1025, 10.3535';
