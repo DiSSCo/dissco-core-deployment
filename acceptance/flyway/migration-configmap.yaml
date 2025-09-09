@@ -10,10 +10,8 @@ data:
     create table manual_pid
     (
         pid      text,
-        prefix   text,
-        pid_type integer
+        prefix   text
     );
     comment on table manual_pid is 'PIDs from which the PID manager may pull';
     comment on column manual_pid.pid is 'Persistent identifier';
     comment on column manual_pid.prefix is 'One of: TEST, SANDBOX, 20.5000.1025, 10.3535';
-    comment on column manual_pid.pid_type is 'One of: doi, handle';
