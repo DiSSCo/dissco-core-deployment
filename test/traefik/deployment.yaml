@@ -95,15 +95,6 @@ spec:
     spec:
       serviceAccountName: traefik-ingress-controller
       automountServiceAccountToken: true
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: eks.amazonaws.com/nodegroup
-                    operator: In
-                    values:
-                      - managed_m5-20230823065304717700000010
       containers:
         - name: traefik
           image: traefik:v3.4

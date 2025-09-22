@@ -37,7 +37,7 @@ kind: EC2NodeClass
 metadata:
   name: default
 spec:
-  amiFamily: AL2 # Amazon Linux 2
+  amiFamily: AL2023
   role: "KarpenterNodeRole-dissco-k8s-production"
   subnetSelectorTerms:
     - tags:
@@ -46,4 +46,4 @@ spec:
     - tags:
         karpenter.sh/discovery: "dissco-k8s-production"
   amiSelectorTerms:
-    - alias: "al2@latest"
+    - alias: "al2023@latest"
