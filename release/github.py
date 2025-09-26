@@ -12,7 +12,7 @@ from datetime import datetime
 
 NO_CHANGES = "No change since last release\n"
 GITHUB_API = "https://api.github.com/repos/dissco/"
-RELEASE_FILE = "release/release-notes/latest_release.json"
+RELEASE_FILE = "release-notes/latest_release.json"
 
 
 def github_auth() -> Dict[str, str]:
@@ -198,7 +198,7 @@ class Github:
         :param service_list: list of services to generate release notes for
         :return: release name
         """
-        with open(f"release/release-notes/{self.release_name}.md", "w+") as f:
+        with open(f"release-notes/{self.release_name}.md", "w+") as f:
             print("Compiling release notes")
             f.write(f"# Release {self.release_name}\n")
             f.write(
