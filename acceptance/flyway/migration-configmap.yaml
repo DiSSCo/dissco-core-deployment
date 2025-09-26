@@ -6,9 +6,19 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_2_4__add_unique_constraints_to_source_system.sql: |
-    ALTER TABLE public.source_system
-    ADD CONSTRAINT endpoint_unique UNIQUE NULLS NOT DISTINCT (endpoint, tombstoned, filters);
-    
-    ALTER TABLE public.source_system
-    ADD CONSTRAINT name_unique UNIQUE (name);
+  V1_2_5__virtual_collection_table.sql: |
+    create type collection_type as enum ('REFERENCE_COLLECTION', 'COMMUNITY_COLLECTION');
+
+    create table virtual_collection
+    (
+        id              text                     not null
+            primary key,
+        version         integer default 1        not null,
+        name            text                     not null,
+        collection_type collection_type          not null,
+        created         timestamp with time zone not null,
+        modified        timestamp with time zone not null,
+        tombstoned      timestamp with time zone,
+        creator         text                     not null,
+        data            jsonb                    not null
+    );

@@ -34,6 +34,7 @@ DEFAULT_EXCLUDE_DIRECTORIES = [
     "machine-annotation-service",
     "mas_inspector",
     "open-telemetry",
+    "flyway"
 ]
 
 
@@ -46,7 +47,7 @@ def get_image_names(
     :return: List of image names and the data associated with them associated with these services
     """
     service_dict = {}
-    for curr_dir in os.scandir(environment.value):
+    for curr_dir in os.scandir("../"+environment.value):
         if curr_dir.is_dir() and is_dir_of_interest(curr_dir.name, config):
             for entry in os.scandir(curr_dir):
                 with open(entry) as file:

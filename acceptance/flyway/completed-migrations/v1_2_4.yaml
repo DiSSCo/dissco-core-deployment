@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: migration-configmap
+  namespace: flyway
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+data:
+  V1_2_4__add_unique_constraints_to_source_system.sql: |
+    ALTER TABLE public.source_system
+    ADD CONSTRAINT endpoint_unique UNIQUE NULLS NOT DISTINCT (endpoint, tombstoned, filters);
+    
+    ALTER TABLE public.source_system
+    ADD CONSTRAINT name_unique UNIQUE (name);
