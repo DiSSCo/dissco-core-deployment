@@ -1,10 +1,10 @@
 # Automatic Releases
 
 This service automates some of the more tedious parts of updating the acceptance and production environments.
+For release see also: [Releases](https://github.com/DiSSCo/dissco-developers-documentation/wiki/Creating-a-release)
 
 ## Setup
 
-* In order to run the script, you need set `env` in `update-images.py`.
 * If you want to exclude certain services, you can add directory names to `exclude_directories`
 * If you want to only update specific services, you can add the directory names to `include_directories`. This
   overwrites
@@ -85,10 +85,12 @@ GitHub releases.
 The exception to this is DiSSCover, which pushes a slightly longer tag to GitHub. To identify the correct commits in
 GitHub, we call the GitHub `/tags` endpoint and match the DiSSCover image tag to the correct GitHub commit tag.
 
-## 4. Deploying to Kubernetes
+## 4. ArgoCD
 
-Manually running the script `kubernetes_update.sh` will update the desired environment based on the updated deployment
-files. These file names were compiled when we updated the image tags (feature 1).
+You now need to check in your changes to git. 
+This includes the updated deployment files and the release notes.
+ArgoCD will then pick up the changes and deploy them.
+Monitor the release and make sure everything is working as expected.
 
 ### Important
 
@@ -102,5 +104,4 @@ changes, deployment changes, etc. **This release script does not automatically m
 
 You can identify where breaking changes have occurred by looking at the release notes. Any breaking change should be
 identified with a "!" in the note. You can use this notification to refer back to the relevant Pull Request and update
-the
-environment accordingly before proceeding. 
+the environment accordingly before proceeding. 
