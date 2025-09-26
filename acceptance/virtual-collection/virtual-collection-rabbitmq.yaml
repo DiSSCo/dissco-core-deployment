@@ -1,0 +1,53 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: virtual-collection-exchange
+  namespace: rabbitmq
+spec:
+  name: virtual-collection-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: virtual-collection-binding
+  namespace: rabbitmq
+spec:
+  source: virtual-collection-exchange # an existing exchange
+  destination: virtual-collection-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "virtual-collection"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: virtual-collection-dlq-policy # name of this custom resource
+  namespace: rabbitmq
+spec:
+  name: virtual-collection-dlq-policy
+  pattern: "virtual-collection-queue"
+  applyTo: "queues"
+  definition:
+    dead-letter-exchange: virtual-collection-exchange-dlq
+    dead-letter-routing-key: virtual-collection-dlq
+    delivery-limit: 2
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: virtual-collection-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: virtual-collection-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
