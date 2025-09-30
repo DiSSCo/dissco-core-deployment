@@ -9,18 +9,21 @@ spec:
   replicas: 3
   resources:
     requests:
-      memory: 4Gi
+      memory: 2Gi
     limits:
-      memory: 4Gi
+      memory: 2Gi
   rabbitmq:
     additionalPlugins:
       - rabbitmq_management
       - rabbitmq_shovel
       - rabbitmq_shovel_management
       - rabbitmq_prometheus
+      - rabbitmq_top
     additionalConfig: |
-      vm_memory_high_watermark.absolute = 4Gi
+      vm_memory_high_watermark.absolute = 2Gi
       cluster_partition_handling = pause_minority
+      quorum_queue.continuous_membership_reconciliation.enabled = true
+      cluster_formation.target_cluster_size_hint = 3
   persistence:
     storageClassName: gp3
-    storage: "100Gi"
+    storage: "120Gi"
