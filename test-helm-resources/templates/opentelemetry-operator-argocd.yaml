@@ -8,13 +8,9 @@ spec:
   source:
     chart: opentelemetry-operator
     repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
-    targetRevision: 0.74.3
+    targetRevision: latest
     helm:
       releaseName: opentelemetry-operator
-      values: |
-        manager:
-          collectorImage:
-            repository: "otel/opentelemetry-collector-k8s"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: otel
