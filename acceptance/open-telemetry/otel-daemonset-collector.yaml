@@ -1,0 +1,252 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-daemonset-collector
+  namespace: otel
+spec:
+  mode: daemonset
+  serviceAccount: otel-service-account
+  priorityClassName: system-cluster-critical
+  env:
+    - name: AUTH_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: otel-secrets
+          key: naturalis-observability-token
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.nodeName
+    - name: MY_POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    - name: CLUSTER_NAME
+      value: "test-cluster"
+  config:
+    {
+      "connectors": { },
+      "receivers": {
+        "filelog": {
+          "include": [
+            "/var/log/pods/*/*/*.log"
+          ],
+          "start_at": "beginning",
+          "include_file_path": true,
+          "include_file_name": false,
+          "operators": [
+            # Find out which format is used by kubernetes
+            {
+              "type": "router",
+              "id": "get-format",
+              "routes": [
+                {
+                  "output": "parser-docker",
+                  "expr": "body matches \"^\\\\{\""
+                },
+                {
+                  "output": "parser-crio",
+                  "expr": "body matches \"^[^ Z]+ \""
+                },
+                {
+                  "output": "parser-containerd",
+                  "expr": "body matches \"^[^ Z]+Z\""
+                }
+              ]
+            },
+            # Parse CRI-O format
+            {
+              "type": "regex_parser",
+              "id": "parser-crio",
+              "regex": "^(?P<time>[^ Z]+) (?P<stream>stdout|stderr) (?P<logtag>[^ ]*) ?(?P<log>.*)$",
+              "output": "extract_metadata_from_filepath",
+              "timestamp": {
+                "parse_from": "attributes.time",
+                "layout_type": "gotime",
+                "layout": "2006-01-02T15:04:05.999999999Z07:00"
+              }
+            },
+            # Parse CRI-Containerd format
+            {
+              "type": "regex_parser",
+              "id": "parser-containerd",
+              "regex": "^(?P<time>[^ ^Z]+Z) (?P<stream>stdout|stderr) (?P<logtag>[^ ]*) ?(?P<log>.*)$",
+              "output": "extract_metadata_from_filepath",
+              "timestamp": {
+                "parse_from": "attributes.time",
+                "layout": "%Y-%m-%dT%H:%M:%S.%LZ"
+              }
+            },
+            # Parse Docker format
+            {
+              "type": "json_parser",
+              "id": "parser-docker",
+              "output": "extract_metadata_from_filepath",
+              "timestamp": {
+                "parse_from": "attributes.time",
+                "layout": "%Y-%m-%dT%H:%M:%S.%LZ"
+              }
+            },
+            # Extract metadata from file path
+            {
+              "type": "regex_parser",
+              "id": "extract_metadata_from_filepath",
+              "regex": "^.*\\/(?P<namespace>[^_]+)_(?P<pod_name>[^_]+)_(?P<uid>[a-f0-9\\-]{16,36})\\/(?P<container_name>[^\\._]+)\\/(?P<restart_count>\\d+)\\.log$",
+              "parse_from": "attributes[\"log.file.path\"]",
+              "cache": {
+                "size": 128
+              }
+            },
+            # Rename attributes
+            {
+              "type": "move",
+              "from": "attributes[\"log.file.path\"]",
+              "to": "resource[\"filename\"]"
+            },
+            {
+              "type": "move",
+              "from": "attributes.container_name",
+              "to": "resource[\"container\"]"
+            },
+            {
+              "type": "move",
+              "from": "attributes.namespace",
+              "to": "resource[\"namespace\"]"
+            },
+            {
+              "type": "move",
+              "from": "attributes.pod_name",
+              "to": "resource[\"pod\"]"
+            },
+            {
+              "type": "add",
+              "field": "resource[\"cluster\"]",
+              "value": "${CLUSTER_NAME}"
+            },
+            {
+              "type": "add",
+              "field": "resource[\"service.namespace\"]",
+              "value": "naturalis.bii.dissco"
+            },
+            {
+              "type": "move",
+              "from": "attributes.log",
+              "to": "body"
+            }
+          ]
+        }
+      },
+      "processors": {
+        "batch": { },
+        "memory_limiter": {
+          "check_interval": "5s",
+          "limit_percentage": 80,
+          "spike_limit_percentage": 25
+        },
+        "transform/host": {
+          "metric_statements": [
+            {
+              "context": "datapoint",
+              "statements": [
+                'set(attributes["deployment_environment"], "test")',
+                'set(attributes["service_namespace"], "naturalis.bii.dissco")',
+                'set(attributes["service_name"], "dissco-node")',
+                'set(attributes["service_owner"], "soulaine.theocharides@naturalis.nl")',
+                'set(attributes["service_team"], "dissco")',
+                'set(attributes["node_name"], "${NODE_NAME}")',
+                'set(attributes["cluster"], "${CLUSTER_NAME}")'
+              ]
+            }
+          ]
+        },
+        "transform/logs": {
+          "log_statements": [
+            {
+              "context": "log",
+              "statements": [
+                'set(attributes["log_level"], "DEBUG") where IsString(body) and IsMatch(body, "\\sDEBUG\\s")',
+                'set(attributes["log_level"], "INFO") where IsString(body) and IsMatch(body, "\\sINFO\\s")',
+                'set(attributes["log_level"], "WARN") where IsString(body) and IsMatch(body, "\\sWARN\\s")',
+                'set(attributes["log_level"], "ERROR") where IsString(body) and IsMatch(body, "\\sERROR\\s")'
+              ]
+            }
+          ]
+        },
+        "filter/logs_namespace": {
+          "error_mode": "ignore",
+          "logs": {
+            "log_record": [
+              'resource.attributes["namespace"] != "default"'
+            ]
+          }
+        }
+      },
+      "extensions": {
+        "health_check": {
+          "endpoint": "${MY_POD_IP}:13133"
+        },
+        "oauth2client/client": {
+          "client_id": "naturalis.bii.dissco",
+          "client_secret": "${AUTH_TOKEN}",
+          "token_url": "https://keycloak.iam.naturalis.io/realms/observability/protocol/openid-connect/token",
+          "tls": {
+            "insecure": true
+          }
+        }
+      },
+      "exporters": {
+        "otlp/logs": {
+          "endpoint": "https://logs.gateway.analytics.naturalis.io:443",
+          "auth": {
+            "authenticator": "oauth2client/client"
+          }
+        },
+        "debug": {
+          "verbosity": "detailed"
+        }
+      },
+      "service": {
+        "extensions": [
+          "oauth2client/client",
+          "health_check"
+        ],
+        "pipelines":
+          {
+            "logs": {
+              "receivers": [
+                "filelog"
+              ],
+              "processors": [
+                "batch",
+                "memory_limiter",
+                "transform/host",
+                "transform/logs",
+                "filter/logs_namespace"
+              ],
+              "exporters": [
+                "otlp/logs",
+                "debug"
+              ]
+            }
+          }
+
+      }
+    }
+  volumeMounts:
+    - name: otel-secrets
+      mountPath: "/mnt/secrets-store/otel-secrets"
+      readOnly: true
+    - name: varlog
+      mountPath: "/var/log"
+      readOnly: true
+  volumes:
+    - name: otel-secrets
+      csi:
+        driver: secrets-store.csi.k8s.io
+        readOnly: true
+        volumeAttributes:
+          secretProviderClass: "otel-secrets"
+    - name: varlog
+      hostPath:
+        path: /var/log
