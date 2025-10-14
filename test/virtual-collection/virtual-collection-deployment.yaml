@@ -20,8 +20,6 @@ spec:
         - name: dissco-virtual-collection-service
           image: public.ecr.aws/dissco/dissco-virtual-collection-service:latest
           imagePullPolicy: Always
-          ports:
-            - containerPort: 80
           env:
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
@@ -73,13 +71,13 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 60
+            initialDelaySeconds: 15
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 60
+            initialDelaySeconds: 15
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true
@@ -92,7 +90,7 @@ metadata:
 spec:
   scaleTargetRef:
     name: dissco-virtual-collection-service
-  minReplicaCount: 1
+  minReplicaCount: 0
   maxReplicaCount:  1
   triggers:
     - type: rabbitmq
