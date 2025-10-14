@@ -46,6 +46,10 @@ spec:
                   key: rabbitmq-username
             - name: spring.rabbitmq.host
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
+            - name: rabbitmq.exchange-name
+              value: virtual-collection-ingestion-exchange
+            - name: rabbitmq.routing-key-name
+              value: virtual-collection-ingestion
             - name: indexing.col-password
               valueFrom:
                 secretKeyRef:
