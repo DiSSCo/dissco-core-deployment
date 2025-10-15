@@ -176,17 +176,137 @@ spec:
                     "targets": [ "${MY_POD_IP}:9100" ]
                   }
                 ]
-
+              },
+              # Broad RabbitMQ metrics
+              {
+                "job_name": "rabbitmq",
+                "kubernetes_sd_configs": [
+                  {
+                    "role": "pod",
+                    "namespaces": {
+                      "names": [ "rabbitmq" ]
+                    }
+                  }
+                ],
+                "relabel_configs": [
+                  # Capture node name
+                  {
+                    "source_labels": [
+                      "__meta_kubernetes_node_name"
+                    ],
+                    "action": "replace",
+                    "target_label": "__node_name",
+                    "regex": "(.+)"
+                  },
+                  # Set the metrics path to /metrics (default for RabbitMQ)
+                  {
+                    "source_labels": [
+                      "__meta_kubernetes_pod_annotation_prometheus_io_path"
+                    ],
+                    "action": "replace",
+                    "target_label": "__metrics_path__",
+                    "regex": "(.+)"
+                  },
+                  # Keep only pods that expose the rabbitmq-exporter port (15692)
+                  {
+                    "source_labels": [
+                      "__meta_kubernetes_pod_container_port_number"
+                    ],
+                    "action": "keep",
+                    "regex": "15692"
+                  },
+                  # Set the target scheme to http
+                  {
+                    "target_label": "__scheme__",
+                    "replacement": "http"
+                  },
+                ],
+                "metric_relabel_configs": [
+                  {
+                    "source_labels": [
+                      "__node_name"
+                    ],
+                    "action": "replace",
+                    "regex": "(.+)",
+                    "target_label": "node_name"
+                  }
+                ]
+              },
+              # RabbitMQ Metrics aggregated by resource
+              {
+                "job_name": "rabbitmq-detailed",
+                "kubernetes_sd_configs": [
+                  {
+                    "role": "pod",
+                    "namespaces": {
+                      "names": [ "rabbitmq" ]
+                    }
+                  }
+                ],
+                "metrics_path": "/metrics/detailed",
+                # Set metric groups that we're interested
+                "params": {
+                  "family": [
+                    "queue_consumer_count",
+                    "queue_coarse_metrics"
+                  ]
+                },
+                "relabel_configs": [
+                  # Keep only pods that expose the rabbitmq-exporter port (15692)
+                  {
+                    "source_labels": [
+                      "__meta_kubernetes_pod_container_port_number"
+                    ],
+                    "action": "keep",
+                    "regex": "15692"
+                  },
+                  # Capture node name
+                  {
+                    "source_labels": [
+                      "__meta_kubernetes_node_name"
+                    ],
+                    "action": "replace",
+                    "target_label": "__node_name",
+                    "regex": "(.+)"
+                  },
+                  # Set the target scheme to http
+                  {
+                    "target_label": "__scheme__",
+                    "replacement": "http"
+                  },
+                ],
+                # Default metrics path is /metrics, default port is 15692
+                "metric_relabel_configs": [
+                  # Add queue name as a label
+                  {
+                    "source_labels": [
+                      "queue"
+                    ],
+                    "action": "replace",
+                    "regex": "(.+)",
+                    "target_label": "queue_name"
+                  },
+                  {
+                    "source_labels": [
+                      "__node_name"
+                    ],
+                    "action": "replace",
+                    "regex": "(.+)",
+                    "target_label": "node_name"
+                  }
+                ]
               }
             ]
           }
         },
         "k8s_events": {
-          "namespaces": []
+          "namespaces": [ ]
         }
       },
       "processors": {
-        "batch": { },
+        "batch": {
+          "send_batch_max_size": 8196
+        },
         "memory_limiter": {
           "check_interval": "5s",
           "limit_percentage": 80,

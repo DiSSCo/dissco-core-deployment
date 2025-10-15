@@ -22,7 +22,7 @@ spec:
         fieldRef:
           fieldPath: status.podIP
     - name: CLUSTER_NAME
-      value: "production-cluster"
+      value: "acceptance-cluster"
   config:
     {
       "connectors": { },
@@ -304,7 +304,9 @@ spec:
         }
       },
       "processors": {
-        "batch": { },
+        "batch": {
+          "send_batch_max_size": 8196
+        },
         "memory_limiter": {
           "check_interval": "5s",
           "limit_percentage": 80,
@@ -315,7 +317,7 @@ spec:
             {
               "context": "datapoint",
               "statements": [
-                'set(attributes["deployment_environment"], "production")',
+                'set(attributes["deployment_environment"], "acceptance")',
                 'set(attributes["service_namespace"], "naturalis.bii.dissco")',
                 'set(attributes["service_name"], "dissco-deploy")',
                 'set(attributes["service_owner"], "soulaine.theocharides@naturalis.nl")',
