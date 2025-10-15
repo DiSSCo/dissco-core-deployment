@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: data-exporter-backend
-          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-459c4ff   # Jun-26-2025
+          image: public.ecr.aws/dissco/dissco-data-exporter-backend:sha-890761f   # Jul-11-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -40,7 +40,7 @@ spec:
             - name: job.endpoint
               value: https://disscover.dissco.eu/api/data-export/v1/internal
             - name: job.image
-              value: public.ecr.aws/dissco/dissco-export-job:sha-77df19d  # June 25, 2025
+              value: public.ecr.aws/dissco/dissco-export-job:sha-740b183  # Aug-22-2025
             - name: job.bucketName
               value: dissco-data-export-production
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
@@ -101,3 +101,4 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: "aws-secrets"
+"
