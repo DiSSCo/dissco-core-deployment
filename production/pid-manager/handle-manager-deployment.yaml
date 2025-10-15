@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-handle-manager-handle
-          image: public.ecr.aws/dissco/handle-manager:sha-377d206   # Jul-01-2025
+          image: public.ecr.aws/dissco/handle-manager:sha-ff11956   # Sep-10-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
