@@ -64,14 +64,25 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: Role
 metadata:
-  name: orchestration-backend-secret-manager
+  namespace: data-export-job
+  name: orchestration-backend-data-export-role
+rules:
+  - apiGroups: [ "batch" ] # "" indicates the core API group
+    resources: [ "cronjobs" ]
+    verbs: [ "get", "list", "watch", "create", "update", "patch", "delete" ]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: data-export-cron-manager-role
+  namespace: data-export-job
 subjects:
   - kind: ServiceAccount
     name: dissco-orchestration-backend-sa
     namespace: default
 roleRef:
-  kind: ClusterRole
-  name: secret-manager
+  kind: Role
+  name: orchestration-backend-data-export-role
   apiGroup: rbac.authorization.k8s.io
