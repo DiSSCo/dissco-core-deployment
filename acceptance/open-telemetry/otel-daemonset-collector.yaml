@@ -23,7 +23,7 @@ spec:
         fieldRef:
           fieldPath: status.podIP
     - name: CLUSTER_NAME
-      value: "test-cluster"
+      value: "acceptance-cluster"
   config:
     {
       "connectors": { },
@@ -42,46 +42,16 @@ spec:
               "id": "get-format",
               "routes": [
                 {
-                  "output": "parser-docker",
-                  "expr": "body matches \"^\\\\{\""
-                },
-                {
-                  "output": "parser-crio",
-                  "expr": "body matches \"^[^ Z]+ \""
-                },
-                {
                   "output": "parser-containerd",
                   "expr": "body matches \"^[^ Z]+Z\""
                 }
               ]
-            },
-            # Parse CRI-O format
-            {
-              "type": "regex_parser",
-              "id": "parser-crio",
-              "regex": "^(?P<time>[^ Z]+) (?P<stream>stdout|stderr) (?P<logtag>[^ ]*) ?(?P<log>.*)$",
-              "output": "extract_metadata_from_filepath",
-              "timestamp": {
-                "parse_from": "attributes.time",
-                "layout_type": "gotime",
-                "layout": "2006-01-02T15:04:05.999999999Z07:00"
-              }
             },
             # Parse CRI-Containerd format
             {
               "type": "regex_parser",
               "id": "parser-containerd",
               "regex": "^(?P<time>[^ ^Z]+Z) (?P<stream>stdout|stderr) (?P<logtag>[^ ]*) ?(?P<log>.*)$",
-              "output": "extract_metadata_from_filepath",
-              "timestamp": {
-                "parse_from": "attributes.time",
-                "layout": "%Y-%m-%dT%H:%M:%S.%LZ"
-              }
-            },
-            # Parse Docker format
-            {
-              "type": "json_parser",
-              "id": "parser-docker",
               "output": "extract_metadata_from_filepath",
               "timestamp": {
                 "parse_from": "attributes.time",
@@ -149,7 +119,7 @@ spec:
             {
               "context": "datapoint",
               "statements": [
-                'set(attributes["deployment_environment"], "test")',
+                'set(attributes["deployment_environment"], "acceptance")',
                 'set(attributes["service_namespace"], "naturalis.bii.dissco")',
                 'set(attributes["service_name"], "dissco-node")',
                 'set(attributes["service_owner"], "soulaine.theocharides@naturalis.nl")',
