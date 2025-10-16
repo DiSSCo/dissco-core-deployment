@@ -120,3 +120,10 @@ spec:
         queueName: digital-specimen-queue
       authenticationRef:
         name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: digital-media-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
