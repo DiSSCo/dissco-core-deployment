@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mas-scheduler-web
+  labels:
+    app: mas-scheduler-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mas-scheduler-web
+  template:
+    metadata:
+      labels:
+        app: mas-scheduler-web
+        language: java
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: mas-scheduler-web
+          image: public.ecr.aws/dissco/dissco-mas-scheduler-service:sha-eb3b052  # Sep-03-2025
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: spring.profiles.active
+              value: web
+            - name: spring.datasource.url
+              value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-password
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
+            - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
+              value: https://login-demo.dissco.eu/auth/realms/dissco
+            - name: token.id
+              value: demo-api-client
+            - name: token.grantType
+              value: client_credentials
+            - name: endpoint.tokenEndpoint
+              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+            - name: endpoint.handleEndpoint
+              value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
+            - name: token.secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: handle-endpoint-token
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 60
+            failureThreshold: 2
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false

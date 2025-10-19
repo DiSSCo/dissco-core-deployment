@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mas-scheduler-web
+spec:
+  selector:
+    app: mas-scheduler-web
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
