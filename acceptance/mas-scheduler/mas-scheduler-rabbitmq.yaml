@@ -1,0 +1,52 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: mas-scheduler-exchange
+  namespace: rabbitmq
+spec:
+  name: mas-scheduler-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: mas-scheduler-binding
+  namespace: rabbitmq
+spec:
+  source: mas-scheduler-exchange # an existing exchange
+  destination: mas-scheduler-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "mas-scheduler"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: mas-scheduler-dlq-policy # name of this custom resource
+  namespace: rabbitmq
+spec:
+  name: mas-scheduler-dlq-policy
+  pattern: "mas-scheduler-queue"
+  applyTo: "queues"
+  definition:
+    dead-letter-exchange: mas-scheduler-exchange-dlq
+    dead-letter-routing-key: mas-scheduler-dlq
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: mas-scheduler-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: mas-scheduler-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
