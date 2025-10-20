@@ -1,0 +1,37 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: digital-media-relationship-tombstone-exchange-dlq
+  namespace: rabbitmq
+spec:
+  name: digital-media-relationship-tombstone-exchange-dlq # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: digital-media-relationship-tombstone-binding-dlq
+  namespace: rabbitmq
+spec:
+  source: digital-media-relationship-tombstone-exchange-dlq # an existing exchange
+  destination: digital-media-relationship-tombstone-queue-dlq # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "digital-media-relationship-tombstone-dlq"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: digital-media-relationship-tombstone-queue-dlq # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: digital-media-relationship-tombstone-queue-dlq # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster

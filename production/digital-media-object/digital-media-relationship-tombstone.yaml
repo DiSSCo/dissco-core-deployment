@@ -1,0 +1,52 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: digital-media-relationship-tombstone-exchange
+  namespace: rabbitmq
+spec:
+  name: digital-media-relationship-tombstone-exchange # name of the exchange
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: digital-media-relationship-tombstone-binding
+  namespace: rabbitmq
+spec:
+  source: digital-media-relationship-tombstone-exchange # an existing exchange
+  destination: digital-media-relationship-tombstone-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "digital-media-relationship-tombstone"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: digital-media-relationship-tombstone-dlq-policy # name of this custom resource
+  namespace: rabbitmq
+spec:
+  name: digital-media-relationship-tombstone-dlq-policy
+  pattern: "digital-media-relationship-tombstone-queue"
+  applyTo: "queues"
+  definition:
+    dead-letter-exchange: digital-media-relationship-tombstone-exchange-dlq
+    dead-letter-routing-key: digital-media-relationship-tombstone-dlq
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: digital-media-relationship-tombstone-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: digital-media-relationship-tombstone-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
