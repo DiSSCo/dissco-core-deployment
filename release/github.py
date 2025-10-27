@@ -286,6 +286,7 @@ class Github:
             "name": self.release_name,
             "generate_release_notes": True,
             "prerelease": is_prerelease,
+            "make_latest": str(not is_prerelease)
         }
         result = requests.post(
             f"{GITHUB_API}{repository_name}/releases",
