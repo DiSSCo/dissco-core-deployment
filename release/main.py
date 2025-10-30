@@ -94,7 +94,7 @@ def get_latest_tags_prod(service_dict: Dict[str, Service]) -> List[Service]:
     """
     updated_services = set()
     # We look at the acc directory to find which tags to put in the production files
-    for curr_dir in os.scandir(Environment.ACCEPTANCE.value):
+    for curr_dir in os.scandir(f"../{Environment.ACCEPTANCE.value}"):
         if curr_dir.is_dir() and is_dir_of_interest(curr_dir.name, config):
             for entry in os.scandir(curr_dir):
                 with open(entry) as file:
