@@ -6,19 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_2_5__virtual_collection_table.sql: |
-    create type collection_type as enum ('REFERENCE_COLLECTION', 'COMMUNITY_COLLECTION');
-
-    create table virtual_collection
-    (
-        id              text                     not null
-            primary key,
-        version         integer default 1        not null,
-        name            text                     not null,
-        collection_type collection_type          not null,
-        created         timestamp with time zone not null,
-        modified        timestamp with time zone not null,
-        tombstoned      timestamp with time zone,
-        creator         text                     not null,
-        data            jsonb                    not null
-    );
+  V1_2_6__add_annotation_status.sql: |
+    create type annotation_status_enum as enum ('ACCEPTED', 'MERGED', 'PENDING', 'REJECTED', 'TOMBSTONED');
+    alter table public.annotation add status annotation_status_enum;
+    create index annotation_status_index on annotation(target_id, annotation_status);
