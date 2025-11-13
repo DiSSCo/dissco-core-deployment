@@ -127,3 +127,28 @@ spec:
         queueName: digital-media-queue
       authenticationRef:
         name: keda-trigger-auth-rabbitmq-conn
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: digital-media-relationship-tombstone-event-scaled-object
+spec:
+  scaleTargetRef:
+    name: digital-media-relationship-tombstone-event
+  minReplicaCount: 0
+  maxReplicaCount: 1
+  triggers:
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: digital-media-relationship-tombstone-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: digital-media-relationship-tombstone-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
