@@ -6,7 +6,3 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_2_8__modify_annotation_status.sql: |
-    alter type annotation_status_enum add value 'APPROVED';
-    alter type annotation_status_enum remove value 'ACCEPTED';
-    alter type annotation_status_enum remove value 'TOMBSTONED';
