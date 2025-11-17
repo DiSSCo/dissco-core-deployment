@@ -6,8 +6,5 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_3_5__fix_annotation_status.sql: |
-    ALTER TYPE annotation_status_enum RENAME TO status_old;
-    CREATE TYPE annotation_status_enum AS ENUM('APPROVED','MERGED','PENDING','REJECTED','TOMBSTONED');
-    ALTER TABLE annotation ALTER COLUMN annotation_status TYPE annotation_status_enum USING annotation_status::text::annotation_status_enum;
-    DROP TYPE status_old;
+  V1_3_6__drop_unused_table.sql: |
+    DROP TABLE atlas_test;
