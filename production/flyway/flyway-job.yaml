@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: db-migration-
+  name: db-migration-test
   namespace: flyway
   annotations:
     argocd.argoproj.io/hook: PreSync
@@ -20,7 +20,7 @@ spec:
             - info
           env:
             - name: FLYWAY_URL
-              value: ""
+              value: "jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco"
             - name: FLYWAY_USER
               valueFrom:
                 secretKeyRef:
