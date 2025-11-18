@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: migration-configmap
+  namespace: flyway
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+  data:
+    V1_0_1__annotation_status_and_manual_pids:
+      sql:
+        -- Annotation status Column --
+        create type annotation_status_enum as enum ('APPROVED', 'MERGED', 'PENDING', 'REJECTED', 'TOMBSTONED');
+        alter table public.annotation add annotation_status annotation_status_enum;
+        create index annotation_status_index on annotation(target_id, annotation_status);
+
+        -- Manual PID table --
+        create table manual_pid
+        (
+        pid      text,
+        prefix   text
+        );
+        comment on table manual_pid is 'PIDs from which the PID manager may pull';
+        comment on column manual_pid.pid is 'Persistent identifier';
