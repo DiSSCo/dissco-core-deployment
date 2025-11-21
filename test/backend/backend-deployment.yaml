@@ -93,12 +93,12 @@ spec:
             - name: token.grant-type
               value: client_credentials
             - name: token.id
-              value: dissco-processing-service
+              value: dissco-backend
             - name: token.secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: dissco-processing-service-client-secret
+                  key: dissco-backend-client-secret
             - name: endpoint.handle-endpoint
               value: https://dev.dissco.tech/handle-manager/api/pids/v1/
             - name: endpoint.token-endpoint
