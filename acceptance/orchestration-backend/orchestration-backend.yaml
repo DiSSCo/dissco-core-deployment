@@ -89,6 +89,16 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: orchestration-s3-access-key-secret
+            - name: springdoc.swagger-ui.path
+              value: /docs/swagger-ui.html
+            - name: springdoc.api-docs.path
+              value: /docs/api-docs
+            - name: springdoc.swagger-ui.config-url
+              value: /api/docs/api-docs/swagger-config
+            - name: springdoc.swagger-ui.url
+              value: /api/docs/api-docs
+            - name: springdoc.swagger-ui.operationsSorter
+              value: method
           resources:
             requests:
               memory: "500Mi"
