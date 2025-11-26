@@ -1,0 +1,40 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: digital-media-derivative-binding
+  namespace: rabbitmq
+spec:
+  source: provenance-exchange # an existing exchange
+  destination: digital-media-derivative-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "provenance.digitalmedia.#"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: digital-media-derivative-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: digital-media-derivative-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: digital-media-derivative-dlq-policy # name of this custom resource
+  namespace: rabbitmq
+spec:
+  name: digital-media-derivative-dlq-policy
+  pattern: "digital-media-derivative-queue"
+  applyTo: "queues"
+  definition:
+    dead-letter-exchange: digital-media-derivative-exchange-dlq
+    dead-letter-routing-key: digital-media-derivative-dlq
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
