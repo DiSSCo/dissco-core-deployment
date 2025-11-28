@@ -1,10 +1,10 @@
 apiVersion: rabbitmq.com/v1beta1
 kind: Exchange
 metadata:
-  name: virtual-collection-exchange
+  name: virtual-collection-ingestion-exchange
   namespace: rabbitmq
 spec:
-  name: virtual-collection-exchange # name of the exchange
+  name: virtual-collection-ingestion-exchange # name of the exchange
   autoDelete: false
   durable: true
   rabbitmqClusterReference:
@@ -13,28 +13,28 @@ spec:
 apiVersion: rabbitmq.com/v1beta1
 kind: Binding
 metadata:
-  name: virtual-collection-binding
+  name: virtual-collection-ingestion-binding
   namespace: rabbitmq
 spec:
-  source: virtual-collection-exchange # an existing exchange
-  destination: virtual-collection-queue # an existing queue
+  source: virtual-collection-ingestion-exchange # an existing exchange
+  destination: virtual-collection-ingestion-queue # an existing queue
   destinationType: queue # can be 'queue' or 'exchange'
-  routingKey: "virtual-collection"
+  routingKey: "virtual-collection-ingestion"
   rabbitmqClusterReference:
     name: rabbitmq-cluster # name of the RabbitMQ cluster
 ---
 apiVersion: rabbitmq.com/v1beta1
 kind: Policy
 metadata:
-  name: virtual-collection-dlq-policy # name of this custom resource
+  name: virtual-collection-ingestion-dlq-policy # name of this custom resource
   namespace: rabbitmq
 spec:
-  name: virtual-collection-dlq-policy
-  pattern: "virtual-collection-queue"
+  name: virtual-collection-ingestion-dlq-policy
+  pattern: "virtual-collection-ingestion-queue"
   applyTo: "queues"
   definition:
-    dead-letter-exchange: virtual-collection-exchange-dlq
-    dead-letter-routing-key: virtual-collection-dlq
+    dead-letter-exchange: virtual-collection-ingestion-exchange-dlq
+    dead-letter-routing-key: virtual-collection-ingestion-dlq
     delivery-limit: 2
   rabbitmqClusterReference:
     name: rabbitmq-cluster
@@ -42,10 +42,10 @@ spec:
 apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
-  name: virtual-collection-queue # name of this custom resource; does not have to the same as the actual queue name
+  name: virtual-collection-ingestion-queue # name of this custom resource; does not have to the same as the actual queue name
   namespace: rabbitmq
 spec:
-  name: virtual-collection-queue # name of the queue
+  name: virtual-collection-ingestion-queue # name of the queue
   autoDelete: false
   durable: true
   type: "quorum"

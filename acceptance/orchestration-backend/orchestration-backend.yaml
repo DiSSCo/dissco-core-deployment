@@ -19,7 +19,7 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-aafb3d7   # Sep-08-2025
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-dc88759   # Nov-26-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -70,7 +70,7 @@ spec:
                   name: aws-secrets
                   key: handle-endpoint-token
             - name: translator-job.image
-              value: public.ecr.aws/dissco/dissco-core-translator:sha-cb31242   # Aug-26-2025
+              value: public.ecr.aws/dissco/dissco-core-translator:sha-a3afd15   # Oct-29-2025
             - name: mas.runningEndpoint
               value: https://sandbox.dissco.tech/api/v1/mjr
             - name: translator-job.export.export-image
@@ -89,6 +89,16 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: orchestration-s3-access-key-secret
+            - name: springdoc.swagger-ui.path
+              value: /docs/swagger-ui.html
+            - name: springdoc.api-docs.path
+              value: /docs/api-docs
+            - name: springdoc.swagger-ui.config-url
+              value: /api/docs/api-docs/swagger-config
+            - name: springdoc.swagger-ui.url
+              value: /api/docs/api-docs
+            - name: springdoc.swagger-ui.operationsSorter
+              value: method
           resources:
             requests:
               memory: "500Mi"

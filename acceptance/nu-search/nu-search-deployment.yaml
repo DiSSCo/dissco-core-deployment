@@ -65,6 +65,10 @@ spec:
               value: /index-files/col-temp.zip
             - name: JAVA_TOOL_OPTIONS
               value: -XX:MaxRAMPercentage=85
+            - name: rabbitmq.exchange-name
+              value: virtual-collection-ingestion-exchange
+            - name: rabbitmq.routing-key-name
+              value: virtual-collection-ingestion
           resources:
             requests:
               memory: "2Gi"
