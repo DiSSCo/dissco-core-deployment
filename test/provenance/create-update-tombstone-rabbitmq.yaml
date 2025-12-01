@@ -1,11 +1,10 @@
 apiVersion: rabbitmq.com/v1beta1
 kind: Exchange
 metadata:
-  name: provenance-exchange
+  name: create-update-tombstone-exchange
   namespace: rabbitmq
 spec:
-  name: provenance-exchange # name of the exchange
-  type: topic
+  name: create-update-tombstone-exchange # name of the exchange
   autoDelete: false
   durable: true
   rabbitmqClusterReference:
@@ -14,38 +13,38 @@ spec:
 apiVersion: rabbitmq.com/v1beta1
 kind: Binding
 metadata:
-  name: provenance-binding
+  name: create-update-tombstone-binding
   namespace: rabbitmq
 spec:
-  source: provenance-exchange # an existing exchange
-  destination: provenance-queue # an existing queue
+  source: create-update-tombstone-exchange # an existing exchange
+  destination: create-update-tombstone-queue # an existing queue
   destinationType: queue # can be 'queue' or 'exchange'
-  routingKey: "provenance.#"
+  routingKey: "create-update-tombstone"
   rabbitmqClusterReference:
     name: rabbitmq-cluster # name of the RabbitMQ cluster
 ---
 apiVersion: rabbitmq.com/v1beta1
 kind: Policy
 metadata:
-  name: provenance-dlq-policy # name of this custom resource
+  name: create-update-tombstone-dlq-policy # name of this custom resource
   namespace: rabbitmq
 spec:
-  name: provenance-dlq-policy
-  pattern: "provenance-queue"
+  name: create-update-tombstone-dlq-policy
+  pattern: "create-update-tombstone-queue"
   applyTo: "queues"
   definition:
-    dead-letter-exchange: provenance-exchange-dlq
-    dead-letter-routing-key: provenance-dlq
+    dead-letter-exchange: create-update-tombstone-exchange-dlq
+    dead-letter-routing-key: create-update-tombstone-dlq
   rabbitmqClusterReference:
     name: rabbitmq-cluster
 ---
 apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
-  name: provenance-queue # name of this custom resource; does not have to the same as the actual queue name
+  name: create-update-tombstone-queue # name of this custom resource; does not have to the same as the actual queue name
   namespace: rabbitmq
 spec:
-  name: provenance-queue # name of the queue
+  name: create-update-tombstone-queue # name of the queue
   autoDelete: false
   durable: true
   type: "quorum"
