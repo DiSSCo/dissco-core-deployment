@@ -71,6 +71,8 @@ spec:
               value: dissco-processing-service
             - name: token.grantType
               value: client_credentials
+            - name: token.tokenEndpoint
+              value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
             - name: token.secret
               valueFrom:
                 secretKeyRef:
