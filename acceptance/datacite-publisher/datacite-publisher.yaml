@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-984b648   # Jun-24-2025
+          image: public.ecr.aws/dissco/datacite-publisher:sha-cc4e536   # Dec-04-2025
           imagePullPolicy: Always
           env:
             - name: doi.prefix
@@ -36,7 +36,7 @@ spec:
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: datacite.endpoint
               value: https://api.test.datacite.org/dois
-            - name: handle.endpoint
+            - name: pid.endpoint
               value: https://sandbox.dissco.tech/doi-manager/api/pids/v1/
             - name: datacite.repository-id
               valueFrom:
