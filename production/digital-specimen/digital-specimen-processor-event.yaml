@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-digital-specimen-processor-event
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-792ecb1   # Sep-05-2025
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-175f21b   # Nov-17-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -74,7 +74,7 @@ spec:
             - name: auth.tokenEndpoint
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: handle.endpoint
-              value: https://api.dissco.eu/doi/v1/
+              value: https://api.dissco.eu/doi/v1
             - name: auth.secret
               valueFrom:
                 secretKeyRef:

@@ -106,10 +106,14 @@ def get_latest_tags_prod(service_dict: Dict[str, Service]) -> List[Service]:
                             if image_name not in updated_services:
                                 image_tag = match.group(2)
                                 pushed_date = DATE_PATTERN.match(line).group(1)
-                                prev_version = service_dict[image_name]
-                                prev_version.set_latest_tag(image_tag)
-                                prev_version.set_pushed_date(pushed_date)
-                                updated_services.add(image_name)
+                                prev_version = service_dict.get(image_name)
+                                if prev_version:
+                                    prev_version.set_latest_tag(image_tag)
+                                    prev_version.set_pushed_date(pushed_date)
+                                    updated_services.add(image_name)
+                                else:
+                                    print(f"Missing image for {image_name}")
+
 
     return [val for val in service_dict.values()]
 
