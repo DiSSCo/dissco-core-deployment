@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elvis-unavailable
+  labels:
+    app: elvis-unavailable
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elvis-unavailable
+  template:
+    metadata:
+      labels:
+        app: elvis-unavailable
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: elvis-unavailable
+          image: public.ecr.aws/dissco/elvis-unavailable:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "100Mi"
+              cpu: "200m"
+      restartPolicy: Always

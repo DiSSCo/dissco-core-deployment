@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: elvis-unavailable
+spec:
+  selector:
+    app: elvis-unavailable
+  ports:
+    - protocol: TCP
+      port: 3000
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: elvis-unavailable-route
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`elvis.dissco.eu`)
+      kind: Rule
+      services:
+        - name: elvis-unavailable
+          namespace: default
+          port: 3000
