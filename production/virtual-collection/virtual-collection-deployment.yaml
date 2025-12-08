@@ -1,30 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-core-annotation-processing-event-auto
+  name: dissco-virtual-collection-service
   labels:
-    app: dissco-core-annotation-processing-event-auto
+    app: dissco-virtual-collection-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-core-annotation-processing-event-auto
+      app: dissco-virtual-collection-service
   template:
     metadata:
       labels:
-        app: dissco-core-annotation-processing-event-auto
+        app: dissco-virtual-collection-service
         language: java
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-core-annotation-processing-event-auto
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:v1-2-3-patch  # Dec-04-2025
+        - name: dissco-virtual-collection-service
+          image: public.ecr.aws/dissco/dissco-virtual-collection-service:sha-aa1a2eb  # Nov-04-2025
           imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
           env:
-            - name: spring.profiles.active
-              value: rabbitmq-auto
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
@@ -51,8 +47,6 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: elastic-password
-            - name: elasticsearch.index-name
-              value: annotation
             - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
@@ -65,41 +59,25 @@ spec:
                   key: rabbitmq-username
             - name: spring.rabbitmq.host
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
-            - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login-demo.dissco.eu/auth/realms/dissco
-            - name: token.id
-              value: production-dissco-processor
-            - name: token.grantType
-              value: client_credentials
-            - name: token.secret
-              valueFrom:
-                secretKeyRef:
-                  name: aws-secrets
-                  key: production-dissco-processor-token
-            - name: endpoint.handle-endpoint
-              value: https://api.dissco.eu/handle/v1/
-            - name: endpoint.token-endpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:
             requests:
               memory: "1Gi"
-              cpu: "200m"
-              ephemeral-storage: "2Gi"
+              cpu: "500m"
+              ephemeral-storage: "10Gi"
             limits:
               memory: "1Gi"
               cpu: "1000m"
-              ephemeral-storage: "4Gi"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 60
+            initialDelaySeconds: 15
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 60
+            initialDelaySeconds: 15
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true
@@ -108,17 +86,24 @@ spec:
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: dissco-core-annotation-processing-event-auto-scaled-object
+  name: dissco-virtual-collection-service-scaled-object
 spec:
   scaleTargetRef:
-    name: dissco-core-annotation-processing-event-auto
+    name: dissco-virtual-collection-service
   minReplicaCount: 0
-  maxReplicaCount:  2
+  maxReplicaCount:  1
   triggers:
     - type: rabbitmq
       metadata:
         mode: QueueLength
         value: "1"
-        queueName: auto-accepted-annotation-queue
+        queueName: virtual-collection-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: virtual-collection-ingestion-queue
       authenticationRef:
         name: keda-trigger-auth-rabbitmq-conn
