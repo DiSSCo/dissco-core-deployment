@@ -55,7 +55,7 @@ spec:
             - name: spring.rabbitmq.host
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: token.id
-              value: dissco-orchestration
+              value: dissco-orchestration-backend
             - name: token.grant-type
               value: client_credentials
             - name: endpoint.token-endpoint
@@ -74,7 +74,7 @@ spec:
             - name: translator-job.export.export-image
               value: public.ecr.aws/dissco/source-system-job-scheduler:latest
             - name: translator-job.export.keycloak
-              value: https://login-demo.dissco.eu/
+              value: https://keycloak.iam.naturalis.io/
             - name: mas.runningEndpoint
               value: https://dev.dissco.tech/api/v1/mjr
             - name: s3.accessKey
@@ -115,8 +115,9 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 60
-            failureThreshold: 2
+            initialDelaySeconds: 30
+            failureThreshold: 6
+            periodSeconds: 10
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
