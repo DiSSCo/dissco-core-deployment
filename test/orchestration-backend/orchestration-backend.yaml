@@ -74,7 +74,7 @@ spec:
             - name: translator-job.export.export-image
               value: public.ecr.aws/dissco/source-system-job-scheduler:latest
             - name: translator-job.export.keycloak
-              value: https://login-demo.dissco.eu/
+              value: https://keycloak.iam.naturalis.io/
             - name: mas.runningEndpoint
               value: https://dev.dissco.tech/api/v1/mjr
             - name: s3.accessKey
