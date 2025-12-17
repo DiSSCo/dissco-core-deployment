@@ -35,6 +35,7 @@ spec:
   definition:
     dead-letter-exchange: nu-search-exchange-dlq
     dead-letter-routing-key: nu-search-dlq
+    delivery-limit: 1
   rabbitmqClusterReference:
     name: rabbitmq-cluster
 ---
