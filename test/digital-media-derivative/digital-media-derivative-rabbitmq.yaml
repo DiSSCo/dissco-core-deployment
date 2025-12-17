@@ -36,5 +36,6 @@ spec:
   definition:
     dead-letter-exchange: digital-media-derivative-exchange-dlq
     dead-letter-routing-key: digital-media-derivative-dlq
+    delivery-limit: 1
   rabbitmqClusterReference:
     name: rabbitmq-cluster

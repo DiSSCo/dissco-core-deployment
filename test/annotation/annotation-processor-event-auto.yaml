@@ -67,21 +67,19 @@ spec:
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev
-            - name: token.id
+            - name: spring.security.oauth2.client.registration.dissco.client-id
               value: dissco-processing-service
-            - name: token.grantType
+            - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
-            - name: token.tokenEndpoint
+            - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
-            - name: token.secret
+            - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-processing-service-client-secret
             - name: endpoint.handle-endpoint
               value: https://dev.dissco.tech/handle-manager/api/pids/v1/
-            - name: endpoint.token-endpoint
-              value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
           resources:
             requests:
               memory: "1Gi"

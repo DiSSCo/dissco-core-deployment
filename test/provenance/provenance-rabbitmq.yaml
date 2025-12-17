@@ -36,6 +36,7 @@ spec:
   definition:
     dead-letter-exchange: provenance-exchange-dlq
     dead-letter-routing-key: provenance-dlq
+    delivery-limit: 1
   rabbitmqClusterReference:
     name: rabbitmq-cluster
 ---
