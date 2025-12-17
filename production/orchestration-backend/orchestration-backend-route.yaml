@@ -51,6 +51,14 @@ spec:
           port: 8080
       middlewares:
         - name: dissco-orchestration-backend-cors-headers
+    - match: Host(`api.dissco.eu`) && PathPrefix(`/orchestration`)
+      kind: Rule
+      services:
+        - name: dissco-orchestration-backend-service
+          namespace: default
+          port: 8080
+      middlewares:
+        - name: dissco-orchestration-backend-health-stripprefix
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
