@@ -90,18 +90,18 @@ spec:
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: application.base-url
               value: https://dev.dissco.tech/api
-            - name: token.grant-type
+            - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
-            - name: token.id
+            - name: spring.security.oauth2.client.registration.dissco.client-id
               value: dissco-backend
-            - name: token.secret
+            - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-backend-client-secret
             - name: endpoint.handle-endpoint
               value: https://dev.dissco.tech/handle-manager/api/pids/v1/
-            - name: endpoint.token-endpoint
+            - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
           resources:
             requests:

@@ -17,7 +17,7 @@ metadata:
   namespace: rabbitmq
 spec:
   source: digital-media-relationship-tombstone-exchange-dlq # an existing exchange
-  destination: digital-media-relationship-tombstone-dlq # an existing queue
+  destination: digital-media-relationship-tombstone-queue-dlq # an existing queue
   destinationType: queue # can be 'queue' or 'exchange'
   routingKey: "digital-media-relationship-tombstone-dlq"
   rabbitmqClusterReference:
@@ -26,10 +26,10 @@ spec:
 apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
-  name: digital-media-relationship-tombstone-dlq # name of this custom resource; does not have to the same as the actual queue name
+  name: digital-media-relationship-tombstone-queue-dlq # name of this custom resource; does not have to the same as the actual queue name
   namespace: rabbitmq
 spec:
-  name: digital-media-relationship-tombstone-dlq # name of the queue
+  name: digital-media-relationship-tombstone-queue-dlq # name of the queue
   autoDelete: false
   durable: true
   type: "quorum"
