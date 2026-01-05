@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-digital-specimen-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-175f21b   # Nov-17-2025
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-0d275b6  # Dec-17-2025
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -67,21 +67,25 @@ spec:
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco
-            - name: auth.id
+            - name: spring.security.oauth2.client.registration.dissco.client-id
               value: production-dissco-processor
-            - name: auth.grantType
+            - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
-            - name: auth.tokenEndpoint
+            - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
             - name: handle.endpoint
               value: https://api.dissco.eu/doi/v1
-            - name: auth.secret
+            - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
                   key: production-dissco-processor-token
             - name: caching.spring.ttl
               value: PT6H
+            - name: rabbitmq.provenance.exchange-name
+              value: create-update-tombstone-exchange
+            - name: rabbitmq.provenance.routing-key-prefix
+              value: create-update-tombstone
           resources:
             requests:
               memory: "500Mi"
