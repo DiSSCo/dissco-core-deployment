@@ -48,7 +48,7 @@ spec:
             - name: springdoc.swagger-ui.url
               value: /handle-manager/api/pids/v1/docs/api-docs
             - name: spring.datasource.url
-              value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -81,14 +81,15 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 45
+            initialDelaySeconds: 120
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 45
-            failureThreshold: 2
+            initialDelaySeconds: 30
+            failureThreshold: 6
+            periodSeconds: 10
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
