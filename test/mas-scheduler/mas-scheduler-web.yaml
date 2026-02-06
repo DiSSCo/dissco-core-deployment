@@ -51,15 +51,15 @@ spec:
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev
-            - name: token.id
-              value: dissco-mas-scheduler
-            - name: token.grantType
+            - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
-            - name: endpoint.tokenEndpoint
+            - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
             - name: endpoint.handleEndpoint
               value: https://dev.dissco.tech/handle-manager/api/pids/v1/
-            - name: token.secret
+            - name: spring.security.oauth2.client.registration.dissco.client-id
+              value: dissco-mas-scheduler
+            - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
