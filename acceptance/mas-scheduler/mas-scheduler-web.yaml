@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: mas-scheduler-web
-          image: public.ecr.aws/dissco/dissco-mas-scheduler-service:sha-d2e2318  # Oct-21-2025
+          image: public.ecr.aws/dissco/dissco-mas-scheduler-service:sha-60ac0a4  # Feb-04-2026
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -50,20 +50,20 @@ spec:
             - name: spring.rabbitmq.host
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://login-demo.dissco.eu/auth/realms/dissco
-            - name: token.id
-              value: demo-api-client
-            - name: token.grantType
+              value: https://keycloak.iam.naturalis.io/realms/dissco-dev
+            - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
-            - name: endpoint.tokenEndpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
+            - name: spring.security.oauth2.client.provider.dissco.token-uri
+              value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
             - name: endpoint.handleEndpoint
               value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
-            - name: token.secret
+            - name: spring.security.oauth2.client.registration.dissco.client-id
+              value: dissco-mas-scheduler
+            - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
-                  key: handle-endpoint-token
+                  key: dissco-mas-scheduler-client-secret
           resources:
             requests:
               memory: "1Gi"

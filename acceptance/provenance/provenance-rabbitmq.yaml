@@ -35,6 +35,7 @@ spec:
   definition:
     dead-letter-exchange: create-update-tombstone-exchange-dlq
     dead-letter-routing-key: create-update-tombstone-dlq
+    delivery-limit: 1
   rabbitmqClusterReference:
     name: rabbitmq-cluster
 ---
