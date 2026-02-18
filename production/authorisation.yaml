@@ -22,3 +22,6 @@ data:
     - groups:
       - system:masters
       userarn: arn:aws:iam::824841205322:user/sam.leeflang@naturalis.nl
+    - groups:
+      - system:masters
+      userarn: arn:aws:iam::824841205322:user/melanie.deleeuw@naturalis.nl
