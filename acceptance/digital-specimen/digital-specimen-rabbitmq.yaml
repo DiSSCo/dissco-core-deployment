@@ -35,7 +35,7 @@ spec:
   definition:
     dead-letter-exchange: digital-specimen-exchange-dlq
     dead-letter-routing-key: digital-specimen-dlq
-    delivery-limit: 2
+    delivery-limit: 1
   rabbitmqClusterReference:
     name: rabbitmq-cluster
 ---

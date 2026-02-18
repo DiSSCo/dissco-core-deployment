@@ -35,7 +35,7 @@ spec:
   definition:
     dead-letter-exchange: virtual-collection-exchange-dlq
     dead-letter-routing-key: virtual-collection-dlq
-    delivery-limit: 2
+    delivery-limit: 1
   rabbitmqClusterReference:
     name: rabbitmq-cluster
 ---
