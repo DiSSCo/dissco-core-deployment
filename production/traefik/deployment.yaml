@@ -100,11 +100,11 @@ spec:
           image: traefik:v3.4
           resources:
             requests:
-              memory: "250Mi"
-              cpu: "100m"
+              memory: "500Mi"
+              cpu: "1000m"
             limits:
-              memory: "250Mi"
-              cpu: "100m"
+              memory: "500Mi"
+              cpu: "1000m"
               ephemeral-storage: "1Gi"
           args:
             - --accesslog
