@@ -75,7 +75,7 @@ spec:
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
             - name: handle.endpoint
               value: https://sandbox.dissco.tech/doi-manager/api/pids/v1
-            - name: auth.secret
+            - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
