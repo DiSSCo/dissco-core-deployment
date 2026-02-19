@@ -6,5 +6,6 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_3_6__drop_unused_table.sql: |
-    DROP TABLE atlas_test;
+  V1_3_7__add_colid_column.sql: |
+    alter table digital_specimen
+    add col_id text;
