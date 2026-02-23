@@ -25,3 +25,5 @@ data:
   V1_2__update_test_table.sql: |
     alter table migration_test.test_table
     add another_col text;
+  V1_3_6__drop_unused_table.sql: |
+    DROP TABLE atlas_test;
