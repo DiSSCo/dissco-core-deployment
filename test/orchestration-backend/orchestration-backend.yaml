@@ -73,6 +73,10 @@ spec:
               value: dev.dissco.tech
             - name: translator-job.export.export-image
               value: public.ecr.aws/dissco/source-system-job-scheduler:latest
+            - name: translator-job.rabbitmq.routingKeyName
+              value: source-system-data-checker
+            - name: translator-job.rabbitmq.exchange-nane
+              value: source-system-data-checker-exchange
             - name: translator-job.export.keycloak
               value: https://keycloak.iam.naturalis.io/
             - name: mas.runningEndpoint
