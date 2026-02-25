@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: source-system-data-checker
-          image: public.ecr.aws/dissco/source-system-data-checker-service
+          image: public.ecr.aws/dissco/source-system-data-checker
           imagePullPolicy: Always
           ports:
             - containerPort: 80
