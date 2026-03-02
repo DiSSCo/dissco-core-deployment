@@ -73,7 +73,9 @@ spec:
               value: dissco-processing-service
             - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
-            - name: token.secret
+            - name: spring.security.oauth2.client.provider.dissco.token-uri
+              value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
+            - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets

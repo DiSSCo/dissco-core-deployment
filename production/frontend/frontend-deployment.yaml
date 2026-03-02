@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: disscover
-          image: public.ecr.aws/dissco/disscover-production:   # 
+          image: public.ecr.aws/dissco/disscover-production:sha-8319280  # Feb-24-2026
           ports:
             - containerPort: 3000
           resources:
@@ -27,4 +27,4 @@ spec:
             limits:
               memory: "100Mi"
               cpu: "200m"
-      restartPolicy: Always restartPolicy: Always
+      restartPolicy: Always
