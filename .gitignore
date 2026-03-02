@@ -1,2 +1,6 @@
 .idea
 *.iml
+.venv
+release/__pycache__
+.env
+.gitignore

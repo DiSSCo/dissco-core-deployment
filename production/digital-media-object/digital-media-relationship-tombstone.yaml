@@ -35,6 +35,7 @@ spec:
   definition:
     dead-letter-exchange: digital-media-relationship-tombstone-exchange-dlq
     dead-letter-routing-key: digital-media-relationship-tombstone-dlq
+    delivery-limit: 1
   rabbitmqClusterReference:
     name: rabbitmq-cluster
 ---
