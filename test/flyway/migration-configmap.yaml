@@ -6,6 +6,10 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_3_7__add_colid_column.sql: |
-    alter table digital_specimen
-    add col_id text;
+  V1_3_8__add_source_system_index.sql: |
+    create index digital_specimen_source_system_id_index
+    on digital_specimen (source_system_id);
+    alter table digital_media_object
+    add source_system_id text;
+    create index digital_media_source_system_id_index
+    on digital_media_object (source_system_id);
