@@ -5,6 +5,7 @@ For release see also: [Releases](https://github.com/DiSSCo/dissco-developers-doc
 
 ## Setup
 
+* **Important:** Before proceeding, run `aws login`
 * If you want to exclude certain services, you can add directory names to `exclude_directories`
 * If you want to only update specific services, you can add the directory names to `include_directories`. This
   overwrites
@@ -14,8 +15,8 @@ For release see also: [Releases](https://github.com/DiSSCo/dissco-developers-doc
   as an environment variable to authenticate with the GitHub API
 * Configure the application using the `config` variable in `main.py`.
     * `env`: Selects the environment, `Environment.ACCEPTANCE` or `Environment.PRODUCTION`
-    * `do_update`: Will update deployment files and create releases on GitHub if set to `True`. Otherwise, just compiles
-      release notes.
+    * `do_update`: Will update deployment files and create releases on GitHub if set to `True`. Otherwise, the script
+      will only compile release notes.
     * `exclude_directories`: Consists of default list of directories not to update. The user may add more directories to
       exclude from the given release
     * `include_directories`: Overwrites `exclude_directories` to only update services in the given directories.
@@ -47,7 +48,7 @@ The release notes are always compiled, regardless of what `config.do_update` is 
 
 The following section gives an outline for automatic increments of release names. If `release-names` is set in the
 configuration, the user's input overrides these rules. The user's input is implemented **verbatim**, meaning any
-additional tags (e.g. `-alpha` for acceptance releases) must be included in the release name. 
+additional tags (e.g. `-alpha` for acceptance releases) must be included in the release name.
 
 The file `latest_release.json` captures the current release numbers for each environment. This file will determine the
 release names for each service if no release name has been set according to the following rules:
@@ -87,21 +88,37 @@ GitHub, we call the GitHub `/tags` endpoint and match the DiSSCover image tag to
 
 ## 4. ArgoCD
 
-You now need to check in your changes to git. 
+You now need to commit your changes to git.
 This includes the updated deployment files and the release notes.
 ArgoCD will then pick up the changes and deploy them.
 Monitor the release and make sure everything is working as expected.
 
+## Patching between Releases
+
+You can use this script for out-of-cycle or patch releases. Whether or not release notes are generated depends on the
+target branch of your changes.
+
+* **Case 1: Releasing from `main`** If you are bumping the image tag to a commit that is already on `main`, run the
+  script as usual. It will automatically detect the image names and generate the corresponding release notes.
+
+* **Case 2: Releasing from a separate branch** Use this approach if you are hotfixing an older release and do not want
+  to deploy the latest `main` branch to acceptance or production. The script will still update the image tags, but **it
+  will not generate release notes**.
+
+  > **Note:** For the script to recognize the release, patch image tags on branches must strictly follow the
+  `dd-mm-yyyy-patch` naming pattern.
+
 ### Important
 
 **Be sure you are updating the correct environment before proceeding. You will need to set the environment in the script
-**
+configuration**
 
-## Managing Interdependent Change
+## Managing Breaking Changes
 
-These kinds of changes depend on a change from outside the codebase -- database changes, data model
-changes, deployment changes, etc. **This release script does not automatically manage any breaking changes**.
+Changes that depend on a change from outside the codebase, such as database changes, data model
+changes, deployment changes, etc., are not handled by this script. Check the Release Preparation Guide for notes on how
+to address these kinds of changes.
 
 You can identify where breaking changes have occurred by looking at the release notes. Any breaking change should be
 identified with a "!" in the note. You can use this notification to refer back to the relevant Pull Request and update
-the environment accordingly before proceeding. 
+the environment accordingly before proceeding.

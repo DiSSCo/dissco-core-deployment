@@ -12,8 +12,8 @@ ECR_PUBLIC = "ecr-public"
 
 # Pattern that identifies image name (May contain 'latest' or a specific sha image tag)
 # Group 1 = image name (e.g. "annotation-processing-service")
-# Group 2 = image tag (e.g. sha-17c02bb)
-IMG_REGEX = r".+public\.ecr\.aws\/dissco\/([\w-]+):(sha-\w{7}).+"
+# Group 2 = image tag (e.g. sha-17c02bb or 02-01-2026)
+IMG_REGEX = r".+public\.ecr\.aws\/dissco\/([\w-]+):((sha-\w{7})|(.+-patch)).+"
 IMG_PATTERN = re.compile(IMG_REGEX)
 
 DATE_REGEX = r".+(\w{3}-\d{2}-\d{4})"
@@ -34,7 +34,7 @@ DEFAULT_EXCLUDE_DIRECTORIES = [
     "machine-annotation-service",
     "mas_inspector",
     "open-telemetry",
-    "flyway"
+    "flyway",
 ]
 
 
@@ -47,7 +47,7 @@ def get_image_names(
     :return: List of image names and the data associated with them associated with these services
     """
     service_dict = {}
-    for curr_dir in os.scandir("../"+environment.value):
+    for curr_dir in os.scandir("../" + environment.value):
         if curr_dir.is_dir() and is_dir_of_interest(curr_dir.name, config):
             for entry in os.scandir(curr_dir):
                 with open(entry) as file:
@@ -114,8 +114,7 @@ def get_latest_tags_prod(service_dict: Dict[str, Service]) -> List[Service]:
                                 else:
                                     print(f"Missing image for {image_name}")
 
-
-    return [val for val in service_dict.values()]
+    return service_dict.values()
 
 
 def get_latest_tags_acc(service_dict: Dict[str, Service]) -> List[Service]:
@@ -182,14 +181,25 @@ def update_deployment_files(service_list: List[Service]) -> None:
 
 if __name__ == "__main__":
     """
-    User to set desired configuration!
+    !! Before running, run `aws login` and authenticate with AWS. !!
+    
+    User to set configuration parameters:
+    * env: Environment.ACCEPTANCE or Environment.PRODUCTION
+    * do_update: Set to True to update files and create new Github release
+    * exclude_directories:  Add services you wish to exclude to this list -- all others will be included. Use directory names.
+    * include_directories: If this list is not empty, we will only update services from this list (i.e. overrides exclude_directory configuration)
+    * release_name (optional): Set this to the desired release name. If blank, release name will follow rules  described in in README
     """
     config = {
-        "env": None,  # Match to desired environment
-        "do_update": False,  # set to True to update files and create new Github release
-        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES,  # Add services you wish to exclude to this list -- all others will be included
-        "include_directories": [],  # If this list is not empty, we will only update services from this list,
-        "release_name": "",  # Set this to the desired release name; otherwise, will follow release rules in readme
+        "env": Environment.ACCEPTANCE,
+        "do_update": False,
+        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
+        + ["source_system_data_checker"],
+        "include_directories": [
+            "annotation",
+            "orchestration-backend",
+        ],
+        "release_name": "",
     }
     env = config.get("env")
     if env is None:

@@ -17,8 +17,8 @@ RELEASE_FILE = "release-notes/latest_release.json"
 
 def github_auth() -> Dict[str, str]:
     return {
-        "Authorization": f"Bearer {os.environ['GITHUB_TOKEN']}",
-        "X-GitHub-Api-Version": "2022-11-28",
+        "Authorization": f"Token {os.environ['GITHUB_TOKEN']}",
+        "X-GitHub-Api-Version": "2026-03-10",
     }
 
 
@@ -87,7 +87,9 @@ def fetch_release_notes(service: Service) -> str:
     """
     if service.prev_tag == service.latest_tag:
         service.set_release_notes(NO_CHANGES)
-        return f"## {service.image_name}\n{NO_CHANGES}"
+        return f"## {service.image_name}\n{NO_CHANGES}\n"
+    if "patch" in service.prev_tag or "patch" in service.latest_tag:
+        return f"## {service.image_name}\nAutomatic release notes not generated for patches"
     body = {
         "tag_name": get_github_tag_name(service, False),
         "previous_tag_name": get_github_tag_name(service, True),
@@ -100,8 +102,8 @@ def fetch_release_notes(service: Service) -> str:
     )
     try:
         result.raise_for_status()
-    except Exception:
-        logging.error(f"Failed to fetch release notes for {service.image_name}")
+    except Exception as e:
+        logging.error(f"Failed to fetch release notes for {service.image_name}", e)
         return f"## {service.image_name}\nUnable to automatically generate notes\n\n"
     if "application/json" in result.headers.get("content-type"):
         return format_release_notes(service, result.json().get("body"))
@@ -286,7 +288,7 @@ class Github:
             "name": self.release_name,
             "generate_release_notes": True,
             "prerelease": is_prerelease,
-            "make_latest": str(not is_prerelease)
+            "make_latest": str(not is_prerelease),
         }
         result = requests.post(
             f"{GITHUB_API}{repository_name}/releases",
