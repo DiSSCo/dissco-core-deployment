@@ -188,10 +188,10 @@ if __name__ == "__main__":
     * do_update: Set to True to update files and create new Github release
     * exclude_directories:  Add services you wish to exclude to this list -- all others will be included. Use directory names.
     * include_directories: If this list is not empty, we will only update services from this list (i.e. overrides exclude_directory configuration)
-    * release_name (optional): Set this to the desired release name. If blank, release name will follow rules  described in in README
+    * release_name (optional): Set this to the desired release name. If blank, release name will follow rules described in README
     """
     config = {
-        "env": Environment.ACCEPTANCE,
+        "env": None,
         "do_update": False,
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
         + ["source_system_data_checker"],
