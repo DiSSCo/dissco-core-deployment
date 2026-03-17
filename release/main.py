@@ -195,10 +195,7 @@ if __name__ == "__main__":
         "do_update": False,
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
         + ["source_system_data_checker"],
-        "include_directories": [
-            "annotation",
-            "orchestration-backend",
-        ],
+        "include_directories": [],
         "release_name": "",
     }
     env = config.get("env")
