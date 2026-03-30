@@ -7,7 +7,7 @@ spec:
   source: provenance-exchange # an existing exchange
   destination: digital-media-derivative-queue # an existing queue
   destinationType: queue # can be 'queue' or 'exchange'
-  routingKey: "provenance.digitalmedia.#"
+  routingKey: "provenance.digital-media.#"
   rabbitmqClusterReference:
     name: rabbitmq-cluster # name of the RabbitMQ cluster
 ---

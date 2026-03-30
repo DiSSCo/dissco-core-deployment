@@ -73,7 +73,7 @@ spec:
               value: client_credentials
             - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
-            - name: handle.endpoint
+            - name: doi.endpoint
               value: https://dev.dissco.tech/doi-manager/api/pids/v1
             - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:

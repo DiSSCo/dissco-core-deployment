@@ -65,9 +65,9 @@ spec:
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
-            - name: feign.annotations
+            - name: web.annotationEndpoint
               value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation
-            - name: feign.mas
+            - name: web.masEndpoint
               value: mas-scheduler-web.default.svc.cluster.local:8080/
             - name: mongo.connection-string
               valueFrom:
@@ -99,10 +99,22 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-backend-client-secret
-            - name: endpoint.handle-endpoint
+            - name: web.handleEndpoint
               value: https://dev.dissco.tech/handle-manager/api/pids/v1/
             - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
+            - name: s3.access-key
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: media-derivative-s3-access-key
+            - name: s3.access-secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: media-derivative-s3-access-key-secret
+            - name: s3.bucket-name
+              value: dissco-data-media-derivative-test
           resources:
             requests:
               memory: "500Mi"
