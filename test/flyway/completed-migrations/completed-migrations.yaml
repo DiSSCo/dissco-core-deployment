@@ -37,3 +37,6 @@ data:
         add source_system_id text;
     create index digital_media_source_system_id_index
         on digital_media_object (source_system_id);
+  V1_3_9__add_countries_column.sql: |
+    ALTER TABLE virtual_collection
+        ADD COLUMN countries text[];

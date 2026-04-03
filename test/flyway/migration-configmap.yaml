@@ -6,6 +6,6 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
-  V1_3_9__add_countries_column.sql: |
-    ALTER TABLE virtual_collection
-    ADD COLUMN countries text[];
+  V1_4_0__add_translator_report_column.sql: |
+    ALTER TABLE translator_job_record
+    ADD report jsonb;
