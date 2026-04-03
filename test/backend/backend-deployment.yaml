@@ -26,7 +26,7 @@ spec:
             - containerPort: 80
           env:
             - name: spring.datasource.url
-              value: jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+              value: "jdbc:postgresql://terraform-20230822143945532600000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco"
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -38,7 +38,7 @@ spec:
                   name: db-secrets
                   key: db-password
             - name: elasticsearch.hostname
-              value: elastic-search-es-http.elastic.svc.cluster.local
+              value: "elastic-search-es-http.elastic.svc.cluster.local"
             - name: elasticsearch.port
               value: "9200"
             - name: elasticsearch.username
@@ -52,30 +52,36 @@ spec:
                   name: aws-secrets
                   key: elastic-password
             - name: springdoc.swagger-ui.path
-              value: /docs/swagger-ui.html
+              value: "/docs/swagger-ui.html"
             - name: springdoc.api-docs.path
-              value: /docs/api-docs
+              value: "/docs/api-docs"
             - name: springdoc.swagger-ui.config-url
-              value: /api/docs/api-docs/swagger-config
+              value: "/api/docs/api-docs/swagger-config"
             - name: springdoc.swagger-ui.url
-              value: /api/docs/api-docs
+              value: "/api/docs/api-docs"
             - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
-              value: https://keycloak.iam.naturalis.io/realms/dissco-dev
+              value: "https://keycloak.iam.naturalis.io/realms/dissco-dev"
             - name: spring.security.oauth2.authorizationserver.endpoint.jwk-set-uri
-              value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+              value: "${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs"
             - name: jwt.auth.converter.resource-id
-              value: springboot-keycloak-client
+              value: "springboot-keycloak-client"
             - name: web.annotationEndpoint
-              value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation
+              value: "dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation"
             - name: web.masEndpoint
-              value: mas-scheduler-web.default.svc.cluster.local:8080/
+              value: "mas-scheduler-web.default.svc.cluster.local:8080/"
+            - name: web.handleEndpoint
+              value: "https://dev.dissco.tech/handle-manager/api/pids/v1/"
+            - name: web.processorEndpoint
+              value: "dissco-digital-specimen-processor-web.default.svc.cluster.local:8080"
+            - name: application.isAcceptingAnnotations
+              value: "true"
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
                   key: mongodb-connection
             - name: mongo.database
-              value: dissco
+              value: "dissco"
             - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
@@ -87,22 +93,20 @@ spec:
                   name: aws-secrets
                   key: rabbitmq-username
             - name: spring.rabbitmq.host
-              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
+              value: "rabbitmq-cluster.rabbitmq.svc.cluster.local"
             - name: application.base-url
-              value: https://dev.dissco.tech/api
+              value: "https://dev.dissco.tech/api"
             - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
-              value: client_credentials
+              value: "client_credentials"
             - name: spring.security.oauth2.client.registration.dissco.client-id
-              value: dissco-backend
+              value: "dissco-backend"
             - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-backend-client-secret
-            - name: web.handleEndpoint
-              value: https://dev.dissco.tech/handle-manager/api/pids/v1/
             - name: spring.security.oauth2.client.provider.dissco.token-uri
-              value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
+              value: "https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token"
             - name: s3.access-key
               valueFrom:
                 secretKeyRef:
@@ -114,7 +118,7 @@ spec:
                   name: aws-secrets
                   key: media-derivative-s3-access-key-secret
             - name: s3.bucket-name
-              value: dissco-data-media-derivative-test
+              value: "dissco-data-media-derivative-test"
           resources:
             requests:
               memory: "500Mi"
