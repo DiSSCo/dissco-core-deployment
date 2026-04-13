@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-digital-media-derivative-service
+  labels:
+    app: dissco-digital-media-derivative-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-digital-media-derivative-service
+  template:
+    metadata:
+      labels:
+        app: dissco-digital-media-derivative-service
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: dissco-digital-media-derivative-service
+          image: public.ecr.aws/dissco/dissco-media-derivative-service
+          imagePullPolicy: Always
+          env:
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: s3.access-key
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: media-derivative-s3-access-key
+            - name: s3.access-secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: media-derivative-s3-access-key-secret
+            - name: s3.bucket-name
+              value: dissco-data-media-derivative-test
+            - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
+              value: client_credentials
+            - name: application.prefix
+              value: TEST
+            - name: application.api-url
+              value: https://dev.dissco.tech/api/dm/v1/
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 10
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: dissco-digital-media-derivative-service-scaled-object
+spec:
+  scaleTargetRef:
+    name: dissco-digital-media-derivative-service
+  minReplicaCount: 0
+  maxReplicaCount: 1
+  triggers:
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: digital-media-derivative-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
