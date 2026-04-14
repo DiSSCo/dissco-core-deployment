@@ -1,0 +1,14 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Policy
+metadata:
+  name: queue-length-policy
+  namespace: rabbitmq
+spec:
+  name: queue-length-policy
+  pattern: "^digital-media-relationship-tombstone*"
+  applyTo: "queues"
+  definition:
+    max-length: 10000000
+    overflow: "drop-head" # Drop messages from head so we don't exceed limit
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster
