@@ -8,7 +8,7 @@ spec:
   pattern: "^digital-media-relationship-tombstone*"
   applyTo: "queues"
   definition:
-    max-length: 10000000
+    max-length: 100000
     overflow: "drop-head" # Drop messages from head so we don't exceed limit
   rabbitmqClusterReference:
     name: rabbitmq-cluster
