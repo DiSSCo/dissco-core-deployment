@@ -38,16 +38,16 @@ spec:
     delivery-limit: 1
   rabbitmqClusterReference:
     name: rabbitmq-cluster
-# ---
-#apiVersion: rabbitmq.com/v1beta1
-#kind: Queue
-#metadata:
-#  name: digital-media-relationship-tombstone-queue # name of this custom resource; does not have to the same as the actual queue name
-#  namespace: rabbitmq
-#spec:
-#  name: digital-media-relationship-tombstone-queue # name of the queue
-#  autoDelete: false
-#  durable: true
-#  type: "quorum"
-#  rabbitmqClusterReference:
-#    name: rabbitmq-cluster # name of the RabbitMQ cluster
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: digital-media-relationship-tombstone-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: rabbitmq
+spec:
+  name: digital-media-relationship-tombstone-queue # name of the queue
+  autoDelete: false
+  durable: true
+  type: "quorum"
+  rabbitmqClusterReference:
+    name: rabbitmq-cluster # name of the RabbitMQ cluster
