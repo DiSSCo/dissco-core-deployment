@@ -149,10 +149,3 @@ spec:
         queueName: digital-media-relationship-tombstone-queue
       authenticationRef:
         name: keda-trigger-auth-rabbitmq-conn
-    - type: rabbitmq
-      metadata:
-        mode: QueueLength
-        value: "1"
-        queueName: digital-media-relationship-tombstone-queue
-      authenticationRef:
-        name: keda-trigger-auth-rabbitmq-conn
