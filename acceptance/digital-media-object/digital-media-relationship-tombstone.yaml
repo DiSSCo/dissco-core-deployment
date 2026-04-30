@@ -36,8 +36,6 @@ spec:
     dead-letter-exchange: digital-media-relationship-tombstone-exchange-dlq
     dead-letter-routing-key: digital-media-relationship-tombstone-dlq
     delivery-limit: 1
-    max-length: 100000
-    overflow: "drop-head" # Drop messages from head so we don't exceed limit
   rabbitmqClusterReference:
     name: rabbitmq-cluster
 ---
