@@ -1,25 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-virtual-collection-service
+  name: source-system-data-checker
   labels:
-    app: dissco-virtual-collection-service
+    app: source-system-data-checker
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-virtual-collection-service
+      app: source-system-data-checker
   template:
     metadata:
       labels:
-        app: dissco-virtual-collection-service
-        language: java
+        app: source-system-data-checker
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-virtual-collection-service
-          image: public.ecr.aws/dissco/dissco-virtual-collection-service:sha-bce743c  # Apr-01-2026
+        - name: source-system-data-checker
+          image: public.ecr.aws/dissco/source-system-data-checker:sha-ebef5b4  # Apr-07-2026
           imagePullPolicy: Always
+          ports:
+            - containerPort: 80
           env:
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
@@ -33,20 +34,6 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: db-password
-            - name: elasticsearch.hostname
-              value: elastic-search-es-http.elastic.svc.cluster.local
-            - name: elasticsearch.port
-              value: "9200"
-            - name: elasticsearch.username
-              valueFrom:
-                secretKeyRef:
-                  name: aws-secrets
-                  key: elastic-username
-            - name: elasticsearch.password
-              valueFrom:
-                secretKeyRef:
-                  name: aws-secrets
-                  key: elastic-password
             - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
@@ -63,21 +50,20 @@ spec:
             requests:
               memory: "1Gi"
               cpu: "500m"
-              ephemeral-storage: "10Gi"
             limits:
               memory: "1Gi"
-              cpu: "1000m"
+              cpu: "500m"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             periodSeconds: 3
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-            initialDelaySeconds: 15
+            initialDelaySeconds: 60
             failureThreshold: 2
           securityContext:
             runAsNonRoot: true
@@ -86,10 +72,10 @@ spec:
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: dissco-virtual-collection-service-scaled-object
+  name: source-system-data-checker-scaled-object
 spec:
   scaleTargetRef:
-    name: dissco-virtual-collection-service
+    name: source-system-data-checker
   minReplicaCount: 0
   maxReplicaCount:  1
   triggers:
@@ -97,13 +83,6 @@ spec:
       metadata:
         mode: QueueLength
         value: "1"
-        queueName: virtual-collection-queue
-      authenticationRef:
-        name: keda-trigger-auth-rabbitmq-conn
-    - type: rabbitmq
-      metadata:
-        mode: QueueLength
-        value: "1"
-        queueName: virtual-collection-ingestion-queue
+        queueName: source-system-data-checker-queue
       authenticationRef:
         name: keda-trigger-auth-rabbitmq-conn

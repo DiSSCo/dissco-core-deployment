@@ -193,8 +193,7 @@ if __name__ == "__main__":
     config = {
         "env": None,
         "do_update": False,
-        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
-        + ["source_system_data_checker"],
+        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES,
         "include_directories": [],
         "release_name": "",
     }
