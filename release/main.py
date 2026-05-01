@@ -191,10 +191,9 @@ if __name__ == "__main__":
     * release_name (optional): Set this to the desired release name. If blank, release name will follow rules described in README
     """
     config = {
-        "env": None,
-        "do_update": False,
-        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES
-        + ["source_system_data_checker"],
+        "env": Environment.ACCEPTANCE,
+        "do_update": True,
+        "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES,
         "include_directories": [],
         "release_name": "",
     }

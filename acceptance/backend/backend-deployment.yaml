@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-2104d3c   # Dec-19-2025
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-c11bbd8   # Apr-16-2026
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -65,10 +65,14 @@ spec:
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
-            - name: feign.annotations
+            - name: web.annotation-endpoint
               value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation
-            - name: feign.mas
+            - name: web.mas-endpoint
               value: mas-scheduler-web.default.svc.cluster.local:8080/
+            - name: web.processor-endpoint
+              value: dissco-digital-specimen-processor-web.svc.cluster.local:8080/
+            - name: web.handle-endpoint
+              value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
@@ -90,6 +94,8 @@ spec:
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: application.base-url
               value: https://sandbox.dissco.tech/api
+            - name: application.is-accepting-annotations
+              value: "true"
             - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
             - name: spring.security.oauth2.client.registration.dissco.client-id
@@ -99,8 +105,6 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-backend-client-secret
-            - name: endpoint.handle-endpoint
-              value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
             - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
           resources:

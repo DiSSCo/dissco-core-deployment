@@ -75,6 +75,8 @@ spec:
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
             - name: doi.endpoint
               value: https://dev.dissco.tech/doi-manager/api/pids/v1
+            - name: annotation.apply-accepted-annotations
+              value: "true"
             - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:

@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dissco-core-annotation-processing-web
+  name: dissco-digital-specimen-processor-specimen-event
   labels:
-    app: dissco-core-annotation-processing-web
+    app: dissco-digital-specimen-processor-specimen-event
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dissco-core-annotation-processing-web
+      app: dissco-digital-specimen-processor-specimen-event
   template:
     metadata:
       labels:
-        app: dissco-core-annotation-processing-web
+        app: dissco-digital-specimen-processor-specimen-event
         language: java
     spec:
       automountServiceAccountToken: false
       containers:
-        - name: dissco-core-annotation-processing-web
-          image: public.ecr.aws/dissco/dissco-core-annotation-processing-service:sha-d76fc67  # Apr-20-2026
+        - name: dissco-digital-specimen-processor-specimen-event
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-0fa5589   # Apr-30-2026
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           env:
             - name: spring.profiles.active
-              value: web
+              value: specimen-rabbitmq
             - name: spring.datasource.url
               value: jdbc:postgresql://terraform-20230828064251677200000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
             - name: spring.datasource.username
@@ -52,7 +52,7 @@ spec:
                   name: aws-secrets
                   key: elastic-password
             - name: elasticsearch.index-name
-              value: annotation
+              value: digital-specimen
             - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
@@ -73,21 +73,19 @@ spec:
               value: client_credentials
             - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
+            - name: doi.endpoint
+              value: https://sandbox.dissco.tech/doi-manager/api/pids/v1
             - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-processing-service-client-secret
-            - name: endpoint.handle-endpoint
-              value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
-            - name: endpoint.token-endpoint
-              value: https://login-demo.dissco.eu/auth/realms/dissco/protocol/openid-connect/token
           resources:
             requests:
-              memory: "500Mi"
-              cpu: "200m"
+              memory: "1Gi"
+              cpu: "500m"
             limits:
-              memory: "500Mi"
+              memory: "1Gi"
               cpu: "1000m"
           livenessProbe:
             httpGet:
@@ -104,3 +102,21 @@ spec:
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: dissco-digital-specimen-processor-specimen-event-scaled-object
+spec:
+  scaleTargetRef:
+    name: dissco-digital-specimen-processor-specimen-event
+  minReplicaCount: 0
+  maxReplicaCount:  1
+  triggers:
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: digital-specimen-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
