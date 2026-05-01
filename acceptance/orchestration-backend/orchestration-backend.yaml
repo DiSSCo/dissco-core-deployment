@@ -63,22 +63,24 @@ spec:
             - name: endpoint.handle-endpoint
               value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
             - name: application.baseUrl
-              value: acc-orchestration.dissco.tech
+              value: acc.orchestration.dissco.tech
             - name: spring.security.oauth2.client.registration.dissco.client-secret
               valueFrom:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-orchestration-client-secret
-            - name: translator-job.image
-              value: public.ecr.aws/dissco/dissco-core-translator:sha-e4118b1   # Mar-23-2026
-            - name: mas.runningEndpoint
-              value: https://sandbox.dissco.tech/api/v1/mjr
-            - name: translator-job.export.export-image
-              value: public.ecr.aws/dissco/source-system-job-scheduler:sha-9cb59e4 # Jun-20-2025
-            - name: translator-job.export.keycloak
-              value: https://login-demo.dissco.eu/
             - name: translator-job.export.dissco-domain
               value: sandbox.dissco.tech
+            - name: translator-job.export.export-image
+              value: public.ecr.aws/dissco/source-system-job-scheduler:sha-9cb59e4 # Jun-20-2025
+            - name: translator-job.rabbitmq.routingKeyName
+              value: source-system-data-checker
+            - name: translator-job.rabbitmq.exchangeName
+              value: source-system-data-checker-exchange
+            - name: translator-job.export.keycloak
+              value: https://keycloak.iam.naturalis.io/
+            - name: mas.runningEndpoint
+              value: https://sandbox.dissco.tech/api/v1/mjr
             - name: s3.accessKey
               valueFrom:
                 secretKeyRef:
