@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    chart:
+    chart: headlamp
     repoURL: https://kubernetes-sigs.github.io/headlamp/
     targetRevision: 0.41.0
     helm:
