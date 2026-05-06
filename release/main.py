@@ -191,11 +191,11 @@ if __name__ == "__main__":
     * release_name (optional): Set this to the desired release name. If blank, release name will follow rules described in README
     """
     config = {
-        "env": None,
-        "do_update": False,
+        "env": Environment.ACCEPTANCE,
+        "do_update": True,
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES,
-        "include_directories": [],
-        "release_name": "",
+        "include_directories": ["backend"],
+        "release_name": "v1.4.3-patch",
     }
     env = config.get("env")
     if env is None:
