@@ -117,6 +117,8 @@ spec:
                   key: media-derivative-s3-access-key-secret
             - name: s3.bucket-name
               value: dissco-data-media-derivative-test
+            - name: spring.profiles.active
+              value: media-derivatives
           resources:
             requests:
               memory: "500Mi"
