@@ -65,10 +65,6 @@ spec:
               value: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
             - name: jwt.auth.converter.resource-id
               value: springboot-keycloak-client
-            - name: feign.annotations
-              value: dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation
-            - name: feign.mas
-              value: mas-scheduler-web.default.svc.cluster.local:8080/
             - name: mongo.connection-string
               valueFrom:
                 secretKeyRef:
@@ -99,8 +95,14 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-backend-client-secret
-            - name: endpoint.handle-endpoint
+            - name: web.handle-endpoint
               value: https://api.dissco.eu/handle-manager/v1/pids/
+            - name: web.annotation-endpoint
+              value: http://dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation
+            - name: web.mas-endpoint
+              value: http://mas-scheduler-web.default.svc.cluster.local:8080/
+            - name: web.processor-endpoint
+              value: http://dissco-digital-specimen-processor-web.svc.cluster.local:8080/
             - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco/protocol/openid-connect/token
           resources:

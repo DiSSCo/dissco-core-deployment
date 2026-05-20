@@ -6,3 +6,16 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 data:
+  V1_0_2__add_source_system_id_and_translator_report_and_vc_countries.sql: |
+    CREATE INDEX digital_specimen_source_system_id_index
+        ON digital_specimen (source_system_id);
+    ALTER TABLE digital_media_object
+        ADD source_system_id text;
+    CREATE INDEX digital_media_source_system_id_index
+        ON digital_media_object (source_system_id);
+    ALTER TABLE digital_specimen
+      ADD col_id text;
+    ALTER TABLE translator_job_record
+      ADD report jsonb;
+    ALTER TABLE virtual_collection
+      ADD COLUMN countries text[];

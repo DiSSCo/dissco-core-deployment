@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dissco-digital-specimen-processor-er-event
+  labels:
+    app: dissco-digital-specimen-processor-er-event
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dissco-digital-specimen-processor-er-event
+  template:
+    metadata:
+      labels:
+        app: dissco-digital-specimen-processor-er-event
+        language: java
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: dissco-digital-specimen-processor-er-event
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-0fa5589   # Apr-30-2026
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: spring.profiles.active
+              value: er-rabbitmq
+            - name: spring.datasource.url
+              value: jdbc:postgresql://terraform-20241127102459386000000001.cbppwfnjypll.eu-west-2.rds.amazonaws.com:5432/dissco
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: db-password
+            - name: elasticsearch.hostname
+              value: elastic-search-es-http.elastic.svc.cluster.local
+            - name: elasticsearch.port
+              value: "9200"
+            - name: elasticsearch.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: elastic-username
+            - name: elasticsearch.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: elastic-password
+            - name: elasticsearch.index-name
+              value: digital-specimen
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-password
+            - name: spring.rabbitmq.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: rabbitmq-username
+            - name: spring.rabbitmq.host
+              value: rabbitmq-cluster.rabbitmq.svc.cluster.local
+            - name: spring.security.oauth2.resourceserver.jwt.issuer-uri
+              value: https://keycloak.iam.naturalis.io/realms/dissco
+            - name: spring.security.oauth2.client.registration.dissco.client-id
+              value: dissco-processing-service
+            - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
+              value: client_credentials
+            - name: spring.security.oauth2.client.provider.dissco.token-uri
+              value: https://keycloak.iam.naturalis.io/realms/dissco/protocol/openid-connect/token
+            - name: doi.endpoint
+              value: https://api.dissco.eu/doi/v1
+            - name: spring.security.oauth2.client.registration.dissco.client-secret
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: dissco-processing-service-client-secret
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 60
+            failureThreshold: 2
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: dissco-digital-specimen-processor-er-event-scaled-object
+spec:
+  scaleTargetRef:
+    name: dissco-digital-specimen-processor-er-event
+  minReplicaCount: 0
+  maxReplicaCount: 1
+  triggers:
+    - type: rabbitmq
+      metadata:
+        mode: QueueLength
+        value: "1"
+        queueName: digital-media-relationship-tombstone-queue
+      authenticationRef:
+        name: keda-trigger-auth-rabbitmq-conn
