@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-76183a8   # May-06-2026
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-1558f03   # May-19-2026
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -119,6 +119,8 @@ spec:
                   key: dissco-backend-client-secret
             - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
+            - name: spring.profiles.active
+              value: media-derivatives
           resources:
             requests:
               memory: "500Mi"
