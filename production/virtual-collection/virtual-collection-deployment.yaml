@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-virtual-collection-service
-          image: public.ecr.aws/dissco/dissco-virtual-collection-service:sha-aa1a2eb  # Nov-04-2025
+          image: public.ecr.aws/dissco/dissco-virtual-collection-service:sha-bce743c  # Apr-01-2026
           imagePullPolicy: Always
           env:
             - name: spring.datasource.url

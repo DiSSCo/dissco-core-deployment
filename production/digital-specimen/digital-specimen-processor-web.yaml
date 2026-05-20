@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: dissco-digital-specimen-processor-web
-          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-f130cd2  # Jan-27-2026
+          image: public.ecr.aws/dissco/dissco-core-digital-specimen-processor:sha-0fa5589  # Apr-30-2026
           imagePullPolicy: Always
           ports:
             - containerPort: 80
