@@ -56,6 +56,8 @@ def get_image_names(
                             image_name = match.group(
                                 1
                             )  # Gets the image name without the tag
+                            if "disscover" in image_name and environment == Environment.PRODUCTION:
+                                image_name = "disscover-production"
                             if image_name not in service_dict:
                                 service_dict[image_name] = Service(
                                     image_name, [entry.path], "", match.group(2), ""
@@ -103,6 +105,8 @@ def get_latest_tags_prod(service_dict: Dict[str, Service]) -> List[Service]:
                             image_name = match.group(
                                 1
                             )  # Gets the image name without the tag
+                            if "disscover" in image_name:
+                                image_name = "disscover-production"
                             if image_name not in updated_services:
                                 image_tag = match.group(2)
                                 pushed_date = DATE_PATTERN.match(line).group(1)
@@ -191,8 +195,8 @@ if __name__ == "__main__":
     * release_name (optional): Set this to the desired release name. If blank, release name will follow rules described in README
     """
     config = {
-        "env": Environment.PRODUCTION,
-        "do_update": True,
+        "env": None,
+        "do_update": False,
         "exclude_directories": DEFAULT_EXCLUDE_DIRECTORIES,
         "include_directories": [],
         "release_name": "",
