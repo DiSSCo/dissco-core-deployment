@@ -68,9 +68,9 @@ spec:
             - name: web.annotationEndpoint
               value: http://dissco-core-annotation-processing-service-web.default.svc.cluster.local:8080/annotation
             - name: web.masEndpoint
-              value: http://mas-scheduler-web.default.svc.cluster.local:8080/
+              value: http://mas-scheduler-web.default.default.svc.cluster.local:8080/
             - name: web.processorEndpoint
-              value: http://dissco-digital-specimen-processor-web.svc.cluster.local:8080/
+              value: http://dissco-digital-specimen-processor-service.default.svc.cluster.local:8080/
             - name: web.handleEndpoint
               value: https://dev.dissco.tech/handle-manager/api/pids/v1/
             - name: mongo.connection-string
