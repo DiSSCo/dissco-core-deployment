@@ -119,6 +119,8 @@ spec:
               value: dissco-data-media-derivative-test
             - name: spring.profiles.active
               value: media-derivatives
+            - name: application.is-accepting-annotations
+              value: "true"
           resources:
             requests:
               memory: "500Mi"
