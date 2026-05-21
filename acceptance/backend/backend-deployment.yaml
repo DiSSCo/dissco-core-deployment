@@ -94,7 +94,7 @@ spec:
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: application.base-url
               value: https://sandbox.dissco.tech/api
-            - name: application.is-accepting-annotations
+            - name: application.accepting-annotations
               value: "true"
             - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
