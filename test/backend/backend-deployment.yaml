@@ -119,7 +119,7 @@ spec:
               value: dissco-data-media-derivative-test
             - name: spring.profiles.active
               value: media-derivatives
-            - name: application.is-accepting-annotations
+            - name: application.accepting-annotations
               value: "true"
           resources:
             requests:
