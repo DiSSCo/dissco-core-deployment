@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: dissco-backend
-          image: public.ecr.aws/dissco/dissco-core-backend:sha-1558f03   # May-19-2026
+          image: public.ecr.aws/dissco/dissco-core-backend:sha-1db7f3a   # May-27-2026
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -94,8 +94,6 @@ spec:
               value: rabbitmq-cluster.rabbitmq.svc.cluster.local
             - name: application.base-url
               value: https://sandbox.dissco.tech/api
-            - name: application.accepting-annotations
-              value: "true"
             - name: spring.security.oauth2.client.registration.dissco.authorization-grant-type
               value: client_credentials
             - name: spring.security.oauth2.client.registration.dissco.client-id
@@ -120,7 +118,7 @@ spec:
             - name: spring.security.oauth2.client.provider.dissco.token-uri
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
             - name: spring.profiles.active
-              value: media-derivatives
+              value: media-derivatives,accept-annotations
           resources:
             requests:
               memory: "500Mi"
