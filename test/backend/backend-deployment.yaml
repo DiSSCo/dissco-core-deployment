@@ -118,9 +118,7 @@ spec:
             - name: s3.bucket-name
               value: dissco-data-media-derivative-test
             - name: spring.profiles.active
-              value: media-derivatives
-            - name: application.accepting-annotations
-              value: "true"
+              value: media-derivatives,accept-annotations
           resources:
             requests:
               memory: "500Mi"
