@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: disscover
-          image: public.ecr.aws/dissco/disscover-production:sha-1941cef   # Apr-21-2026
+          image: public.ecr.aws/dissco/disscover-production:sha-837a10f   # May 29-2026
           ports:
             - containerPort: 3000
           resources:
