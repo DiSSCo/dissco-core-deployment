@@ -82,10 +82,6 @@ spec:
                   key: dissco-processing-service-client-secret
             - name: caching.spring.ttl
               value: PT6H
-            - name: rabbitmq.provenance.exchange-name
-              value: create-update-tombstone-exchange
-            - name: rabbitmq.provenance.routing-key-prefix
-              value: create-update-tombstone
           resources:
             requests:
               memory: "500Mi"

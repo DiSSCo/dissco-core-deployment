@@ -80,10 +80,6 @@ spec:
                 secretKeyRef:
                   name: aws-secrets
                   key: dissco-processing-service-client-secret
-            - name: rabbitmq.provenance.exchange-name
-              value: create-update-tombstone-exchange
-            - name: rabbitmq.provenance.routing-key-prefix
-              value: create-update-tombstone
           resources:
             requests:
               memory: "1Gi"

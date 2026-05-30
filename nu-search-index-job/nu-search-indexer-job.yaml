@@ -4,7 +4,6 @@ metadata:
   name: dissco-nu-search-indexer-job
   labels:
     app: dissco-nu-search-indexer-job
-    language: java
 spec:
   template:
     spec:
@@ -13,7 +12,7 @@ spec:
       serviceAccountName: nu-search-sa
       containers:
         - name: dissco-nu-search-indexer-job
-          image: public.ecr.aws/dissco/dissco-nusearch-service:sha-a9efb0c   # Sep-16-2025
+          image: public.ecr.aws/dissco/dissco-nusearch-service
           imagePullPolicy: Always
           env:
             - name: spring.profiles.active
@@ -48,7 +47,7 @@ spec:
             - name: indexing.col-username
               value: sam_leeflang
             - name: indexing.col-dataset
-              value: "310463"
+              value: "315192"
             - name: indexing.index-location
               value: /index-files/index
             - name: indexing.temp-coldp-location
@@ -58,10 +57,10 @@ spec:
           resources:
             requests:
               memory: "6Gi"
-              cpu: "500m"
+              cpu: "2000m"
             limits:
               memory: "6Gi"
-              cpu: "1000m"
+              cpu: "2000m"
               ephemeral-storage: "10Gi"
           securityContext:
             runAsNonRoot: true
