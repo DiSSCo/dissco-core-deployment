@@ -131,7 +131,7 @@ def get_github_tag_name(service: Service, prev_tag: bool) -> str:
     :return: tag name
     """
     if prev_tag:
-        if service.image_name == "disscover":
+        if "disscover" in service.image_name:
             return get_github_tag_name_disscover(service.prev_tag)
         return (
             service.prev_tag
@@ -139,7 +139,7 @@ def get_github_tag_name(service: Service, prev_tag: bool) -> str:
             else f"{service.prev_tag}-dissco-dev"
         )
     else:
-        if service.image_name == "disscover":
+        if "disscover" in service.image_name:
             return get_github_tag_name_disscover(service.latest_tag)
         return (
             service.latest_tag

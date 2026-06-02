@@ -19,7 +19,7 @@ spec:
       serviceAccountName: dissco-orchestration-backend-sa
       containers:
         - name: dissco-orchestration-backend
-          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-b351810   # Feb-25-2026
+          image: public.ecr.aws/dissco/dissco-core-orchestration-backend:sha-024aece   # Apr-21-2026
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -72,7 +72,7 @@ spec:
             - name: mas.runningEndpoint
               value: https://api.dissco.eu/v1/mjr
             - name: translator-job.image
-              value: public.ecr.aws/dissco/dissco-core-translator:sha-55f15fb   # Feb-24-2026
+              value: public.ecr.aws/dissco/dissco-core-translator:sha-e4118b1   # Mar-23-2026
             - name: translator-job.export.export-image
               value: public.ecr.aws/dissco/source-system-job-scheduler:sha-9cb59e4 # Jun-20-2025
             - name: translator-job.export.keycloak
