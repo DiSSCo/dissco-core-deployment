@@ -44,7 +44,7 @@ spec:
                   name: aws-secrets
                   key: dissco-processing-service-client-secret
             - name: datacite.endpoint
-              value: https://api.test.datacite.org/dois
+              value: https://api.test.datacite.org/dois/
             - name: pid.endpoint
               value: https://sandbox.dissco.tech/doi-manager/api/pids/v1/
             - name: datacite.repository-id
