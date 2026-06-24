@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nba-api-deployment
+  namespace: nba
+  labels:
+    app: nba-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nba-api
+  template:
+    metadata:
+      labels:
+        app: nba-api
+        language: java
+    spec:
+      serviceAccountName: nba-secret-manager
+      automountServiceAccountToken: true
+      containers:
+        - name: nba-api
+          image: registry.gitlab.com/naturalis/bii/nbds/netherlands-specimen-access-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: elasticsearch.hostname
+              value: elastic-search-es-http.elastic.svc.cluster.local
+            - name: elasticsearch.port
+              value: "9200"
+            - name: elasticsearch.username
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: elastic-username
+            - name: elasticsearch.password
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secrets
+                  key: elastic-password
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "200m"
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
+              ephemeral-storage: "32Mi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 6
+            periodSeconds: 10
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: aws-secrets
+              mountPath: "/mnt/secrets-store/aws-secrets"
+              readOnly: true
+      volumes:
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"
