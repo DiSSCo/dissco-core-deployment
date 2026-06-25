@@ -32,12 +32,12 @@ spec:
             - name: elasticsearch.username
               valueFrom:
                 secretKeyRef:
-                  name: aws-secrets
+                  name: nba-secrets
                   key: elastic-username
             - name: elasticsearch.password
               valueFrom:
                 secretKeyRef:
-                  name: aws-secrets
+                  name: nba-secrets
                   key: elastic-password
           resources:
             requests:
@@ -64,13 +64,13 @@ spec:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
           volumeMounts:
-            - name: aws-secrets
-              mountPath: "/mnt/secrets-store/aws-secrets"
+            - name: nba-secrets
+              mountPath: "/mnt/secrets-store/nba-secrets"
               readOnly: true
       volumes:
-        - name: aws-secrets
+        - name: nba-secrets
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
-              secretProviderClass: "aws-secrets"
+              secretProviderClass: "nba-secrets"
