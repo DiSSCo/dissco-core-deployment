@@ -46,7 +46,7 @@ spec:
             - name: token.IdName
               value: dissco-data-exporter-job
             - name: token.SecretName
-              value: dissco-data-exporter-job-client-secret
+              value: export-client-secret
             - name: token.TokenEndpoint
               value: https://keycloak.iam.naturalis.io/realms/dissco-dev/protocol/openid-connect/token
             - name: aws.access-key
