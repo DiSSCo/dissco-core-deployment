@@ -7,7 +7,7 @@ spec:
   version: 9.2.0
   nodeSets:
     - name: default
-      count: 3
+      count: 4
       config:
         node.store.allow_mmap: false
       volumeClaimTemplates:
