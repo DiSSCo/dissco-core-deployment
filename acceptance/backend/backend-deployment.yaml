@@ -70,7 +70,7 @@ spec:
             - name: web.mas-endpoint
               value: http://mas-scheduler-web.default.svc.cluster.local:8080/
             - name: web.processor-endpoint
-              value: http://dissco-digital-specimen-processor-web.svc.cluster.local:8080/
+              value: http://dissco-digital-specimen-processor-service.default.svc.cluster.local:8080/
             - name: web.handle-endpoint
               value: https://sandbox.dissco.tech/handle-manager/api/pids/v1/
             - name: mongo.connection-string
