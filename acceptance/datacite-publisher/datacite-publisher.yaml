@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: datacite-publisher
-          image: public.ecr.aws/dissco/datacite-publisher:sha-167bccf   # Apr-16-2026
+          image: public.ecr.aws/dissco/datacite-publisher:sha-97e0a3c   # Aug-05-2026
           imagePullPolicy: Always
           env:
             - name: doi.prefix
