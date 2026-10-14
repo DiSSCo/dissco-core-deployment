@@ -19,7 +19,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`nba.dev.dissco.tech`) && PathPrefix(`/api`)
+    - match: Host(`nba.dev.dissco.tech`)
       kind: Rule
       services:
         - name: nba-api-service
