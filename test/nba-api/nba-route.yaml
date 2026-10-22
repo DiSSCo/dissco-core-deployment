@@ -5,7 +5,7 @@ metadata:
   namespace: nba
 spec:
   selector:
-    app: nba-api-deployment
+    app: nba-api
   ports:
     - protocol: TCP
       port: 8080
@@ -23,5 +23,5 @@ spec:
       kind: Rule
       services:
         - name: nba-api-service
-          namespace: default
+          namespace: nba
           port: 8080
