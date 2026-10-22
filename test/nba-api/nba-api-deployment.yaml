@@ -23,7 +23,7 @@ spec:
           image: registry.gitlab.com/naturalis/bii/nbds/netherlands-specimen-access-api:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           env:
             - name: elasticsearch.hostname
               value: elastic-search-es-http.elastic.svc.cluster.local
