@@ -1,0 +1,34 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: airflow-worker-jobs
+  namespace: airflow
+rules:
+  # KubernetesJobOperator: create the Job, poll it (wait_until_job_complete) and clean it up
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["create", "get", "list", "watch", "patch", "delete"]
+  - apiGroups: ["batch"]
+    resources: ["jobs/status"]
+    verbs: ["get"]
+  # get_logs=True: find the Job's pod and stream its log
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: airflow-worker-jobs
+  namespace: airflow
+subjects:
+  - kind: ServiceAccount
+    name: airflow-worker
+    namespace: airflow
+roleRef:
+  kind: Role
+  name: airflow-worker-jobs
+  apiGroup: rbac.authorization.k8s.io

@@ -1,0 +1,40 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: nba-elastic-search
+  namespace: nba
+spec:
+  version: 9.5.5
+  nodeSets:
+    - name: default
+      count: 1
+      config:
+        node.store.allow_mmap: false
+      podTemplate:
+        metadata:
+          annotations:
+            # A single node with an EBS volume: every Karpenter consolidation means ~6-8 minutes without Elasticsearch
+            karpenter.sh/do-not-disrupt: "true"
+        spec:
+          containers:
+            - name: elasticsearch # Must match the ECK container name for the resources to apply.
+              resources:
+                requests:
+                  cpu: 1
+                  memory: 4Gi
+                limits:
+                  cpu: 2
+                  memory: 4Gi
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 50Gi
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
