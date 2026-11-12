@@ -19,21 +19,9 @@ spec:
       serviceAccountName: nu-search-sa
       containers:
         - name: dissco-nu-search-deployment
-          image: public.ecr.aws/dissco/dissco-nusearch-service
+          image: public.ecr.aws/dissco/dissco-nusearch-service:latest
           imagePullPolicy: Always
           env:
-            - name: spring.profiles.active
-              value: s3-resolver
-            - name: s3.access-key
-              valueFrom:
-                secretKeyRef:
-                  name: aws-secrets
-                  key: col-bucket-access-key-id
-            - name: s3.access-secret
-              valueFrom:
-                secretKeyRef:
-                  name: aws-secrets
-                  key: col-bucket-access-key-secret
             - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
@@ -50,35 +38,19 @@ spec:
               value: virtual-collection-ingestion-exchange
             - name: rabbitmq.routing-key-name
               value: virtual-collection-ingestion
-            - name: indexing.col-password
-              valueFrom:
-                secretKeyRef:
-                  name: aws-secrets
-                  key: indexing-col-password
-            - name: indexing.col-username
-              value: sam_leeflang
-            - name: indexing.col-dataset
-              value: "315192"
-            - name: indexing.index-location
-              value: /index-files/index
-            - name: indexing.index-at-startup
-              value: "true"
-            - name: indexing.delete-index
-              value: "true"
-            - name: indexing.temp-coldp-location
-              value: /index-files/col-temp.zip
+            - name: matching-api.endpoint
+              value: http://col-matching-ws-service.default.svc.cluster.local:8080
             - name: JAVA_TOOL_OPTIONS
-              value: -XX:MaxRAMPercentage=85
-            - name: logging.level.root
-              value: INFO
+              value: -XX:MaxRAMPercentage=75
           resources:
             requests:
-              memory: "3Gi"
-              cpu: "1500m"
+              memory: "1Gi"
+              cpu: "500m"
+              ephemeral-storage: "1Gi"
             limits:
-              memory: "3Gi"
-              cpu: "1500m"
-              ephemeral-storage: "10Gi"
+              memory: "1Gi"
+              cpu: "500m"
+              ephemeral-storage: "1Gi"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -95,14 +67,10 @@ spec:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
           volumeMounts:
-            - mountPath: /index-files
-              name: temp-volume
             - name: aws-secrets
               mountPath: "/mnt/secrets-store/aws-secrets"
               readOnly: true
       volumes:
-        - name: temp-volume
-          emptyDir: { }
         - name: aws-secrets
           csi:
             driver: secrets-store.csi.k8s.io
