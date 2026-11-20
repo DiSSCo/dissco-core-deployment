@@ -11,10 +11,6 @@ spec:
       config:
         node.store.allow_mmap: false
       podTemplate:
-        metadata:
-          annotations:
-            # A single node with an EBS volume: every Karpenter consolidation means ~6-8 minutes without Elasticsearch
-            karpenter.sh/do-not-disrupt: "true"
         spec:
           containers:
             - name: elasticsearch # Must match the ECK container name for the resources to apply.
