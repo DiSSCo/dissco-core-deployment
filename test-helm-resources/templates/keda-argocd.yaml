@@ -8,9 +8,13 @@ spec:
   source:
     chart: keda
     repoURL: https://kedacore.github.io/charts
-    targetRevision: 2.10.2
+    targetRevision: 2.21.1
     helm:
       releaseName: keda
   destination:
     server: "https://kubernetes.default.svc"
     namespace: keda
+  syncPolicy:
+    syncOptions:
+      # The KEDA CRDs are larger than the 256KB last-applied annotation of a client-side apply
+      - ServerSideApply=true
