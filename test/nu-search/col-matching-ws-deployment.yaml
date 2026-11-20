@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: col-matching-ws-deployment
+  labels:
+    app: col-matching-ws-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: col-matching-ws-deployment
+  template:
+    metadata:
+      labels:
+        app: col-matching-ws-deployment
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: col-matching-ws-deployment
+          image: docker.gbif.org/matching-ws:xcol-amd64-316691-20261103-114436
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: JVM_OPTIONS
+              value: "-Xmx2560m -XX:+UseZGC" # GBIF uses the ZGC garbage collector
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "1500m"
+              ephemeral-storage: "10Gi"
+            limits:
+              memory: "4Gi"
+              cpu: "1500m"
+              ephemeral-storage: "10Gi"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 2
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            runAsGroup: 1000
+            runAsUser: 1000
