@@ -97,7 +97,8 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: traefik
-          image: traefik:v3.4
+          # Keep test/traefik/crd.yaml on the same version (reference/dynamic-configuration/kubernetes-crd-definition-v1.yml)
+          image: traefik:v3.7.19
           resources:
             requests:
               memory: "250Mi"

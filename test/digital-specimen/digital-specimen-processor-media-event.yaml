@@ -110,6 +110,10 @@ metadata:
 spec:
   scaleTargetRef:
     name: dissco-digital-specimen-processor-media-event
+  advanced:
+    horizontalPodAutoscalerConfig:
+      # KEDA's default name (keda-hpa-<ScaledObject name>) is longer than the 63-character limit
+      name: keda-hpa-dissco-digital-specimen-processor-media-event
   minReplicaCount: 0
   maxReplicaCount: 1
   triggers:
