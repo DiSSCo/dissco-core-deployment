@@ -8,9 +8,11 @@ spec:
   source:
     chart: karpenter
     repoURL: public.ecr.aws/karpenter
-    targetRevision: 0.35.2
+    targetRevision: 0.35.12
     helm:
       releaseName: karpenter
+      # The CRDs come from the karpenter-crd-argocd app
+      skipCrds: true
       values: |
         serviceAccount:
           annotations:
@@ -18,6 +20,20 @@ spec:
         settings:
           clusterName: dissco-k8s-test
         dnsPolicy: ClusterFirst
+        # Serves the v1beta1 <-> v1 conversion webhook during the v1 migration
+        webhook:
+          enabled: true
+          port: 8443
   destination:
     server: "https://kubernetes.default.svc"
     namespace: karpenter
+  # The Karpenter controller injects the CA of its webhooks
+  ignoreDifferences:
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      jqPathExpressions:
+        - .webhooks[].clientConfig.caBundle
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+      jqPathExpressions:
+        - .webhooks[].clientConfig.caBundle
