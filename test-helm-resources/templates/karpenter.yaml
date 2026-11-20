@@ -8,7 +8,7 @@ spec:
   source:
     chart: karpenter
     repoURL: public.ecr.aws/karpenter
-    targetRevision: 0.35.12
+    targetRevision: 1.0.14
     helm:
       releaseName: karpenter
       # The CRDs come from the karpenter-crd-argocd app
