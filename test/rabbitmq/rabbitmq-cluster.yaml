@@ -7,6 +7,7 @@ metadata:
     rabbitmq.com/topology-allowed-namespaces: "machine-annotation-services"
 spec:
   replicas: 3
+  image: rabbitmq:4.4.1-management
   resources:
     requests:
       memory: 4Gi
@@ -18,8 +19,6 @@ spec:
       - rabbitmq_shovel
       - rabbitmq_shovel_management
       - rabbitmq_prometheus
-    additionalConfig: |
-      cluster_partition_handling = pause_minority
   persistence:
     storageClassName: gp3
     storage: "100Gi"

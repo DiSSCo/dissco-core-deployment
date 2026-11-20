@@ -110,6 +110,10 @@ metadata:
 spec:
   scaleTargetRef:
     name: dissco-core-annotation-processing-event-mas
+  advanced:
+    horizontalPodAutoscalerConfig:
+      # KEDA's default name (keda-hpa-<ScaledObject name>) is longer than the 63-character limit
+      name: keda-hpa-dissco-core-annotation-processing-event-mas
   minReplicaCount: 0
   maxReplicaCount:  1
   triggers:

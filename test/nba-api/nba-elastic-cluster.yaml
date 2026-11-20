@@ -4,7 +4,7 @@ metadata:
   name: nba-elastic-search
   namespace: nba
 spec:
-  version: 9.5.5
+  version: 9.5.6
   nodeSets:
     - name: default
       count: 1

@@ -4,7 +4,7 @@ metadata:
   name: nba-kibana
   namespace: nba
 spec:
-  version: 9.5.5
+  version: 9.5.6
   count: 1
   elasticsearchRef:
     name: nba-elastic-search
