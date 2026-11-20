@@ -10,7 +10,7 @@ spec:
     # webhook to the kube-system namespace, and Karpenter runs in the karpenter namespace.
     chart: karpenter-crd
     repoURL: public.ecr.aws/karpenter
-    targetRevision: 0.35.12
+    targetRevision: 1.0.14
     helm:
       releaseName: karpenter-crd
       values: |
