@@ -28,7 +28,7 @@ spec:
     {
       "connectors": { },
       "receivers": {
-        "filelog": {
+        "file_log": {
           "include": [
             "/var/log/pods/*/*/*.log"
           ],
@@ -196,7 +196,7 @@ spec:
         }
       },
       "exporters": {
-        "otlp/logs": {
+        "otlp_grpc/logs": {
           "endpoint": "https://logs.gateway.analytics.naturalis.io:443",
           "auth": {
             "authenticator": "oauth2client/client"
@@ -215,7 +215,7 @@ spec:
           {
             "logs": {
               "receivers": [
-                "filelog"
+                "file_log"
               ],
               "processors": [
                 "batch",
@@ -225,7 +225,7 @@ spec:
                 "filter/logs_namespace"
               ],
               "exporters": [
-                "otlp/logs",
+                "otlp_grpc/logs",
                 "debug"
               ]
             }
