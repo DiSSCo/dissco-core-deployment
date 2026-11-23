@@ -344,13 +344,13 @@ spec:
         }
       },
       "exporters": {
-        "otlp/metrics": {
+        "otlp_grpc/metrics": {
           "endpoint": "https://metrics.gateway.analytics.naturalis.io:443",
           "auth": {
             "authenticator": "oauth2client/client"
           }
         },
-        "otlp/logs": {
+        "otlp_grpc/logs": {
           "endpoint": "https://logs.gateway.analytics.naturalis.io:443",
           "auth": {
             "authenticator": "oauth2client/client"
@@ -373,7 +373,7 @@ spec:
               "transform/host"
             ],
             "exporters": [
-              "otlp/metrics"
+              "otlp_grpc/metrics"
             ]
           },
           "logs": {
@@ -386,7 +386,7 @@ spec:
               "transform/host"
             ],
             "exporters": [
-              "otlp/logs"
+              "otlp_grpc/logs"
             ]
           }
         }

@@ -35,4 +35,3 @@ spec:
   stripPrefix:
     prefixes:
       - /api/data-export/v1
-    forceSlash: false
