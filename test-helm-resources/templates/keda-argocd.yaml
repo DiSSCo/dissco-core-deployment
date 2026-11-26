@@ -21,3 +21,6 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: keda
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
